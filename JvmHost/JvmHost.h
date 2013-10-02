@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JvmHost : NSObject
-
+@interface JvmHost : NSObject {
+    JavaVM *jvm;       /* denotes a Java VM */
+    JNIEnv *env;       /* pointer to native method interface */
+}
+- (JvmHost*) init;
+- (JvmHost*) initWithOptions:(NSDictionary*)options;
+- (void)destroy;
 @end

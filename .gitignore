@@ -1,0 +1,5 @@
+.DS_Store
+JvmHost/jre/
+JvmHost/jdk/
+Temp/
+xcuserdata/
