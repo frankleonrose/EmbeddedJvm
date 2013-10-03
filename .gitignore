@@ -1,6 +1,6 @@
 .DS_Store
-JvmHost/jre/
-JvmHost/jdk/
+EmbeddedJvm/jre/
+EmbeddedJvm/jdk/
 Temp/
 xcuserdata/
 Release/
