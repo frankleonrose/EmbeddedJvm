@@ -24,6 +24,8 @@
 		015336E717FDB0F3001D4DD4 /* EmbeddedJvmTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */; };
 		015336EC17FDBA26001D4DD4 /* EmbeddedJvm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */; };
 		015336EE17FDC526001D4DD4 /* EmbeddedJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0153370317FE04A6001D4DD4 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
+		0153370417FE04B7001D4DD4 /* Readme.md in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,16 @@
 			dstSubfolderSpec = 10;
 			files = (
 				015336EC17FDBA26001D4DD4 /* EmbeddedJvm.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0153370117FE040F001D4DD4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Documentation;
+			dstSubfolderSpec = 7;
+			files = (
+				0153370417FE04B7001D4DD4 /* Readme.md in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,6 +686,7 @@
 		011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvm.mm; path = ../EmbeddedJvm/EmbeddedJvm.mm; sourceTree = "<group>"; };
 		011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvmTests.mm; path = ../EmbeddedJvmTests/EmbeddedJvmTests.mm; sourceTree = "<group>"; };
 		015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvm.h; sourceTree = "<group>"; };
+		0153370217FE04A6001D4DD4 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -701,6 +714,7 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
+				0153370217FE04A6001D4DD4 /* Readme.md */,
 				010C4D3717FBB2D90015C86D /* EmbeddedJvm */,
 				010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */,
 				010C4D3017FBB2D90015C86D /* Frameworks */,
@@ -1703,6 +1717,7 @@
 				010C4D2B17FBB2D90015C86D /* Headers */,
 				010C4D2C17FBB2D90015C86D /* Resources */,
 				015336EA17FDB5A5001D4DD4 /* ShellScript */,
+				0153370117FE040F001D4DD4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1769,6 +1784,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0153370317FE04A6001D4DD4 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1794,7 +1810,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "copyTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/JVM\njavaRoot=$SRCROOT/EmbeddedJvm\necho ====================\necho Copying $javaRoot/jre and $javaRoot/jdk to $copyTo\necho ====================\n[ -d $copyTo ] || mkdir $copyTo\ncp -pRL $javaRoot/jre $copyTo\ncp -pRL $javaRoot/jdk $copyTo";
+			shellScript = "copyTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/JVM\njavaRoot=$SRCROOT/EmbeddedJvm\necho ====================\necho Copying $javaRoot/jre and $javaRoot/jdk to $copyTo\n[ -d $copyTo ] || mkdir $copyTo\ncp -pRL $javaRoot/jre $copyTo\ncp -pRL $javaRoot/jdk $copyTo\n\necho ====================\necho Copying Framework to Release directory\ncp -pRL $BUILT_PRODUCTS_DIR/EmbeddedJvm.framework $SRCROOT/Release";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1850,8 +1866,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1862,7 +1878,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1877,7 +1893,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/EmbeddedJvm/jdk/include",
+				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -1887,8 +1909,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1901,7 +1923,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1909,7 +1931,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/EmbeddedJvm/jdk/include",
+				);
+				LINK_WITH_STANDARD_LIBRARIES = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1924,8 +1952,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
 				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1941,8 +1970,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
 				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};

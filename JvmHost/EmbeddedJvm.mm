@@ -45,8 +45,15 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         
         NSBundle *app = [NSBundle mainBundle];
-        //path = @"JvmHost/jre/lib/server/libjvm.dylib";
-        path = [NSString stringWithFormat:@"%@/Contents/Frameworks/EmbeddedJvm.framework/Versions/A/JVM/jre/lib/server/libjvm.dylib", [app executablePath]];
+        NSURL *exeUrl = [app executableURL];
+        if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
+            path = @"EmbeddedJvm/jre/lib/server/libjvm.dylib";
+            NSLog(@"XCTest deployment loading %@", path);
+        }
+        else {
+            NSURL *contentsPath = [[exeUrl URLByDeletingLastPathComponent] URLByDeletingLastPathComponent];
+            path = [NSString stringWithFormat:@"%@/Frameworks/EmbeddedJvm.framework/Versions/A/JVM/jre/lib/server/libjvm.dylib", [contentsPath path]];
+        }
         jvmlib = dlopen([path cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
         
         if (jvmlib==nil) {
@@ -75,25 +82,35 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         //    options[1].optionString = "-Djava.class.path=c:\myclasses"; /* user classes */
         //    options[2].optionString = "-Djava.library.path=c:\mylibs";  /* set native library path */
         //    options[3].optionString = "-verbose:jni";                   /* print JNI-related messages */
-        optionsArray = new JavaVMOption[2];
+        optionCount = 5;
+        optionsArray = new JavaVMOption[optionCount];
         NSString *classpath = [paths componentsJoinedByString:@";"];
         NSString *classpathDef = [NSString stringWithFormat:@"-Djava.class.path=%@", classpath];
-        optionsArray[0].optionString = const_cast<char *>([classpathDef cStringUsingEncoding:NSASCIIStringEncoding]);
-        optionsArray[1].optionString = const_cast<char *>([@"-verbose[:class|gc|jni]" cStringUsingEncoding:NSASCIIStringEncoding]);
-        optionCount = 2;
+        optionsArray[0].optionString = [self asciiString:classpathDef];
+        optionsArray[1].optionString = [self asciiString:@"-verbose[:class|gc|jni]"];
+        optionsArray[2].optionString = [self asciiString:@"-XX:MaxPermSize=256m"];
+        optionsArray[3].optionString = [self asciiString:@"-Xms200m"];
+        optionsArray[4].optionString = [self asciiString:@"-Xmx1500m"];
 
         self.commands = [[NSMutableArray alloc] init];
 
+        NSLog(@"Initializing mainThreadLoop (self=%@)", self);
         self.mainThread = [[NSThread alloc] initWithTarget:self
                                                      selector:@selector(mainThreadLoop:)
                                                        object:nil];
-        [self.mainThread start];  // Actually create the thread
+        [self.mainThread setName:@"EmbeddedJvm"];
+        [self.mainThread start];  // Actually start the thread
         
     }
     return self;
 }
 
+-(char *)asciiString:(NSString*)s {
+    return const_cast<char *>([s cStringUsingEncoding:NSASCIIStringEncoding]);
+}
+
 -(void)dealloc {
+    NSLog(@"Deallocating EmbeddedJvm");
     delete[] optionsArray;
 }
 
@@ -123,10 +140,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (void)mainThreadLoop:(NSObject*)parameter {
+    NSLog(@"Starting mainThreadLoop (self=%@)", self);
     NSError *error = nil;
     [self createJvm:&error];
     if (error!=nil) {
         // TODO: Send error back to caller
+        return;
     }
     
     NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
@@ -147,12 +166,14 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
     bool threadTerminated = false;
     while (!threadTerminated) {
-        bool sourced = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-        if (!sourced) {
-            NSLog(@"");
+        bool sourceOrTimeout = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+        if (!sourceOrTimeout) {
+            NSLog(@"Failed to start run loop in EmbeddedJvm");
             threadTerminated = true;
         }
+        [self doCommand];
     }
+    NSLog(@"Terminated EmbeddedJvm main thread");
 }
 
 - (void)destroy {
@@ -166,6 +187,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 -(void)doCommand {
+    //NSLog(@"Run all enqueued commands");
     bool done = false;
     do {
         NSObject *command = nil;
@@ -179,6 +201,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             }
         }
         if (command!=nil) {
+            NSLog(@"Picked a command from the JVM queue");
             void (^cmdBlock)(JNIEnv* env) = (__bridge void(^)(JNIEnv* env))((__bridge void*)(command));
             @try {
                 cmdBlock(env);
@@ -195,15 +218,21 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             command = nil; // Release the block
         }
     } while (!done);
+    //NSLog(@"Done running commands");
 }
 
 - (void) doWithJvmThread:(void(^)(JNIEnv* env))block {
+    NSLog(@"Enqueuing command to JVM queue");
     @synchronized(self.commands) {
         [self.commands addObject:block];
     }
     if (self.runLoop!=nil && self.runLoopSource!=nil) {
+        NSLog(@"Alerting JVM runloop about new command");
         CFRunLoopSourceSignal(self.runLoopSource);
         CFRunLoopWakeUp(self.runLoop);
+    }
+    else {
+        NSLog(@"JVM runloop not yet started");
     }
 }
 
@@ -212,17 +241,17 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
     [host setRunLoop:rl];
 }
 void RunLoopSourcePerformRoutine (void *info)
 {
-    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
     [host doCommand];
 }
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
     [host setRunLoop:nil];
     NSLog(@"Unexpected cancelation of run loop source");
 }
