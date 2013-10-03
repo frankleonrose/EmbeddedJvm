@@ -1,13 +1,12 @@
 //
-//  JvmHost.mm
-//  JvmHost
+//  EmbeddedJvm.mm
+//  EmbeddedJvm
 //
 //  Created by Frank on 2013/10/1.
 //  Copyright (c) 2013 Futurose. All rights reserved.
 //
 
-#import "jni.h"
-#import "JvmHost.h"
+#import "EmbeddedJvm.h"
 #include <dlfcn.h>
 
 typedef jint (*JNI_GetDefaultJavaVMInitArgs_t)(void *args);
@@ -20,7 +19,7 @@ void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode
 void RunLoopSourcePerformRoutine (void *info);
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
-@interface JvmHost () {
+@interface EmbeddedJvm () {
     NSString *path;
     JavaVMOption* optionsArray;
     int optionCount;
@@ -38,14 +37,16 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 -(void)doCommand;
 @end
 
-@implementation JvmHost
-- (JvmHost*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
+@implementation EmbeddedJvm
+- (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
     if (self = [super init]) {
         if (const char *err = dlerror()) {
             NSLog(@"Flushing existing dl error: %s", err);
         }
         
-        path = @"JvmHost/jre/lib/server/libjvm.dylib";
+        NSBundle *app = [NSBundle mainBundle];
+        //path = @"JvmHost/jre/lib/server/libjvm.dylib";
+        path = [NSString stringWithFormat:@"%@/Contents/Frameworks/EmbeddedJvm.framework/Versions/A/JVM/jre/lib/server/libjvm.dylib", [app executablePath]];
         jvmlib = dlopen([path cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
         
         if (jvmlib==nil) {
@@ -211,17 +212,17 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    JvmHost *host = (JvmHost*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
     [host setRunLoop:rl];
 }
 void RunLoopSourcePerformRoutine (void *info)
 {
-    JvmHost *host = (JvmHost*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
     [host doCommand];
 }
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    JvmHost *host = (JvmHost*)CFBridgingRelease(info);
+    EmbeddedJvm *host = (EmbeddedJvm*)CFBridgingRelease(info);
     [host setRunLoop:nil];
     NSLog(@"Unexpected cancelation of run loop source");
 }

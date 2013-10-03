@@ -8,542 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		010C4D3217FBB2D90015C86D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D3117FBB2D90015C86D /* Cocoa.framework */; };
-		010C4D3C17FBB2D90015C86D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D3A17FBB2D90015C86D /* InfoPlist.strings */; };
-		010C4D4017FBB2DA0015C86D /* JvmHost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 010C4D3F17FBB2DA0015C86D /* JvmHost.mm */; };
-		010C4D4717FBB2DA0015C86D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D4617FBB2DA0015C86D /* XCTest.framework */; };
 		010C4D4817FBB2DA0015C86D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D3117FBB2D90015C86D /* Cocoa.framework */; };
 		010C4D4B17FBB2DA0015C86D /* EmbeddedJvm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */; };
 		010C4D5117FBB2DA0015C86D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D4F17FBB2DA0015C86D /* InfoPlist.strings */; };
-		010C4D5317FBB2DA0015C86D /* JvmHostTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */; };
 		010C4D6717FBB69F0015C86D /* classfile_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D5E17FBB69F0015C86D /* classfile_constants.h */; };
 		010C4D6817FBB69F0015C86D /* jawt_md.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6017FBB69F0015C86D /* jawt_md.h */; };
-		010C4D6917FBB69F0015C86D /* jni_md.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6117FBB69F0015C86D /* jni_md.h */; };
+		010C4D6917FBB69F0015C86D /* jni_md.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6117FBB69F0015C86D /* jni_md.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		010C4D6A17FBB69F0015C86D /* jawt.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6217FBB69F0015C86D /* jawt.h */; };
 		010C4D6B17FBB69F0015C86D /* jdwpTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6317FBB69F0015C86D /* jdwpTransport.h */; };
-		010C4D6C17FBB69F0015C86D /* jni.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6417FBB69F0015C86D /* jni.h */; };
+		010C4D6C17FBB69F0015C86D /* jni.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6417FBB69F0015C86D /* jni.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		010C4D6D17FBB69F0015C86D /* jvmti.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6517FBB69F0015C86D /* jvmti.h */; };
 		010C4D6E17FBB69F0015C86D /* jvmticmlr.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6617FBB69F0015C86D /* jvmticmlr.h */; };
-		010C4FE917FBB6F10015C86D /* java in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7117FBB6EF0015C86D /* java */; };
-		010C4FEA17FBB6F10015C86D /* keytool in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7217FBB6EF0015C86D /* keytool */; };
-		010C4FEB17FBB6F10015C86D /* orbd in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7317FBB6EF0015C86D /* orbd */; };
-		010C4FEC17FBB6F10015C86D /* pack200 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7417FBB6EF0015C86D /* pack200 */; };
-		010C4FED17FBB6F10015C86D /* policytool in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7517FBB6EF0015C86D /* policytool */; };
-		010C4FEE17FBB6F10015C86D /* rmid in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7617FBB6EF0015C86D /* rmid */; };
-		010C4FEF17FBB6F10015C86D /* rmiregistry in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7717FBB6EF0015C86D /* rmiregistry */; };
-		010C4FF017FBB6F10015C86D /* servertool in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7817FBB6EF0015C86D /* servertool */; };
-		010C4FF117FBB6F10015C86D /* tnameserv in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7917FBB6EF0015C86D /* tnameserv */; };
-		010C4FF217FBB6F10015C86D /* unpack200 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7A17FBB6EF0015C86D /* unpack200 */; };
-		010C4FF317FBB6F10015C86D /* COPYRIGHT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7B17FBB6EF0015C86D /* COPYRIGHT */; };
-		010C4FF517FBB6F10015C86D /* calendars.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D7F17FBB6EF0015C86D /* calendars.properties */; };
-		010C4FF717FBB6F10015C86D /* classlist in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8117FBB6EF0015C86D /* classlist */; };
-		010C4FF817FBB6F10015C86D /* CIEXYZ.pf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8317FBB6EF0015C86D /* CIEXYZ.pf */; };
-		010C4FF917FBB6F10015C86D /* GRAY.pf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8417FBB6EF0015C86D /* GRAY.pf */; };
-		010C4FFA17FBB6F10015C86D /* LINEAR_RGB.pf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8517FBB6EF0015C86D /* LINEAR_RGB.pf */; };
-		010C4FFB17FBB6F10015C86D /* PYCC.pf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8617FBB6EF0015C86D /* PYCC.pf */; };
-		010C4FFC17FBB6F10015C86D /* sRGB.pf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8717FBB6EF0015C86D /* sRGB.pf */; };
-		010C4FFD17FBB6F10015C86D /* content-types.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8817FBB6EF0015C86D /* content-types.properties */; };
-		010C4FFE17FBB6F10015C86D /* currency.data in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8917FBB6EF0015C86D /* currency.data */; };
-		010C500217FBB6F10015C86D /* meta-index in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D8E17FBB6EF0015C86D /* meta-index */; };
-		010C500717FBB6F10015C86D /* flavormap.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9317FBB6EF0015C86D /* flavormap.properties */; };
-		010C500817FBB6F10015C86D /* fontconfig.bfc in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9417FBB6EF0015C86D /* fontconfig.bfc */; };
-		010C500917FBB6F10015C86D /* fontconfig.properties.src in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9517FBB6EF0015C86D /* fontconfig.properties.src */; };
-		010C500A17FBB6F10015C86D /* fonts.dir in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9717FBB6EF0015C86D /* fonts.dir */; };
-		010C500B17FBB6F10015C86D /* LucidaBrightDemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9817FBB6EF0015C86D /* LucidaBrightDemiBold.ttf */; };
-		010C500C17FBB6F10015C86D /* LucidaBrightDemiItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9917FBB6EF0015C86D /* LucidaBrightDemiItalic.ttf */; };
-		010C500D17FBB6F10015C86D /* LucidaBrightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9A17FBB6EF0015C86D /* LucidaBrightItalic.ttf */; };
-		010C500E17FBB6F10015C86D /* LucidaBrightRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9B17FBB6EF0015C86D /* LucidaBrightRegular.ttf */; };
-		010C500F17FBB6F10015C86D /* LucidaSansDemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9C17FBB6EF0015C86D /* LucidaSansDemiBold.ttf */; };
-		010C501017FBB6F10015C86D /* LucidaSansRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9D17FBB6EF0015C86D /* LucidaSansRegular.ttf */; };
-		010C501117FBB6F10015C86D /* LucidaTypewriterBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9E17FBB6EF0015C86D /* LucidaTypewriterBold.ttf */; };
-		010C501217FBB6F10015C86D /* LucidaTypewriterRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D9F17FBB6EF0015C86D /* LucidaTypewriterRegular.ttf */; };
-		010C501617FBB6F10015C86D /* cursors.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DA617FBB6EF0015C86D /* cursors.properties */; };
-		010C501717FBB6F10015C86D /* invalid32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DA717FBB6EF0015C86D /* invalid32x32.gif */; };
-		010C501817FBB6F10015C86D /* motif_CopyDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DA817FBB6EF0015C86D /* motif_CopyDrop32x32.gif */; };
-		010C501917FBB6F10015C86D /* motif_CopyNoDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DA917FBB6EF0015C86D /* motif_CopyNoDrop32x32.gif */; };
-		010C501A17FBB6F10015C86D /* motif_LinkDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DAA17FBB6EF0015C86D /* motif_LinkDrop32x32.gif */; };
-		010C501B17FBB6F10015C86D /* motif_LinkNoDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DAB17FBB6EF0015C86D /* motif_LinkNoDrop32x32.gif */; };
-		010C501C17FBB6F10015C86D /* motif_MoveDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DAC17FBB6EF0015C86D /* motif_MoveDrop32x32.gif */; };
-		010C501D17FBB6F10015C86D /* motif_MoveNoDrop32x32.gif in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DAD17FBB6EF0015C86D /* motif_MoveNoDrop32x32.gif */; };
-		010C501E17FBB6F10015C86D /* javafx.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DAE17FBB6EF0015C86D /* javafx.properties */; };
-		010C502617FBB6F10015C86D /* jvm.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DB717FBB6EF0015C86D /* jvm.cfg */; };
-		010C502717FBB6F10015C86D /* jvm.hprof.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DB817FBB6EF0015C86D /* jvm.hprof.txt */; };
-		010C505B17FBB6F10015C86D /* logging.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DEC17FBB6EF0015C86D /* logging.properties */; };
-		010C505D17FBB6F10015C86D /* jmxremote.access in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF017FBB6EF0015C86D /* jmxremote.access */; };
-		010C505E17FBB6F10015C86D /* jmxremote.password.template in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF117FBB6EF0015C86D /* jmxremote.password.template */; };
-		010C505F17FBB6F10015C86D /* management.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF217FBB6EF0015C86D /* management.properties */; };
-		010C506017FBB6F10015C86D /* snmp.acl.template in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF317FBB6EF0015C86D /* snmp.acl.template */; };
-		010C506217FBB6F10015C86D /* meta-index in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF517FBB6EF0015C86D /* meta-index */; };
-		010C506317FBB6F10015C86D /* net.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF617FBB6EF0015C86D /* net.properties */; };
-		010C506517FBB6F10015C86D /* psfont.properties.ja in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF817FBB6EF0015C86D /* psfont.properties.ja */; };
-		010C506617FBB6F10015C86D /* psfontj2d.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DF917FBB6EF0015C86D /* psfontj2d.properties */; };
-		010C506917FBB6F10015C86D /* blacklist in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DFD17FBB6EF0015C86D /* blacklist */; };
-		010C506A17FBB6F10015C86D /* cacerts in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DFE17FBB6EF0015C86D /* cacerts */; };
-		010C506B17FBB6F10015C86D /* java.policy in Resources */ = {isa = PBXBuildFile; fileRef = 010C4DFF17FBB6EF0015C86D /* java.policy */; };
-		010C506C17FBB6F10015C86D /* java.security in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0017FBB6EF0015C86D /* java.security */; };
-		010C506D17FBB6F10015C86D /* javafx.policy in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0117FBB6EF0015C86D /* javafx.policy */; };
-		010C506F17FBB6F10015C86D /* trusted.libraries in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0317FBB6EF0015C86D /* trusted.libraries */; };
-		010C507317FBB6F10015C86D /* Xusage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0817FBB6EF0015C86D /* Xusage.txt */; };
-		010C507417FBB6F10015C86D /* jdk_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0A17FBB6EF0015C86D /* jdk_header.png */; };
-		010C507517FBB6F10015C86D /* sound.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0B17FBB6EF0015C86D /* sound.properties */; };
-		010C507717FBB6F10015C86D /* Abidjan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1017FBB6EF0015C86D /* Abidjan */; };
-		010C507817FBB6F10015C86D /* Accra in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1117FBB6EF0015C86D /* Accra */; };
-		010C507917FBB6F10015C86D /* Addis_Ababa in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1217FBB6EF0015C86D /* Addis_Ababa */; };
-		010C507A17FBB6F10015C86D /* Algiers in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1317FBB6EF0015C86D /* Algiers */; };
-		010C507B17FBB6F10015C86D /* Asmara in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1417FBB6EF0015C86D /* Asmara */; };
-		010C507C17FBB6F10015C86D /* Bamako in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1517FBB6EF0015C86D /* Bamako */; };
-		010C507D17FBB6F10015C86D /* Bangui in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1617FBB6EF0015C86D /* Bangui */; };
-		010C507E17FBB6F10015C86D /* Banjul in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1717FBB6EF0015C86D /* Banjul */; };
-		010C507F17FBB6F10015C86D /* Bissau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1817FBB6EF0015C86D /* Bissau */; };
-		010C508017FBB6F10015C86D /* Blantyre in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1917FBB6EF0015C86D /* Blantyre */; };
-		010C508117FBB6F10015C86D /* Brazzaville in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1A17FBB6EF0015C86D /* Brazzaville */; };
-		010C508217FBB6F10015C86D /* Bujumbura in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1B17FBB6EF0015C86D /* Bujumbura */; };
-		010C508317FBB6F10015C86D /* Cairo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1C17FBB6EF0015C86D /* Cairo */; };
-		010C508417FBB6F10015C86D /* Casablanca in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1D17FBB6EF0015C86D /* Casablanca */; };
-		010C508517FBB6F10015C86D /* Ceuta in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1E17FBB6EF0015C86D /* Ceuta */; };
-		010C508617FBB6F10015C86D /* Conakry in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E1F17FBB6EF0015C86D /* Conakry */; };
-		010C508717FBB6F10015C86D /* Dakar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2017FBB6EF0015C86D /* Dakar */; };
-		010C508817FBB6F10015C86D /* Dar_es_Salaam in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2117FBB6EF0015C86D /* Dar_es_Salaam */; };
-		010C508917FBB6F10015C86D /* Djibouti in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2217FBB6EF0015C86D /* Djibouti */; };
-		010C508A17FBB6F10015C86D /* Douala in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2317FBB6EF0015C86D /* Douala */; };
-		010C508B17FBB6F10015C86D /* El_Aaiun in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2417FBB6EF0015C86D /* El_Aaiun */; };
-		010C508C17FBB6F10015C86D /* Freetown in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2517FBB6EF0015C86D /* Freetown */; };
-		010C508D17FBB6F10015C86D /* Gaborone in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2617FBB6EF0015C86D /* Gaborone */; };
-		010C508E17FBB6F10015C86D /* Harare in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2717FBB6EF0015C86D /* Harare */; };
-		010C508F17FBB6F10015C86D /* Johannesburg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2817FBB6EF0015C86D /* Johannesburg */; };
-		010C509017FBB6F10015C86D /* Juba in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2917FBB6EF0015C86D /* Juba */; };
-		010C509117FBB6F10015C86D /* Kampala in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2A17FBB6EF0015C86D /* Kampala */; };
-		010C509217FBB6F10015C86D /* Khartoum in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2B17FBB6EF0015C86D /* Khartoum */; };
-		010C509317FBB6F10015C86D /* Kigali in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2C17FBB6EF0015C86D /* Kigali */; };
-		010C509417FBB6F10015C86D /* Kinshasa in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2D17FBB6EF0015C86D /* Kinshasa */; };
-		010C509517FBB6F10015C86D /* Lagos in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2E17FBB6EF0015C86D /* Lagos */; };
-		010C509617FBB6F10015C86D /* Libreville in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E2F17FBB6EF0015C86D /* Libreville */; };
-		010C509717FBB6F10015C86D /* Lome in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3017FBB6EF0015C86D /* Lome */; };
-		010C509817FBB6F10015C86D /* Luanda in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3117FBB6EF0015C86D /* Luanda */; };
-		010C509917FBB6F10015C86D /* Lubumbashi in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3217FBB6EF0015C86D /* Lubumbashi */; };
-		010C509A17FBB6F10015C86D /* Lusaka in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3317FBB6EF0015C86D /* Lusaka */; };
-		010C509B17FBB6F10015C86D /* Malabo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3417FBB6EF0015C86D /* Malabo */; };
-		010C509C17FBB6F10015C86D /* Maputo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3517FBB6EF0015C86D /* Maputo */; };
-		010C509D17FBB6F10015C86D /* Maseru in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3617FBB6EF0015C86D /* Maseru */; };
-		010C509E17FBB6F10015C86D /* Mbabane in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3717FBB6F00015C86D /* Mbabane */; };
-		010C509F17FBB6F10015C86D /* Mogadishu in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3817FBB6F00015C86D /* Mogadishu */; };
-		010C50A017FBB6F10015C86D /* Monrovia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3917FBB6F00015C86D /* Monrovia */; };
-		010C50A117FBB6F10015C86D /* Nairobi in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3A17FBB6F00015C86D /* Nairobi */; };
-		010C50A217FBB6F10015C86D /* Ndjamena in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3B17FBB6F00015C86D /* Ndjamena */; };
-		010C50A317FBB6F10015C86D /* Niamey in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3C17FBB6F00015C86D /* Niamey */; };
-		010C50A417FBB6F10015C86D /* Nouakchott in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3D17FBB6F00015C86D /* Nouakchott */; };
-		010C50A517FBB6F10015C86D /* Ouagadougou in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3E17FBB6F00015C86D /* Ouagadougou */; };
-		010C50A617FBB6F10015C86D /* Porto-Novo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E3F17FBB6F00015C86D /* Porto-Novo */; };
-		010C50A717FBB6F10015C86D /* Sao_Tome in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4017FBB6F00015C86D /* Sao_Tome */; };
-		010C50A817FBB6F10015C86D /* Tripoli in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4117FBB6F00015C86D /* Tripoli */; };
-		010C50A917FBB6F10015C86D /* Tunis in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4217FBB6F00015C86D /* Tunis */; };
-		010C50AA17FBB6F10015C86D /* Windhoek in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4317FBB6F00015C86D /* Windhoek */; };
-		010C50AB17FBB6F10015C86D /* Adak in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4517FBB6F00015C86D /* Adak */; };
-		010C50AC17FBB6F10015C86D /* Anchorage in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4617FBB6F00015C86D /* Anchorage */; };
-		010C50AD17FBB6F10015C86D /* Anguilla in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4717FBB6F00015C86D /* Anguilla */; };
-		010C50AE17FBB6F10015C86D /* Antigua in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4817FBB6F00015C86D /* Antigua */; };
-		010C50AF17FBB6F10015C86D /* Araguaina in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4917FBB6F00015C86D /* Araguaina */; };
-		010C50B017FBB6F10015C86D /* Buenos_Aires in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4B17FBB6F00015C86D /* Buenos_Aires */; };
-		010C50B117FBB6F10015C86D /* Catamarca in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4C17FBB6F00015C86D /* Catamarca */; };
-		010C50B217FBB6F10015C86D /* Cordoba in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4D17FBB6F00015C86D /* Cordoba */; };
-		010C50B317FBB6F10015C86D /* Jujuy in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4E17FBB6F00015C86D /* Jujuy */; };
-		010C50B417FBB6F10015C86D /* La_Rioja in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E4F17FBB6F00015C86D /* La_Rioja */; };
-		010C50B517FBB6F10015C86D /* Mendoza in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5017FBB6F00015C86D /* Mendoza */; };
-		010C50B617FBB6F10015C86D /* Rio_Gallegos in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5117FBB6F00015C86D /* Rio_Gallegos */; };
-		010C50B717FBB6F10015C86D /* Salta in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5217FBB6F00015C86D /* Salta */; };
-		010C50B817FBB6F10015C86D /* San_Juan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5317FBB6F00015C86D /* San_Juan */; };
-		010C50B917FBB6F10015C86D /* San_Luis in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5417FBB6F00015C86D /* San_Luis */; };
-		010C50BA17FBB6F10015C86D /* Tucuman in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5517FBB6F00015C86D /* Tucuman */; };
-		010C50BB17FBB6F10015C86D /* Ushuaia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5617FBB6F00015C86D /* Ushuaia */; };
-		010C50BC17FBB6F10015C86D /* Aruba in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5717FBB6F00015C86D /* Aruba */; };
-		010C50BD17FBB6F10015C86D /* Asuncion in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5817FBB6F00015C86D /* Asuncion */; };
-		010C50BE17FBB6F10015C86D /* Atikokan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5917FBB6F00015C86D /* Atikokan */; };
-		010C50BF17FBB6F10015C86D /* Bahia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5A17FBB6F00015C86D /* Bahia */; };
-		010C50C017FBB6F10015C86D /* Bahia_Banderas in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5B17FBB6F00015C86D /* Bahia_Banderas */; };
-		010C50C117FBB6F10015C86D /* Barbados in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5C17FBB6F00015C86D /* Barbados */; };
-		010C50C217FBB6F10015C86D /* Belem in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5D17FBB6F00015C86D /* Belem */; };
-		010C50C317FBB6F10015C86D /* Belize in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5E17FBB6F00015C86D /* Belize */; };
-		010C50C417FBB6F10015C86D /* Blanc-Sablon in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E5F17FBB6F00015C86D /* Blanc-Sablon */; };
-		010C50C517FBB6F10015C86D /* Boa_Vista in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6017FBB6F00015C86D /* Boa_Vista */; };
-		010C50C617FBB6F10015C86D /* Bogota in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6117FBB6F00015C86D /* Bogota */; };
-		010C50C717FBB6F10015C86D /* Boise in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6217FBB6F00015C86D /* Boise */; };
-		010C50C817FBB6F10015C86D /* Cambridge_Bay in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6317FBB6F00015C86D /* Cambridge_Bay */; };
-		010C50C917FBB6F10015C86D /* Campo_Grande in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6417FBB6F00015C86D /* Campo_Grande */; };
-		010C50CA17FBB6F10015C86D /* Cancun in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6517FBB6F00015C86D /* Cancun */; };
-		010C50CB17FBB6F10015C86D /* Caracas in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6617FBB6F00015C86D /* Caracas */; };
-		010C50CC17FBB6F10015C86D /* Cayenne in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6717FBB6F00015C86D /* Cayenne */; };
-		010C50CD17FBB6F10015C86D /* Cayman in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6817FBB6F00015C86D /* Cayman */; };
-		010C50CE17FBB6F10015C86D /* Chicago in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6917FBB6F00015C86D /* Chicago */; };
-		010C50CF17FBB6F10015C86D /* Chihuahua in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6A17FBB6F00015C86D /* Chihuahua */; };
-		010C50D017FBB6F10015C86D /* Costa_Rica in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6B17FBB6F00015C86D /* Costa_Rica */; };
-		010C50D117FBB6F10015C86D /* Creston in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6C17FBB6F00015C86D /* Creston */; };
-		010C50D217FBB6F10015C86D /* Cuiaba in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6D17FBB6F00015C86D /* Cuiaba */; };
-		010C50D317FBB6F10015C86D /* Curacao in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6E17FBB6F00015C86D /* Curacao */; };
-		010C50D417FBB6F10015C86D /* Danmarkshavn in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E6F17FBB6F00015C86D /* Danmarkshavn */; };
-		010C50D517FBB6F10015C86D /* Dawson in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7017FBB6F00015C86D /* Dawson */; };
-		010C50D617FBB6F10015C86D /* Dawson_Creek in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7117FBB6F00015C86D /* Dawson_Creek */; };
-		010C50D717FBB6F10015C86D /* Denver in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7217FBB6F00015C86D /* Denver */; };
-		010C50D817FBB6F10015C86D /* Detroit in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7317FBB6F00015C86D /* Detroit */; };
-		010C50D917FBB6F10015C86D /* Dominica in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7417FBB6F00015C86D /* Dominica */; };
-		010C50DA17FBB6F10015C86D /* Edmonton in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7517FBB6F00015C86D /* Edmonton */; };
-		010C50DB17FBB6F10015C86D /* Eirunepe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7617FBB6F00015C86D /* Eirunepe */; };
-		010C50DC17FBB6F10015C86D /* El_Salvador in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7717FBB6F00015C86D /* El_Salvador */; };
-		010C50DD17FBB6F10015C86D /* Fortaleza in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7817FBB6F00015C86D /* Fortaleza */; };
-		010C50DE17FBB6F10015C86D /* Glace_Bay in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7917FBB6F00015C86D /* Glace_Bay */; };
-		010C50DF17FBB6F10015C86D /* Godthab in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7A17FBB6F00015C86D /* Godthab */; };
-		010C50E017FBB6F10015C86D /* Goose_Bay in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7B17FBB6F00015C86D /* Goose_Bay */; };
-		010C50E117FBB6F10015C86D /* Grand_Turk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7C17FBB6F00015C86D /* Grand_Turk */; };
-		010C50E217FBB6F10015C86D /* Grenada in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7D17FBB6F00015C86D /* Grenada */; };
-		010C50E317FBB6F10015C86D /* Guadeloupe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7E17FBB6F00015C86D /* Guadeloupe */; };
-		010C50E417FBB6F10015C86D /* Guatemala in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E7F17FBB6F00015C86D /* Guatemala */; };
-		010C50E517FBB6F10015C86D /* Guayaquil in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8017FBB6F00015C86D /* Guayaquil */; };
-		010C50E617FBB6F10015C86D /* Guyana in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8117FBB6F00015C86D /* Guyana */; };
-		010C50E717FBB6F10015C86D /* Halifax in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8217FBB6F00015C86D /* Halifax */; };
-		010C50E817FBB6F10015C86D /* Havana in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8317FBB6F00015C86D /* Havana */; };
-		010C50E917FBB6F10015C86D /* Hermosillo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8417FBB6F00015C86D /* Hermosillo */; };
-		010C50EA17FBB6F10015C86D /* Indianapolis in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8617FBB6F00015C86D /* Indianapolis */; };
-		010C50EB17FBB6F10015C86D /* Knox in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8717FBB6F00015C86D /* Knox */; };
-		010C50EC17FBB6F10015C86D /* Marengo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8817FBB6F00015C86D /* Marengo */; };
-		010C50ED17FBB6F10015C86D /* Petersburg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8917FBB6F00015C86D /* Petersburg */; };
-		010C50EE17FBB6F10015C86D /* Tell_City in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8A17FBB6F00015C86D /* Tell_City */; };
-		010C50EF17FBB6F10015C86D /* Vevay in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8B17FBB6F00015C86D /* Vevay */; };
-		010C50F017FBB6F10015C86D /* Vincennes in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8C17FBB6F00015C86D /* Vincennes */; };
-		010C50F117FBB6F10015C86D /* Winamac in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8D17FBB6F00015C86D /* Winamac */; };
-		010C50F217FBB6F10015C86D /* Inuvik in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8E17FBB6F00015C86D /* Inuvik */; };
-		010C50F317FBB6F10015C86D /* Iqaluit in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E8F17FBB6F00015C86D /* Iqaluit */; };
-		010C50F417FBB6F10015C86D /* Jamaica in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9017FBB6F00015C86D /* Jamaica */; };
-		010C50F517FBB6F10015C86D /* Juneau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9117FBB6F00015C86D /* Juneau */; };
-		010C50F617FBB6F10015C86D /* Louisville in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9317FBB6F00015C86D /* Louisville */; };
-		010C50F717FBB6F10015C86D /* Monticello in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9417FBB6F00015C86D /* Monticello */; };
-		010C50F817FBB6F10015C86D /* La_Paz in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9517FBB6F00015C86D /* La_Paz */; };
-		010C50F917FBB6F10015C86D /* Lima in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9617FBB6F00015C86D /* Lima */; };
-		010C50FA17FBB6F10015C86D /* Los_Angeles in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9717FBB6F00015C86D /* Los_Angeles */; };
-		010C50FB17FBB6F10015C86D /* Maceio in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9817FBB6F00015C86D /* Maceio */; };
-		010C50FC17FBB6F10015C86D /* Managua in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9917FBB6F00015C86D /* Managua */; };
-		010C50FD17FBB6F10015C86D /* Manaus in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9A17FBB6F00015C86D /* Manaus */; };
-		010C50FE17FBB6F10015C86D /* Martinique in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9B17FBB6F00015C86D /* Martinique */; };
-		010C50FF17FBB6F10015C86D /* Matamoros in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9C17FBB6F00015C86D /* Matamoros */; };
-		010C510017FBB6F10015C86D /* Mazatlan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9D17FBB6F00015C86D /* Mazatlan */; };
-		010C510117FBB6F10015C86D /* Menominee in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9E17FBB6F00015C86D /* Menominee */; };
-		010C510217FBB6F10015C86D /* Merida in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E9F17FBB6F00015C86D /* Merida */; };
-		010C510317FBB6F10015C86D /* Metlakatla in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA017FBB6F00015C86D /* Metlakatla */; };
-		010C510417FBB6F10015C86D /* Mexico_City in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA117FBB6F00015C86D /* Mexico_City */; };
-		010C510517FBB6F10015C86D /* Miquelon in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA217FBB6F00015C86D /* Miquelon */; };
-		010C510617FBB6F10015C86D /* Moncton in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA317FBB6F00015C86D /* Moncton */; };
-		010C510717FBB6F10015C86D /* Monterrey in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA417FBB6F00015C86D /* Monterrey */; };
-		010C510817FBB6F10015C86D /* Montevideo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA517FBB6F00015C86D /* Montevideo */; };
-		010C510917FBB6F10015C86D /* Montreal in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA617FBB6F00015C86D /* Montreal */; };
-		010C510A17FBB6F10015C86D /* Montserrat in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA717FBB6F00015C86D /* Montserrat */; };
-		010C510B17FBB6F10015C86D /* Nassau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA817FBB6F00015C86D /* Nassau */; };
-		010C510C17FBB6F10015C86D /* New_York in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EA917FBB6F00015C86D /* New_York */; };
-		010C510D17FBB6F10015C86D /* Nipigon in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EAA17FBB6F00015C86D /* Nipigon */; };
-		010C510E17FBB6F10015C86D /* Nome in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EAB17FBB6F00015C86D /* Nome */; };
-		010C510F17FBB6F10015C86D /* Noronha in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EAC17FBB6F00015C86D /* Noronha */; };
-		010C511017FBB6F10015C86D /* Beulah in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EAE17FBB6F00015C86D /* Beulah */; };
-		010C511117FBB6F10015C86D /* Center in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EAF17FBB6F00015C86D /* Center */; };
-		010C511217FBB6F10015C86D /* New_Salem in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB017FBB6F00015C86D /* New_Salem */; };
-		010C511317FBB6F10015C86D /* Ojinaga in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB117FBB6F00015C86D /* Ojinaga */; };
-		010C511417FBB6F10015C86D /* Panama in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB217FBB6F00015C86D /* Panama */; };
-		010C511517FBB6F10015C86D /* Pangnirtung in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB317FBB6F00015C86D /* Pangnirtung */; };
-		010C511617FBB6F10015C86D /* Paramaribo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB417FBB6F00015C86D /* Paramaribo */; };
-		010C511717FBB6F10015C86D /* Phoenix in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB517FBB6F00015C86D /* Phoenix */; };
-		010C511817FBB6F10015C86D /* Port-au-Prince in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB617FBB6F00015C86D /* Port-au-Prince */; };
-		010C511917FBB6F10015C86D /* Port_of_Spain in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB717FBB6F00015C86D /* Port_of_Spain */; };
-		010C511A17FBB6F10015C86D /* Porto_Velho in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB817FBB6F00015C86D /* Porto_Velho */; };
-		010C511B17FBB6F10015C86D /* Puerto_Rico in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EB917FBB6F00015C86D /* Puerto_Rico */; };
-		010C511C17FBB6F10015C86D /* Rainy_River in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBA17FBB6F00015C86D /* Rainy_River */; };
-		010C511D17FBB6F10015C86D /* Rankin_Inlet in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBB17FBB6F00015C86D /* Rankin_Inlet */; };
-		010C511E17FBB6F10015C86D /* Recife in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBC17FBB6F00015C86D /* Recife */; };
-		010C511F17FBB6F10015C86D /* Regina in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBD17FBB6F00015C86D /* Regina */; };
-		010C512017FBB6F10015C86D /* Resolute in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBE17FBB6F00015C86D /* Resolute */; };
-		010C512117FBB6F10015C86D /* Rio_Branco in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EBF17FBB6F00015C86D /* Rio_Branco */; };
-		010C512217FBB6F10015C86D /* Santa_Isabel in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC017FBB6F00015C86D /* Santa_Isabel */; };
-		010C512317FBB6F10015C86D /* Santarem in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC117FBB6F00015C86D /* Santarem */; };
-		010C512417FBB6F10015C86D /* Santiago in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC217FBB6F00015C86D /* Santiago */; };
-		010C512517FBB6F10015C86D /* Santo_Domingo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC317FBB6F00015C86D /* Santo_Domingo */; };
-		010C512617FBB6F10015C86D /* Sao_Paulo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC417FBB6F00015C86D /* Sao_Paulo */; };
-		010C512717FBB6F10015C86D /* Scoresbysund in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC517FBB6F00015C86D /* Scoresbysund */; };
-		010C512817FBB6F10015C86D /* Sitka in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC617FBB6F00015C86D /* Sitka */; };
-		010C512917FBB6F10015C86D /* St_Johns in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC717FBB6F00015C86D /* St_Johns */; };
-		010C512A17FBB6F10015C86D /* St_Kitts in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC817FBB6F00015C86D /* St_Kitts */; };
-		010C512B17FBB6F10015C86D /* St_Lucia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EC917FBB6F00015C86D /* St_Lucia */; };
-		010C512C17FBB6F10015C86D /* St_Thomas in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECA17FBB6F00015C86D /* St_Thomas */; };
-		010C512D17FBB6F10015C86D /* St_Vincent in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECB17FBB6F00015C86D /* St_Vincent */; };
-		010C512E17FBB6F10015C86D /* Swift_Current in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECC17FBB6F00015C86D /* Swift_Current */; };
-		010C512F17FBB6F10015C86D /* Tegucigalpa in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECD17FBB6F00015C86D /* Tegucigalpa */; };
-		010C513017FBB6F10015C86D /* Thule in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECE17FBB6F00015C86D /* Thule */; };
-		010C513117FBB6F10015C86D /* Thunder_Bay in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ECF17FBB6F00015C86D /* Thunder_Bay */; };
-		010C513217FBB6F10015C86D /* Tijuana in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED017FBB6F00015C86D /* Tijuana */; };
-		010C513317FBB6F10015C86D /* Toronto in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED117FBB6F00015C86D /* Toronto */; };
-		010C513417FBB6F10015C86D /* Tortola in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED217FBB6F00015C86D /* Tortola */; };
-		010C513517FBB6F10015C86D /* Vancouver in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED317FBB6F00015C86D /* Vancouver */; };
-		010C513617FBB6F10015C86D /* Whitehorse in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED417FBB6F00015C86D /* Whitehorse */; };
-		010C513717FBB6F10015C86D /* Winnipeg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED517FBB6F00015C86D /* Winnipeg */; };
-		010C513817FBB6F10015C86D /* Yakutat in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED617FBB6F00015C86D /* Yakutat */; };
-		010C513917FBB6F10015C86D /* Yellowknife in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED717FBB6F00015C86D /* Yellowknife */; };
-		010C513A17FBB6F10015C86D /* Casey in Resources */ = {isa = PBXBuildFile; fileRef = 010C4ED917FBB6F00015C86D /* Casey */; };
-		010C513B17FBB6F10015C86D /* Davis in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDA17FBB6F00015C86D /* Davis */; };
-		010C513C17FBB6F10015C86D /* DumontDUrville in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDB17FBB6F00015C86D /* DumontDUrville */; };
-		010C513D17FBB6F10015C86D /* Macquarie in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDC17FBB6F00015C86D /* Macquarie */; };
-		010C513E17FBB6F10015C86D /* Mawson in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDD17FBB6F00015C86D /* Mawson */; };
-		010C513F17FBB6F10015C86D /* McMurdo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDE17FBB6F00015C86D /* McMurdo */; };
-		010C514017FBB6F10015C86D /* Palmer in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EDF17FBB6F00015C86D /* Palmer */; };
-		010C514117FBB6F10015C86D /* Rothera in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE017FBB6F00015C86D /* Rothera */; };
-		010C514217FBB6F10015C86D /* Syowa in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE117FBB6F00015C86D /* Syowa */; };
-		010C514317FBB6F10015C86D /* Vostok in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE217FBB6F00015C86D /* Vostok */; };
-		010C514417FBB6F10015C86D /* Aden in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE417FBB6F00015C86D /* Aden */; };
-		010C514517FBB6F10015C86D /* Almaty in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE517FBB6F00015C86D /* Almaty */; };
-		010C514617FBB6F10015C86D /* Amman in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE617FBB6F00015C86D /* Amman */; };
-		010C514717FBB6F10015C86D /* Anadyr in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE717FBB6F00015C86D /* Anadyr */; };
-		010C514817FBB6F10015C86D /* Aqtau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE817FBB6F00015C86D /* Aqtau */; };
-		010C514917FBB6F10015C86D /* Aqtobe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EE917FBB6F00015C86D /* Aqtobe */; };
-		010C514A17FBB6F10015C86D /* Ashgabat in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EEA17FBB6F00015C86D /* Ashgabat */; };
-		010C514B17FBB6F10015C86D /* Baghdad in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EEB17FBB6F00015C86D /* Baghdad */; };
-		010C514C17FBB6F10015C86D /* Bahrain in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EEC17FBB6F00015C86D /* Bahrain */; };
-		010C514D17FBB6F10015C86D /* Baku in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EED17FBB6F00015C86D /* Baku */; };
-		010C514E17FBB6F10015C86D /* Bangkok in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EEE17FBB6F00015C86D /* Bangkok */; };
-		010C514F17FBB6F10015C86D /* Beirut in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EEF17FBB6F00015C86D /* Beirut */; };
-		010C515017FBB6F10015C86D /* Bishkek in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF017FBB6F00015C86D /* Bishkek */; };
-		010C515117FBB6F10015C86D /* Brunei in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF117FBB6F00015C86D /* Brunei */; };
-		010C515217FBB6F10015C86D /* Choibalsan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF217FBB6F00015C86D /* Choibalsan */; };
-		010C515317FBB6F10015C86D /* Chongqing in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF317FBB6F00015C86D /* Chongqing */; };
-		010C515417FBB6F10015C86D /* Colombo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF417FBB6F00015C86D /* Colombo */; };
-		010C515517FBB6F10015C86D /* Damascus in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF517FBB6F00015C86D /* Damascus */; };
-		010C515617FBB6F10015C86D /* Dhaka in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF617FBB6F00015C86D /* Dhaka */; };
-		010C515717FBB6F10015C86D /* Dili in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF717FBB6F00015C86D /* Dili */; };
-		010C515817FBB6F10015C86D /* Dubai in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF817FBB6F00015C86D /* Dubai */; };
-		010C515917FBB6F10015C86D /* Dushanbe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EF917FBB6F00015C86D /* Dushanbe */; };
-		010C515A17FBB6F10015C86D /* Gaza in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFA17FBB6F00015C86D /* Gaza */; };
-		010C515B17FBB6F10015C86D /* Harbin in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFB17FBB6F00015C86D /* Harbin */; };
-		010C515C17FBB6F10015C86D /* Hebron in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFC17FBB6F00015C86D /* Hebron */; };
-		010C515D17FBB6F10015C86D /* Ho_Chi_Minh in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFD17FBB6F00015C86D /* Ho_Chi_Minh */; };
-		010C515E17FBB6F10015C86D /* Hong_Kong in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFE17FBB6F00015C86D /* Hong_Kong */; };
-		010C515F17FBB6F10015C86D /* Hovd in Resources */ = {isa = PBXBuildFile; fileRef = 010C4EFF17FBB6F00015C86D /* Hovd */; };
-		010C516017FBB6F10015C86D /* Irkutsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0017FBB6F00015C86D /* Irkutsk */; };
-		010C516117FBB6F10015C86D /* Jakarta in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0117FBB6F00015C86D /* Jakarta */; };
-		010C516217FBB6F10015C86D /* Jayapura in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0217FBB6F00015C86D /* Jayapura */; };
-		010C516317FBB6F10015C86D /* Jerusalem in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0317FBB6F00015C86D /* Jerusalem */; };
-		010C516417FBB6F10015C86D /* Kabul in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0417FBB6F00015C86D /* Kabul */; };
-		010C516517FBB6F10015C86D /* Kamchatka in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0517FBB6F00015C86D /* Kamchatka */; };
-		010C516617FBB6F10015C86D /* Karachi in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0617FBB6F00015C86D /* Karachi */; };
-		010C516717FBB6F10015C86D /* Kashgar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0717FBB6F00015C86D /* Kashgar */; };
-		010C516817FBB6F10015C86D /* Kathmandu in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0817FBB6F00015C86D /* Kathmandu */; };
-		010C516917FBB6F10015C86D /* Kolkata in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0917FBB6F00015C86D /* Kolkata */; };
-		010C516A17FBB6F10015C86D /* Krasnoyarsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0A17FBB6F00015C86D /* Krasnoyarsk */; };
-		010C516B17FBB6F10015C86D /* Kuala_Lumpur in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0B17FBB6F00015C86D /* Kuala_Lumpur */; };
-		010C516C17FBB6F10015C86D /* Kuching in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0C17FBB6F00015C86D /* Kuching */; };
-		010C516D17FBB6F10015C86D /* Kuwait in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0D17FBB6F00015C86D /* Kuwait */; };
-		010C516E17FBB6F10015C86D /* Macau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0E17FBB6F00015C86D /* Macau */; };
-		010C516F17FBB6F10015C86D /* Magadan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F0F17FBB6F00015C86D /* Magadan */; };
-		010C517017FBB6F10015C86D /* Makassar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1017FBB6F00015C86D /* Makassar */; };
-		010C517117FBB6F10015C86D /* Manila in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1117FBB6F00015C86D /* Manila */; };
-		010C517217FBB6F10015C86D /* Muscat in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1217FBB6F00015C86D /* Muscat */; };
-		010C517317FBB6F10015C86D /* Nicosia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1317FBB6F00015C86D /* Nicosia */; };
-		010C517417FBB6F10015C86D /* Novokuznetsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1417FBB6F00015C86D /* Novokuznetsk */; };
-		010C517517FBB6F10015C86D /* Novosibirsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1517FBB6F00015C86D /* Novosibirsk */; };
-		010C517617FBB6F10015C86D /* Omsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1617FBB6F00015C86D /* Omsk */; };
-		010C517717FBB6F10015C86D /* Oral in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1717FBB6F00015C86D /* Oral */; };
-		010C517817FBB6F10015C86D /* Phnom_Penh in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1817FBB6F00015C86D /* Phnom_Penh */; };
-		010C517917FBB6F10015C86D /* Pontianak in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1917FBB6F00015C86D /* Pontianak */; };
-		010C517A17FBB6F10015C86D /* Pyongyang in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1A17FBB6F00015C86D /* Pyongyang */; };
-		010C517B17FBB6F10015C86D /* Qatar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1B17FBB6F00015C86D /* Qatar */; };
-		010C517C17FBB6F10015C86D /* Qyzylorda in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1C17FBB6F00015C86D /* Qyzylorda */; };
-		010C517D17FBB6F10015C86D /* Rangoon in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1D17FBB6F00015C86D /* Rangoon */; };
-		010C517E17FBB6F10015C86D /* Riyadh in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1E17FBB6F00015C86D /* Riyadh */; };
-		010C517F17FBB6F10015C86D /* Riyadh87 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F1F17FBB6F00015C86D /* Riyadh87 */; };
-		010C518017FBB6F10015C86D /* Riyadh88 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2017FBB6F00015C86D /* Riyadh88 */; };
-		010C518117FBB6F10015C86D /* Riyadh89 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2117FBB6F00015C86D /* Riyadh89 */; };
-		010C518217FBB6F10015C86D /* Sakhalin in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2217FBB6F00015C86D /* Sakhalin */; };
-		010C518317FBB6F10015C86D /* Samarkand in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2317FBB6F00015C86D /* Samarkand */; };
-		010C518417FBB6F10015C86D /* Seoul in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2417FBB6F00015C86D /* Seoul */; };
-		010C518517FBB6F10015C86D /* Shanghai in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2517FBB6F00015C86D /* Shanghai */; };
-		010C518617FBB6F10015C86D /* Singapore in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2617FBB6F00015C86D /* Singapore */; };
-		010C518717FBB6F10015C86D /* Taipei in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2717FBB6F00015C86D /* Taipei */; };
-		010C518817FBB6F10015C86D /* Tashkent in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2817FBB6F00015C86D /* Tashkent */; };
-		010C518917FBB6F10015C86D /* Tbilisi in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2917FBB6F00015C86D /* Tbilisi */; };
-		010C518A17FBB6F10015C86D /* Tehran in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2A17FBB6F00015C86D /* Tehran */; };
-		010C518B17FBB6F10015C86D /* Thimphu in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2B17FBB6F00015C86D /* Thimphu */; };
-		010C518C17FBB6F10015C86D /* Tokyo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2C17FBB6F00015C86D /* Tokyo */; };
-		010C518D17FBB6F10015C86D /* Ulaanbaatar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2D17FBB6F00015C86D /* Ulaanbaatar */; };
-		010C518E17FBB6F10015C86D /* Urumqi in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2E17FBB6F00015C86D /* Urumqi */; };
-		010C518F17FBB6F10015C86D /* Vientiane in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F2F17FBB6F00015C86D /* Vientiane */; };
-		010C519017FBB6F10015C86D /* Vladivostok in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3017FBB6F00015C86D /* Vladivostok */; };
-		010C519117FBB6F10015C86D /* Yakutsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3117FBB6F00015C86D /* Yakutsk */; };
-		010C519217FBB6F10015C86D /* Yekaterinburg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3217FBB6F00015C86D /* Yekaterinburg */; };
-		010C519317FBB6F10015C86D /* Yerevan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3317FBB6F00015C86D /* Yerevan */; };
-		010C519417FBB6F10015C86D /* Azores in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3517FBB6F00015C86D /* Azores */; };
-		010C519517FBB6F10015C86D /* Bermuda in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3617FBB6F00015C86D /* Bermuda */; };
-		010C519617FBB6F10015C86D /* Canary in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3717FBB6F00015C86D /* Canary */; };
-		010C519717FBB6F10015C86D /* Cape_Verde in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3817FBB6F00015C86D /* Cape_Verde */; };
-		010C519817FBB6F10015C86D /* Faroe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3917FBB6F00015C86D /* Faroe */; };
-		010C519917FBB6F10015C86D /* Madeira in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3A17FBB6F00015C86D /* Madeira */; };
-		010C519A17FBB6F10015C86D /* Reykjavik in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3B17FBB6F00015C86D /* Reykjavik */; };
-		010C519B17FBB6F10015C86D /* South_Georgia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3C17FBB6F00015C86D /* South_Georgia */; };
-		010C519C17FBB6F10015C86D /* St_Helena in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3D17FBB6F00015C86D /* St_Helena */; };
-		010C519D17FBB6F10015C86D /* Stanley in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F3E17FBB6F00015C86D /* Stanley */; };
-		010C519E17FBB6F10015C86D /* Adelaide in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4017FBB6F00015C86D /* Adelaide */; };
-		010C519F17FBB6F10015C86D /* Brisbane in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4117FBB6F00015C86D /* Brisbane */; };
-		010C51A017FBB6F10015C86D /* Broken_Hill in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4217FBB6F00015C86D /* Broken_Hill */; };
-		010C51A117FBB6F10015C86D /* Currie in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4317FBB6F00015C86D /* Currie */; };
-		010C51A217FBB6F10015C86D /* Darwin in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4417FBB6F00015C86D /* Darwin */; };
-		010C51A317FBB6F10015C86D /* Eucla in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4517FBB6F00015C86D /* Eucla */; };
-		010C51A417FBB6F10015C86D /* Hobart in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4617FBB6F00015C86D /* Hobart */; };
-		010C51A517FBB6F10015C86D /* Lindeman in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4717FBB6F00015C86D /* Lindeman */; };
-		010C51A617FBB6F10015C86D /* Lord_Howe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4817FBB6F00015C86D /* Lord_Howe */; };
-		010C51A717FBB6F10015C86D /* Melbourne in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4917FBB6F00015C86D /* Melbourne */; };
-		010C51A817FBB6F10015C86D /* Perth in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4A17FBB6F00015C86D /* Perth */; };
-		010C51A917FBB6F10015C86D /* Sydney in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4B17FBB6F00015C86D /* Sydney */; };
-		010C51AA17FBB6F10015C86D /* CET in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4C17FBB6F00015C86D /* CET */; };
-		010C51AB17FBB6F10015C86D /* CST6CDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4D17FBB6F00015C86D /* CST6CDT */; };
-		010C51AC17FBB6F10015C86D /* EET in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4E17FBB6F00015C86D /* EET */; };
-		010C51AD17FBB6F10015C86D /* EST in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F4F17FBB6F00015C86D /* EST */; };
-		010C51AE17FBB6F10015C86D /* EST5EDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5017FBB6F00015C86D /* EST5EDT */; };
-		010C51AF17FBB6F10015C86D /* GMT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5217FBB6F00015C86D /* GMT */; };
-		010C51B017FBB6F10015C86D /* GMT+1 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5317FBB6F00015C86D /* GMT+1 */; };
-		010C51B117FBB6F10015C86D /* GMT+10 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5417FBB6F00015C86D /* GMT+10 */; };
-		010C51B217FBB6F10015C86D /* GMT+11 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5517FBB6F00015C86D /* GMT+11 */; };
-		010C51B317FBB6F10015C86D /* GMT+12 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5617FBB6F00015C86D /* GMT+12 */; };
-		010C51B417FBB6F10015C86D /* GMT+2 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5717FBB6F00015C86D /* GMT+2 */; };
-		010C51B517FBB6F10015C86D /* GMT+3 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5817FBB6F00015C86D /* GMT+3 */; };
-		010C51B617FBB6F10015C86D /* GMT+4 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5917FBB6F00015C86D /* GMT+4 */; };
-		010C51B717FBB6F10015C86D /* GMT+5 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5A17FBB6F00015C86D /* GMT+5 */; };
-		010C51B817FBB6F10015C86D /* GMT+6 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5B17FBB6F00015C86D /* GMT+6 */; };
-		010C51B917FBB6F10015C86D /* GMT+7 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5C17FBB6F00015C86D /* GMT+7 */; };
-		010C51BA17FBB6F10015C86D /* GMT+8 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5D17FBB6F00015C86D /* GMT+8 */; };
-		010C51BB17FBB6F10015C86D /* GMT+9 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5E17FBB6F00015C86D /* GMT+9 */; };
-		010C51BC17FBB6F10015C86D /* GMT-1 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F5F17FBB6F00015C86D /* GMT-1 */; };
-		010C51BD17FBB6F10015C86D /* GMT-10 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6017FBB6F00015C86D /* GMT-10 */; };
-		010C51BE17FBB6F10015C86D /* GMT-11 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6117FBB6F00015C86D /* GMT-11 */; };
-		010C51BF17FBB6F10015C86D /* GMT-12 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6217FBB6F00015C86D /* GMT-12 */; };
-		010C51C017FBB6F10015C86D /* GMT-13 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6317FBB6F00015C86D /* GMT-13 */; };
-		010C51C117FBB6F10015C86D /* GMT-14 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6417FBB6F00015C86D /* GMT-14 */; };
-		010C51C217FBB6F10015C86D /* GMT-2 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6517FBB6F00015C86D /* GMT-2 */; };
-		010C51C317FBB6F10015C86D /* GMT-3 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6617FBB6F00015C86D /* GMT-3 */; };
-		010C51C417FBB6F10015C86D /* GMT-4 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6717FBB6F00015C86D /* GMT-4 */; };
-		010C51C517FBB6F10015C86D /* GMT-5 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6817FBB6F00015C86D /* GMT-5 */; };
-		010C51C617FBB6F10015C86D /* GMT-6 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6917FBB6F00015C86D /* GMT-6 */; };
-		010C51C717FBB6F10015C86D /* GMT-7 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6A17FBB6F00015C86D /* GMT-7 */; };
-		010C51C817FBB6F10015C86D /* GMT-8 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6B17FBB6F00015C86D /* GMT-8 */; };
-		010C51C917FBB6F10015C86D /* GMT-9 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6C17FBB6F00015C86D /* GMT-9 */; };
-		010C51CA17FBB6F10015C86D /* UCT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6D17FBB6F00015C86D /* UCT */; };
-		010C51CB17FBB6F10015C86D /* UTC in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F6E17FBB6F00015C86D /* UTC */; };
-		010C51CC17FBB6F10015C86D /* Amsterdam in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7017FBB6F00015C86D /* Amsterdam */; };
-		010C51CD17FBB6F10015C86D /* Andorra in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7117FBB6F00015C86D /* Andorra */; };
-		010C51CE17FBB6F10015C86D /* Athens in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7217FBB6F00015C86D /* Athens */; };
-		010C51CF17FBB6F10015C86D /* Belgrade in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7317FBB6F00015C86D /* Belgrade */; };
-		010C51D017FBB6F10015C86D /* Berlin in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7417FBB6F00015C86D /* Berlin */; };
-		010C51D117FBB6F10015C86D /* Brussels in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7517FBB6F00015C86D /* Brussels */; };
-		010C51D217FBB6F10015C86D /* Bucharest in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7617FBB6F00015C86D /* Bucharest */; };
-		010C51D317FBB6F10015C86D /* Budapest in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7717FBB6F00015C86D /* Budapest */; };
-		010C51D417FBB6F10015C86D /* Chisinau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7817FBB6F00015C86D /* Chisinau */; };
-		010C51D517FBB6F10015C86D /* Copenhagen in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7917FBB6F00015C86D /* Copenhagen */; };
-		010C51D617FBB6F10015C86D /* Dublin in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7A17FBB6F00015C86D /* Dublin */; };
-		010C51D717FBB6F10015C86D /* Gibraltar in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7B17FBB6F00015C86D /* Gibraltar */; };
-		010C51D817FBB6F10015C86D /* Helsinki in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7C17FBB6F00015C86D /* Helsinki */; };
-		010C51D917FBB6F10015C86D /* Istanbul in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7D17FBB6F00015C86D /* Istanbul */; };
-		010C51DA17FBB6F10015C86D /* Kaliningrad in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7E17FBB6F00015C86D /* Kaliningrad */; };
-		010C51DB17FBB6F10015C86D /* Kiev in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F7F17FBB6F00015C86D /* Kiev */; };
-		010C51DC17FBB6F10015C86D /* Lisbon in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8017FBB6F00015C86D /* Lisbon */; };
-		010C51DD17FBB6F10015C86D /* London in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8117FBB6F00015C86D /* London */; };
-		010C51DE17FBB6F10015C86D /* Luxembourg in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8217FBB6F00015C86D /* Luxembourg */; };
-		010C51DF17FBB6F10015C86D /* Madrid in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8317FBB6F00015C86D /* Madrid */; };
-		010C51E017FBB6F10015C86D /* Malta in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8417FBB6F00015C86D /* Malta */; };
-		010C51E117FBB6F10015C86D /* Minsk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8517FBB6F00015C86D /* Minsk */; };
-		010C51E217FBB6F10015C86D /* Monaco in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8617FBB6F00015C86D /* Monaco */; };
-		010C51E317FBB6F10015C86D /* Moscow in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8717FBB6F00015C86D /* Moscow */; };
-		010C51E417FBB6F10015C86D /* Oslo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8817FBB6F00015C86D /* Oslo */; };
-		010C51E517FBB6F10015C86D /* Paris in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8917FBB6F00015C86D /* Paris */; };
-		010C51E617FBB6F10015C86D /* Prague in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8A17FBB6F00015C86D /* Prague */; };
-		010C51E717FBB6F10015C86D /* Riga in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8B17FBB6F00015C86D /* Riga */; };
-		010C51E817FBB6F10015C86D /* Rome in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8C17FBB6F00015C86D /* Rome */; };
-		010C51E917FBB6F10015C86D /* Samara in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8D17FBB6F00015C86D /* Samara */; };
-		010C51EA17FBB6F10015C86D /* Simferopol in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8E17FBB6F00015C86D /* Simferopol */; };
-		010C51EB17FBB6F10015C86D /* Sofia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F8F17FBB6F00015C86D /* Sofia */; };
-		010C51EC17FBB6F10015C86D /* Stockholm in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9017FBB6F00015C86D /* Stockholm */; };
-		010C51ED17FBB6F10015C86D /* Tallinn in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9117FBB6F00015C86D /* Tallinn */; };
-		010C51EE17FBB6F10015C86D /* Tirane in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9217FBB6F00015C86D /* Tirane */; };
-		010C51EF17FBB6F10015C86D /* Uzhgorod in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9317FBB6F00015C86D /* Uzhgorod */; };
-		010C51F017FBB6F10015C86D /* Vaduz in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9417FBB6F00015C86D /* Vaduz */; };
-		010C51F117FBB6F10015C86D /* Vienna in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9517FBB6F00015C86D /* Vienna */; };
-		010C51F217FBB6F10015C86D /* Vilnius in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9617FBB6F00015C86D /* Vilnius */; };
-		010C51F317FBB6F10015C86D /* Volgograd in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9717FBB6F00015C86D /* Volgograd */; };
-		010C51F417FBB6F10015C86D /* Warsaw in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9817FBB6F00015C86D /* Warsaw */; };
-		010C51F517FBB6F10015C86D /* Zaporozhye in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9917FBB6F00015C86D /* Zaporozhye */; };
-		010C51F617FBB6F10015C86D /* Zurich in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9A17FBB6F00015C86D /* Zurich */; };
-		010C51F717FBB6F10015C86D /* GMT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9B17FBB6F00015C86D /* GMT */; };
-		010C51F817FBB6F10015C86D /* HST in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9C17FBB6F00015C86D /* HST */; };
-		010C51F917FBB6F10015C86D /* Antananarivo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9E17FBB6F00015C86D /* Antananarivo */; };
-		010C51FA17FBB6F10015C86D /* Chagos in Resources */ = {isa = PBXBuildFile; fileRef = 010C4F9F17FBB6F00015C86D /* Chagos */; };
-		010C51FB17FBB6F10015C86D /* Christmas in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA017FBB6F00015C86D /* Christmas */; };
-		010C51FC17FBB6F10015C86D /* Cocos in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA117FBB6F00015C86D /* Cocos */; };
-		010C51FD17FBB6F10015C86D /* Comoro in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA217FBB6F00015C86D /* Comoro */; };
-		010C51FE17FBB6F10015C86D /* Kerguelen in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA317FBB6F00015C86D /* Kerguelen */; };
-		010C51FF17FBB6F10015C86D /* Mahe in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA417FBB6F00015C86D /* Mahe */; };
-		010C520017FBB6F10015C86D /* Maldives in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA517FBB6F00015C86D /* Maldives */; };
-		010C520117FBB6F10015C86D /* Mauritius in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA617FBB6F00015C86D /* Mauritius */; };
-		010C520217FBB6F10015C86D /* Mayotte in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA717FBB6F00015C86D /* Mayotte */; };
-		010C520317FBB6F10015C86D /* Reunion in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA817FBB6F00015C86D /* Reunion */; };
-		010C520417FBB6F10015C86D /* MET in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FA917FBB6F00015C86D /* MET */; };
-		010C520517FBB6F10015C86D /* MST in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FAA17FBB6F00015C86D /* MST */; };
-		010C520617FBB6F10015C86D /* MST7MDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FAB17FBB6F10015C86D /* MST7MDT */; };
-		010C520717FBB6F10015C86D /* Apia in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FAD17FBB6F10015C86D /* Apia */; };
-		010C520817FBB6F10015C86D /* Auckland in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FAE17FBB6F10015C86D /* Auckland */; };
-		010C520917FBB6F10015C86D /* Chatham in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FAF17FBB6F10015C86D /* Chatham */; };
-		010C520A17FBB6F10015C86D /* Chuuk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB017FBB6F10015C86D /* Chuuk */; };
-		010C520B17FBB6F10015C86D /* Easter in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB117FBB6F10015C86D /* Easter */; };
-		010C520C17FBB6F10015C86D /* Efate in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB217FBB6F10015C86D /* Efate */; };
-		010C520D17FBB6F10015C86D /* Enderbury in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB317FBB6F10015C86D /* Enderbury */; };
-		010C520E17FBB6F10015C86D /* Fakaofo in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB417FBB6F10015C86D /* Fakaofo */; };
-		010C520F17FBB6F10015C86D /* Fiji in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB517FBB6F10015C86D /* Fiji */; };
-		010C521017FBB6F10015C86D /* Funafuti in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB617FBB6F10015C86D /* Funafuti */; };
-		010C521117FBB6F10015C86D /* Galapagos in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB717FBB6F10015C86D /* Galapagos */; };
-		010C521217FBB6F10015C86D /* Gambier in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB817FBB6F10015C86D /* Gambier */; };
-		010C521317FBB6F10015C86D /* Guadalcanal in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FB917FBB6F10015C86D /* Guadalcanal */; };
-		010C521417FBB6F10015C86D /* Guam in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBA17FBB6F10015C86D /* Guam */; };
-		010C521517FBB6F10015C86D /* Honolulu in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBB17FBB6F10015C86D /* Honolulu */; };
-		010C521617FBB6F10015C86D /* Johnston in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBC17FBB6F10015C86D /* Johnston */; };
-		010C521717FBB6F10015C86D /* Kiritimati in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBD17FBB6F10015C86D /* Kiritimati */; };
-		010C521817FBB6F10015C86D /* Kosrae in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBE17FBB6F10015C86D /* Kosrae */; };
-		010C521917FBB6F10015C86D /* Kwajalein in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FBF17FBB6F10015C86D /* Kwajalein */; };
-		010C521A17FBB6F10015C86D /* Majuro in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC017FBB6F10015C86D /* Majuro */; };
-		010C521B17FBB6F10015C86D /* Marquesas in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC117FBB6F10015C86D /* Marquesas */; };
-		010C521C17FBB6F10015C86D /* Midway in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC217FBB6F10015C86D /* Midway */; };
-		010C521D17FBB6F10015C86D /* Nauru in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC317FBB6F10015C86D /* Nauru */; };
-		010C521E17FBB6F10015C86D /* Niue in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC417FBB6F10015C86D /* Niue */; };
-		010C521F17FBB6F10015C86D /* Norfolk in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC517FBB6F10015C86D /* Norfolk */; };
-		010C522017FBB6F10015C86D /* Noumea in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC617FBB6F10015C86D /* Noumea */; };
-		010C522117FBB6F10015C86D /* Pago_Pago in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC717FBB6F10015C86D /* Pago_Pago */; };
-		010C522217FBB6F10015C86D /* Palau in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC817FBB6F10015C86D /* Palau */; };
-		010C522317FBB6F10015C86D /* Pitcairn in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FC917FBB6F10015C86D /* Pitcairn */; };
-		010C522417FBB6F10015C86D /* Pohnpei in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCA17FBB6F10015C86D /* Pohnpei */; };
-		010C522517FBB6F10015C86D /* Port_Moresby in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCB17FBB6F10015C86D /* Port_Moresby */; };
-		010C522617FBB6F10015C86D /* Rarotonga in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCC17FBB6F10015C86D /* Rarotonga */; };
-		010C522717FBB6F10015C86D /* Saipan in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCD17FBB6F10015C86D /* Saipan */; };
-		010C522817FBB6F10015C86D /* Tahiti in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCE17FBB6F10015C86D /* Tahiti */; };
-		010C522917FBB6F10015C86D /* Tarawa in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FCF17FBB6F10015C86D /* Tarawa */; };
-		010C522A17FBB6F10015C86D /* Tongatapu in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD017FBB6F10015C86D /* Tongatapu */; };
-		010C522B17FBB6F10015C86D /* Wake in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD117FBB6F10015C86D /* Wake */; };
-		010C522C17FBB6F10015C86D /* Wallis in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD217FBB6F10015C86D /* Wallis */; };
-		010C522D17FBB6F10015C86D /* PST8PDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD317FBB6F10015C86D /* PST8PDT */; };
-		010C522E17FBB6F10015C86D /* AST4 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD517FBB6F10015C86D /* AST4 */; };
-		010C522F17FBB6F10015C86D /* AST4ADT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD617FBB6F10015C86D /* AST4ADT */; };
-		010C523017FBB6F10015C86D /* CST6 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD717FBB6F10015C86D /* CST6 */; };
-		010C523117FBB6F10015C86D /* CST6CDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD817FBB6F10015C86D /* CST6CDT */; };
-		010C523217FBB6F10015C86D /* EST5 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FD917FBB6F10015C86D /* EST5 */; };
-		010C523317FBB6F10015C86D /* EST5EDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDA17FBB6F10015C86D /* EST5EDT */; };
-		010C523417FBB6F10015C86D /* HST10 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDB17FBB6F10015C86D /* HST10 */; };
-		010C523517FBB6F10015C86D /* MST7 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDC17FBB6F10015C86D /* MST7 */; };
-		010C523617FBB6F10015C86D /* MST7MDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDD17FBB6F10015C86D /* MST7MDT */; };
-		010C523717FBB6F10015C86D /* PST8 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDE17FBB6F10015C86D /* PST8 */; };
-		010C523817FBB6F10015C86D /* PST8PDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FDF17FBB6F10015C86D /* PST8PDT */; };
-		010C523917FBB6F10015C86D /* YST9 in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE017FBB6F10015C86D /* YST9 */; };
-		010C523A17FBB6F10015C86D /* YST9YDT in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE117FBB6F10015C86D /* YST9YDT */; };
-		010C523B17FBB6F10015C86D /* WET in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE217FBB6F10015C86D /* WET */; };
-		010C523C17FBB6F10015C86D /* ZoneInfoMappings in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE317FBB6F10015C86D /* ZoneInfoMappings */; };
-		010C523D17FBB6F10015C86D /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE417FBB6F10015C86D /* LICENSE */; };
-		010C523E17FBB6F10015C86D /* README in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE517FBB6F10015C86D /* README */; };
-		010C523F17FBB6F10015C86D /* THIRDPARTYLICENSEREADME-JAVAFX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE617FBB6F10015C86D /* THIRDPARTYLICENSEREADME-JAVAFX.txt */; };
-		010C524017FBB6F10015C86D /* THIRDPARTYLICENSEREADME.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE717FBB6F10015C86D /* THIRDPARTYLICENSEREADME.txt */; };
-		010C524117FBB6F10015C86D /* Welcome.html in Resources */ = {isa = PBXBuildFile; fileRef = 010C4FE817FBB6F10015C86D /* Welcome.html */; };
+		011DA20A17FDAE7000CCD96A /* EmbeddedJvm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */; };
+		011DA20D17FDAFEB00CCD96A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D4617FBB2DA0015C86D /* XCTest.framework */; };
+		015336E717FDB0F3001D4DD4 /* EmbeddedJvmTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */; };
+		015336EC17FDBA26001D4DD4 /* EmbeddedJvm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */; };
+		015336EE17FDC526001D4DD4 /* EmbeddedJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -556,6 +36,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		015336EB17FDBA13001D4DD4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				015336EC17FDBA26001D4DD4 /* EmbeddedJvm.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmbeddedJvm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		010C4D3117FBB2D90015C86D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -565,13 +58,10 @@
 		010C4D3917FBB2D90015C86D /* EmbeddedJvm-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmbeddedJvm-Info.plist"; sourceTree = "<group>"; };
 		010C4D3B17FBB2D90015C86D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		010C4D3D17FBB2DA0015C86D /* EmbeddedJvm-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EmbeddedJvm-Prefix.pch"; sourceTree = "<group>"; };
-		010C4D3E17FBB2DA0015C86D /* JvmHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JvmHost.h; sourceTree = "<group>"; };
-		010C4D3F17FBB2DA0015C86D /* JvmHost.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JvmHost.mm; sourceTree = "<group>"; };
 		010C4D4517FBB2DA0015C86D /* EmbeddedJvmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmbeddedJvmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		010C4D4617FBB2DA0015C86D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		010C4D4E17FBB2DA0015C86D /* EmbeddedJvmTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmbeddedJvmTests-Info.plist"; sourceTree = "<group>"; };
 		010C4D5017FBB2DA0015C86D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JvmHostTests.mm; sourceTree = "<group>"; };
 		010C4D5E17FBB69F0015C86D /* classfile_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classfile_constants.h; sourceTree = "<group>"; };
 		010C4D6017FBB69F0015C86D /* jawt_md.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jawt_md.h; sourceTree = "<group>"; };
 		010C4D6117FBB69F0015C86D /* jni_md.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jni_md.h; sourceTree = "<group>"; };
@@ -1181,6 +671,9 @@
 		010C4FE617FBB6F10015C86D /* THIRDPARTYLICENSEREADME-JAVAFX.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "THIRDPARTYLICENSEREADME-JAVAFX.txt"; sourceTree = "<group>"; };
 		010C4FE717FBB6F10015C86D /* THIRDPARTYLICENSEREADME.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = THIRDPARTYLICENSEREADME.txt; sourceTree = "<group>"; };
 		010C4FE817FBB6F10015C86D /* Welcome.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Welcome.html; sourceTree = "<group>"; };
+		011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvm.mm; path = ../EmbeddedJvm/EmbeddedJvm.mm; sourceTree = "<group>"; };
+		011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvmTests.mm; path = ../EmbeddedJvmTests/EmbeddedJvmTests.mm; sourceTree = "<group>"; };
+		015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvm.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1196,8 +689,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				011DA20D17FDAFEB00CCD96A /* XCTest.framework in Frameworks */,
 				010C4D4817FBB2DA0015C86D /* Cocoa.framework in Frameworks */,
-				010C4D4717FBB2DA0015C86D /* XCTest.framework in Frameworks */,
 				010C4D4B17FBB2DA0015C86D /* EmbeddedJvm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1208,8 +701,8 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
-				010C4D3717FBB2D90015C86D /* JvmHost */,
-				010C4D4C17FBB2DA0015C86D /* JvmHostTests */,
+				010C4D3717FBB2D90015C86D /* EmbeddedJvm */,
+				010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */,
 				010C4D3017FBB2D90015C86D /* Frameworks */,
 				010C4D2F17FBB2D90015C86D /* Products */,
 			);
@@ -1244,16 +737,16 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		010C4D3717FBB2D90015C86D /* JvmHost */ = {
+		010C4D3717FBB2D90015C86D /* EmbeddedJvm */ = {
 			isa = PBXGroup;
 			children = (
 				010C4D6F17FBB6EF0015C86D /* jre */,
 				010C4D5C17FBB69F0015C86D /* jdk */,
-				010C4D3E17FBB2DA0015C86D /* JvmHost.h */,
-				010C4D3F17FBB2DA0015C86D /* JvmHost.mm */,
+				011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */,
+				015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */,
 				010C4D3817FBB2D90015C86D /* Supporting Files */,
 			);
-			path = JvmHost;
+			path = EmbeddedJvm;
 			sourceTree = "<group>";
 		};
 		010C4D3817FBB2D90015C86D /* Supporting Files */ = {
@@ -1266,13 +759,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		010C4D4C17FBB2DA0015C86D /* JvmHostTests */ = {
+		010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */ = {
 			isa = PBXGroup;
 			children = (
-				010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */,
+				011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */,
 				010C4D4D17FBB2DA0015C86D /* Supporting Files */,
 			);
-			path = JvmHostTests;
+			path = EmbeddedJvmTests;
 			sourceTree = "<group>";
 		};
 		010C4D4D17FBB2DA0015C86D /* Supporting Files */ = {
@@ -2186,11 +1679,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				015336EE17FDC526001D4DD4 /* EmbeddedJvm.h in Headers */,
+				010C4D6C17FBB69F0015C86D /* jni.h in Headers */,
+				010C4D6917FBB69F0015C86D /* jni_md.h in Headers */,
 				010C4D6D17FBB69F0015C86D /* jvmti.h in Headers */,
 				010C4D6E17FBB69F0015C86D /* jvmticmlr.h in Headers */,
-				010C4D6C17FBB69F0015C86D /* jni.h in Headers */,
 				010C4D6B17FBB69F0015C86D /* jdwpTransport.h in Headers */,
-				010C4D6917FBB69F0015C86D /* jni_md.h in Headers */,
 				010C4D6717FBB69F0015C86D /* classfile_constants.h in Headers */,
 				010C4D6A17FBB69F0015C86D /* jawt.h in Headers */,
 				010C4D6817FBB69F0015C86D /* jawt_md.h in Headers */,
@@ -2208,6 +1702,7 @@
 				010C4D2A17FBB2D90015C86D /* Frameworks */,
 				010C4D2B17FBB2D90015C86D /* Headers */,
 				010C4D2C17FBB2D90015C86D /* Resources */,
+				015336EA17FDB5A5001D4DD4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2225,6 +1720,7 @@
 				010C4D4117FBB2DA0015C86D /* Sources */,
 				010C4D4217FBB2DA0015C86D /* Frameworks */,
 				010C4D4317FBB2DA0015C86D /* Resources */,
+				015336EB17FDBA13001D4DD4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -2273,528 +1769,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010C51D517FBB6F10015C86D /* Copenhagen in Resources */,
-				010C518C17FBB6F10015C86D /* Tokyo in Resources */,
-				010C50BD17FBB6F10015C86D /* Asuncion in Resources */,
-				010C506317FBB6F10015C86D /* net.properties in Resources */,
-				010C513517FBB6F10015C86D /* Vancouver in Resources */,
-				010C510317FBB6F10015C86D /* Metlakatla in Resources */,
-				010C507C17FBB6F10015C86D /* Bamako in Resources */,
-				010C51A117FBB6F10015C86D /* Currie in Resources */,
-				010C521417FBB6F10015C86D /* Guam in Resources */,
-				010C505B17FBB6F10015C86D /* logging.properties in Resources */,
-				010C50FF17FBB6F10015C86D /* Matamoros in Resources */,
-				010C51D217FBB6F10015C86D /* Bucharest in Resources */,
-				010C508D17FBB6F10015C86D /* Gaborone in Resources */,
-				010C517F17FBB6F10015C86D /* Riyadh87 in Resources */,
-				010C521517FBB6F10015C86D /* Honolulu in Resources */,
-				010C51B217FBB6F10015C86D /* GMT+11 in Resources */,
-				010C520F17FBB6F10015C86D /* Fiji in Resources */,
-				010C523517FBB6F10015C86D /* MST7 in Resources */,
-				010C51D017FBB6F10015C86D /* Berlin in Resources */,
-				010C523C17FBB6F10015C86D /* ZoneInfoMappings in Resources */,
-				010C516717FBB6F10015C86D /* Kashgar in Resources */,
-				010C51C817FBB6F10015C86D /* GMT-8 in Resources */,
-				010C518817FBB6F10015C86D /* Tashkent in Resources */,
-				010C501E17FBB6F10015C86D /* javafx.properties in Resources */,
-				010C51B617FBB6F10015C86D /* GMT+4 in Resources */,
-				010C511D17FBB6F10015C86D /* Rankin_Inlet in Resources */,
-				010C514417FBB6F10015C86D /* Aden in Resources */,
-				010C50AD17FBB6F10015C86D /* Anguilla in Resources */,
-				010C50B917FBB6F10015C86D /* San_Luis in Resources */,
-				010C512617FBB6F10015C86D /* Sao_Paulo in Resources */,
-				010C506617FBB6F10015C86D /* psfontj2d.properties in Resources */,
-				010C523317FBB6F10015C86D /* EST5EDT in Resources */,
-				010C510C17FBB6F10015C86D /* New_York in Resources */,
-				010C510F17FBB6F10015C86D /* Noronha in Resources */,
-				010C519317FBB6F10015C86D /* Yerevan in Resources */,
-				010C516A17FBB6F10015C86D /* Krasnoyarsk in Resources */,
-				010C51CB17FBB6F10015C86D /* UTC in Resources */,
-				010C4FFB17FBB6F10015C86D /* PYCC.pf in Resources */,
-				010C50D717FBB6F10015C86D /* Denver in Resources */,
-				010C4FEA17FBB6F10015C86D /* keytool in Resources */,
-				010C514A17FBB6F10015C86D /* Ashgabat in Resources */,
-				010C510717FBB6F10015C86D /* Monterrey in Resources */,
-				010C505D17FBB6F10015C86D /* jmxremote.access in Resources */,
-				010C510217FBB6F10015C86D /* Merida in Resources */,
-				010C50FD17FBB6F10015C86D /* Manaus in Resources */,
-				010C509E17FBB6F10015C86D /* Mbabane in Resources */,
-				010C507A17FBB6F10015C86D /* Algiers in Resources */,
-				010C50D517FBB6F10015C86D /* Dawson in Resources */,
-				010C51AF17FBB6F10015C86D /* GMT in Resources */,
-				010C519417FBB6F10015C86D /* Azores in Resources */,
-				010C514817FBB6F10015C86D /* Aqtau in Resources */,
-				010C50B317FBB6F10015C86D /* Jujuy in Resources */,
-				010C500A17FBB6F10015C86D /* fonts.dir in Resources */,
-				010C514317FBB6F10015C86D /* Vostok in Resources */,
-				010C507917FBB6F10015C86D /* Addis_Ababa in Resources */,
-				010C4FF017FBB6F10015C86D /* servertool in Resources */,
-				010C4FF317FBB6F10015C86D /* COPYRIGHT in Resources */,
-				010C51C017FBB6F10015C86D /* GMT-13 in Resources */,
-				010C507317FBB6F10015C86D /* Xusage.txt in Resources */,
-				010C506217FBB6F10015C86D /* meta-index in Resources */,
-				010C508517FBB6F10015C86D /* Ceuta in Resources */,
-				010C520917FBB6F10015C86D /* Chatham in Resources */,
-				010C515717FBB6F10015C86D /* Dili in Resources */,
-				010C522E17FBB6F10015C86D /* AST4 in Resources */,
-				010C51B017FBB6F10015C86D /* GMT+1 in Resources */,
-				010C501817FBB6F10015C86D /* motif_CopyDrop32x32.gif in Resources */,
-				010C514E17FBB6F10015C86D /* Bangkok in Resources */,
-				010C50FE17FBB6F10015C86D /* Martinique in Resources */,
-				010C50AA17FBB6F10015C86D /* Windhoek in Resources */,
-				010C51C417FBB6F10015C86D /* GMT-4 in Resources */,
-				010C511B17FBB6F10015C86D /* Puerto_Rico in Resources */,
-				010C511717FBB6F10015C86D /* Phoenix in Resources */,
-				010C521A17FBB6F10015C86D /* Majuro in Resources */,
-				010C512817FBB6F10015C86D /* Sitka in Resources */,
-				010C50D617FBB6F10015C86D /* Dawson_Creek in Resources */,
-				010C517D17FBB6F10015C86D /* Rangoon in Resources */,
-				010C51BA17FBB6F10015C86D /* GMT+8 in Resources */,
-				010C516917FBB6F10015C86D /* Kolkata in Resources */,
-				010C51BF17FBB6F10015C86D /* GMT-12 in Resources */,
-				010C517717FBB6F10015C86D /* Oral in Resources */,
-				010C518017FBB6F10015C86D /* Riyadh88 in Resources */,
-				010C50CA17FBB6F10015C86D /* Cancun in Resources */,
-				010C508817FBB6F10015C86D /* Dar_es_Salaam in Resources */,
-				010C514C17FBB6F10015C86D /* Bahrain in Resources */,
-				010C509217FBB6F10015C86D /* Khartoum in Resources */,
-				010C501717FBB6F10015C86D /* invalid32x32.gif in Resources */,
-				010C51B517FBB6F10015C86D /* GMT+3 in Resources */,
-				010C50CC17FBB6F10015C86D /* Cayenne in Resources */,
-				010C51FB17FBB6F10015C86D /* Christmas in Resources */,
-				010C509D17FBB6F10015C86D /* Maseru in Resources */,
-				010C51B917FBB6F10015C86D /* GMT+7 in Resources */,
-				010C516017FBB6F10015C86D /* Irkutsk in Resources */,
-				010C511917FBB6F10015C86D /* Port_of_Spain in Resources */,
-				010C522617FBB6F10015C86D /* Rarotonga in Resources */,
-				010C506B17FBB6F10015C86D /* java.policy in Resources */,
-				010C50D117FBB6F10015C86D /* Creston in Resources */,
-				010C50D417FBB6F10015C86D /* Danmarkshavn in Resources */,
-				010C51A317FBB6F10015C86D /* Eucla in Resources */,
-				010C518F17FBB6F10015C86D /* Vientiane in Resources */,
-				010C50BE17FBB6F10015C86D /* Atikokan in Resources */,
-				010C523717FBB6F10015C86D /* PST8 in Resources */,
-				010C518517FBB6F10015C86D /* Shanghai in Resources */,
-				010C510517FBB6F10015C86D /* Miquelon in Resources */,
-				010C514617FBB6F10015C86D /* Amman in Resources */,
-				010C50DB17FBB6F10015C86D /* Eirunepe in Resources */,
-				010C50AF17FBB6F10015C86D /* Araguaina in Resources */,
-				010C520717FBB6F10015C86D /* Apia in Resources */,
-				010C51F617FBB6F10015C86D /* Zurich in Resources */,
-				010C508617FBB6F10015C86D /* Conakry in Resources */,
-				010C506517FBB6F10015C86D /* psfont.properties.ja in Resources */,
-				010C515E17FBB6F10015C86D /* Hong_Kong in Resources */,
-				010C51D317FBB6F10015C86D /* Budapest in Resources */,
-				010C51A717FBB6F10015C86D /* Melbourne in Resources */,
-				010C511617FBB6F10015C86D /* Paramaribo in Resources */,
-				010C51CE17FBB6F10015C86D /* Athens in Resources */,
-				010C517817FBB6F10015C86D /* Phnom_Penh in Resources */,
-				010C513817FBB6F10015C86D /* Yakutat in Resources */,
-				010C519D17FBB6F10015C86D /* Stanley in Resources */,
-				010C515417FBB6F10015C86D /* Colombo in Resources */,
-				010C520C17FBB6F10015C86D /* Efate in Resources */,
-				010C50CD17FBB6F10015C86D /* Cayman in Resources */,
-				010C500217FBB6F10015C86D /* meta-index in Resources */,
-				010C4FF517FBB6F10015C86D /* calendars.properties in Resources */,
-				010C50D017FBB6F10015C86D /* Costa_Rica in Resources */,
-				010C51EC17FBB6F10015C86D /* Stockholm in Resources */,
-				010C50E817FBB6F10015C86D /* Havana in Resources */,
-				010C521D17FBB6F10015C86D /* Nauru in Resources */,
-				010C508217FBB6F10015C86D /* Bujumbura in Resources */,
-				010C511317FBB6F10015C86D /* Ojinaga in Resources */,
-				010C502617FBB6F10015C86D /* jvm.cfg in Resources */,
-				010C50A917FBB6F10015C86D /* Tunis in Resources */,
-				010C518E17FBB6F10015C86D /* Urumqi in Resources */,
-				010C51DB17FBB6F10015C86D /* Kiev in Resources */,
-				010C513B17FBB6F10015C86D /* Davis in Resources */,
-				010C512917FBB6F10015C86D /* St_Johns in Resources */,
-				010C50F017FBB6F10015C86D /* Vincennes in Resources */,
-				010C506917FBB6F10015C86D /* blacklist in Resources */,
-				010C521717FBB6F10015C86D /* Kiritimati in Resources */,
-				010C518617FBB6F10015C86D /* Singapore in Resources */,
-				010C50F117FBB6F10015C86D /* Winamac in Resources */,
-				010C511A17FBB6F10015C86D /* Porto_Velho in Resources */,
-				010C51D117FBB6F10015C86D /* Brussels in Resources */,
-				010C516417FBB6F10015C86D /* Kabul in Resources */,
-				010C50D917FBB6F10015C86D /* Dominica in Resources */,
-				010C513717FBB6F10015C86D /* Winnipeg in Resources */,
-				010C506F17FBB6F10015C86D /* trusted.libraries in Resources */,
-				010C50C117FBB6F10015C86D /* Barbados in Resources */,
-				010C502717FBB6F10015C86D /* jvm.hprof.txt in Resources */,
-				010C50EE17FBB6F10015C86D /* Tell_City in Resources */,
-				010C50BB17FBB6F10015C86D /* Ushuaia in Resources */,
-				010C51EA17FBB6F10015C86D /* Simferopol in Resources */,
-				010C522717FBB6F10015C86D /* Saipan in Resources */,
-				010C516F17FBB6F10015C86D /* Magadan in Resources */,
-				010C515517FBB6F10015C86D /* Damascus in Resources */,
-				010C519817FBB6F10015C86D /* Faroe in Resources */,
-				010C50A117FBB6F10015C86D /* Nairobi in Resources */,
-				010C50E517FBB6F10015C86D /* Guayaquil in Resources */,
-				010C516517FBB6F10015C86D /* Kamchatka in Resources */,
-				010C50F517FBB6F10015C86D /* Juneau in Resources */,
-				010C512B17FBB6F10015C86D /* St_Lucia in Resources */,
-				010C509117FBB6F10015C86D /* Kampala in Resources */,
-				010C51D817FBB6F10015C86D /* Helsinki in Resources */,
-				010C509F17FBB6F10015C86D /* Mogadishu in Resources */,
-				010C51BD17FBB6F10015C86D /* GMT-10 in Resources */,
-				010C50EA17FBB6F10015C86D /* Indianapolis in Resources */,
-				010C508C17FBB6F10015C86D /* Freetown in Resources */,
-				010C519717FBB6F10015C86D /* Cape_Verde in Resources */,
-				010C51AB17FBB6F10015C86D /* CST6CDT in Resources */,
-				010C51F417FBB6F10015C86D /* Warsaw in Resources */,
-				010C51A017FBB6F10015C86D /* Broken_Hill in Resources */,
-				010C514D17FBB6F10015C86D /* Baku in Resources */,
-				010C509C17FBB6F10015C86D /* Maputo in Resources */,
-				010C510017FBB6F10015C86D /* Mazatlan in Resources */,
-				010C509717FBB6F10015C86D /* Lome in Resources */,
-				010C519A17FBB6F10015C86D /* Reykjavik in Resources */,
-				010C520517FBB6F10015C86D /* MST in Resources */,
-				010C511F17FBB6F10015C86D /* Regina in Resources */,
-				010C509417FBB6F10015C86D /* Kinshasa in Resources */,
-				010C50DD17FBB6F10015C86D /* Fortaleza in Resources */,
-				010C510A17FBB6F10015C86D /* Montserrat in Resources */,
-				010C4FF117FBB6F10015C86D /* tnameserv in Resources */,
-				010C51E417FBB6F10015C86D /* Oslo in Resources */,
-				010C516D17FBB6F10015C86D /* Kuwait in Resources */,
-				010C51C217FBB6F10015C86D /* GMT-2 in Resources */,
-				010C516E17FBB6F10015C86D /* Macau in Resources */,
-				010C501217FBB6F10015C86D /* LucidaTypewriterRegular.ttf in Resources */,
-				010C50C617FBB6F10015C86D /* Bogota in Resources */,
-				010C514217FBB6F10015C86D /* Syowa in Resources */,
-				010C521117FBB6F10015C86D /* Galapagos in Resources */,
-				010C4FF717FBB6F10015C86D /* classlist in Resources */,
-				010C50AE17FBB6F10015C86D /* Antigua in Resources */,
-				010C51EE17FBB6F10015C86D /* Tirane in Resources */,
-				010C508F17FBB6F10015C86D /* Johannesburg in Resources */,
-				010C522B17FBB6F10015C86D /* Wake in Resources */,
-				010C501D17FBB6F10015C86D /* motif_MoveNoDrop32x32.gif in Resources */,
-				010C51A417FBB6F10015C86D /* Hobart in Resources */,
-				010C512217FBB6F10015C86D /* Santa_Isabel in Resources */,
-				010C510B17FBB6F10015C86D /* Nassau in Resources */,
-				010C51CA17FBB6F10015C86D /* UCT in Resources */,
-				010C512117FBB6F10015C86D /* Rio_Branco in Resources */,
-				010C50E117FBB6F10015C86D /* Grand_Turk in Resources */,
-				010C51AC17FBB6F10015C86D /* EET in Resources */,
-				010C50DA17FBB6F10015C86D /* Edmonton in Resources */,
-				010C510417FBB6F10015C86D /* Mexico_City in Resources */,
-				010C51F517FBB6F10015C86D /* Zaporozhye in Resources */,
-				010C509017FBB6F10015C86D /* Juba in Resources */,
-				010C51FE17FBB6F10015C86D /* Kerguelen in Resources */,
-				010C510617FBB6F10015C86D /* Moncton in Resources */,
-				010C519F17FBB6F10015C86D /* Brisbane in Resources */,
-				010C50B217FBB6F10015C86D /* Cordoba in Resources */,
-				010C512417FBB6F10015C86D /* Santiago in Resources */,
-				010C517A17FBB6F10015C86D /* Pyongyang in Resources */,
-				010C516C17FBB6F10015C86D /* Kuching in Resources */,
-				010C50DF17FBB6F10015C86D /* Godthab in Resources */,
-				010C515B17FBB6F10015C86D /* Harbin in Resources */,
-				010C515317FBB6F10015C86D /* Chongqing in Resources */,
-				010C500E17FBB6F10015C86D /* LucidaBrightRegular.ttf in Resources */,
-				010C51FD17FBB6F10015C86D /* Comoro in Resources */,
-				010C508017FBB6F10015C86D /* Blantyre in Resources */,
-				010C501A17FBB6F10015C86D /* motif_LinkDrop32x32.gif in Resources */,
-				010C51E217FBB6F10015C86D /* Monaco in Resources */,
-				010C512017FBB6F10015C86D /* Resolute in Resources */,
-				010C51E017FBB6F10015C86D /* Malta in Resources */,
-				010C50A017FBB6F10015C86D /* Monrovia in Resources */,
-				010C50C217FBB6F10015C86D /* Belem in Resources */,
-				010C523217FBB6F10015C86D /* EST5 in Resources */,
-				010C501017FBB6F10015C86D /* LucidaSansRegular.ttf in Resources */,
-				010C517517FBB6F10015C86D /* Novosibirsk in Resources */,
-				010C51AD17FBB6F10015C86D /* EST in Resources */,
-				010C518417FBB6F10015C86D /* Seoul in Resources */,
-				010C521317FBB6F10015C86D /* Guadalcanal in Resources */,
-				010C50B717FBB6F10015C86D /* Salta in Resources */,
-				010C510817FBB6F10015C86D /* Montevideo in Resources */,
-				010C50FB17FBB6F10015C86D /* Maceio in Resources */,
-				010C50EC17FBB6F10015C86D /* Marengo in Resources */,
-				010C508117FBB6F10015C86D /* Brazzaville in Resources */,
-				010C519C17FBB6F10015C86D /* St_Helena in Resources */,
-				010C50FA17FBB6F10015C86D /* Los_Angeles in Resources */,
-				010C4FE917FBB6F10015C86D /* java in Resources */,
-				010C51A917FBB6F10015C86D /* Sydney in Resources */,
-				010C50CB17FBB6F10015C86D /* Caracas in Resources */,
-				010C516317FBB6F10015C86D /* Jerusalem in Resources */,
-				010C517217FBB6F10015C86D /* Muscat in Resources */,
-				010C500D17FBB6F10015C86D /* LucidaBrightItalic.ttf in Resources */,
-				010C517317FBB6F10015C86D /* Nicosia in Resources */,
-				010C50F317FBB6F10015C86D /* Iqaluit in Resources */,
-				010C511517FBB6F10015C86D /* Pangnirtung in Resources */,
-				010C50C817FBB6F10015C86D /* Cambridge_Bay in Resources */,
-				010C50BF17FBB6F10015C86D /* Bahia in Resources */,
-				010C50F717FBB6F10015C86D /* Monticello in Resources */,
-				010C520617FBB6F10015C86D /* MST7MDT in Resources */,
-				010C517E17FBB6F10015C86D /* Riyadh in Resources */,
-				010C506D17FBB6F10015C86D /* javafx.policy in Resources */,
-				010C523F17FBB6F10015C86D /* THIRDPARTYLICENSEREADME-JAVAFX.txt in Resources */,
-				010C508717FBB6F10015C86D /* Dakar in Resources */,
-				010C51B317FBB6F10015C86D /* GMT+12 in Resources */,
-				010C509B17FBB6F10015C86D /* Malabo in Resources */,
-				010C522C17FBB6F10015C86D /* Wallis in Resources */,
-				010C506A17FBB6F10015C86D /* cacerts in Resources */,
-				010C522817FBB6F10015C86D /* Tahiti in Resources */,
-				010C50B817FBB6F10015C86D /* San_Juan in Resources */,
-				010C50B417FBB6F10015C86D /* La_Rioja in Resources */,
-				010C520017FBB6F10015C86D /* Maldives in Resources */,
-				010C4FFA17FBB6F10015C86D /* LINEAR_RGB.pf in Resources */,
-				010C50E917FBB6F10015C86D /* Hermosillo in Resources */,
-				010C51B817FBB6F10015C86D /* GMT+6 in Resources */,
-				010C500917FBB6F10015C86D /* fontconfig.properties.src in Resources */,
-				010C50D217FBB6F10015C86D /* Cuiaba in Resources */,
-				010C50A217FBB6F10015C86D /* Ndjamena in Resources */,
-				010C51F917FBB6F10015C86D /* Antananarivo in Resources */,
-				010C50A617FBB6F10015C86D /* Porto-Novo in Resources */,
-				010C50EF17FBB6F10015C86D /* Vevay in Resources */,
-				010C51B117FBB6F10015C86D /* GMT+10 in Resources */,
-				010C51F817FBB6F10015C86D /* HST in Resources */,
-				010C513317FBB6F10015C86D /* Toronto in Resources */,
-				010C512317FBB6F10015C86D /* Santarem in Resources */,
-				010C523017FBB6F10015C86D /* CST6 in Resources */,
-				010C509317FBB6F10015C86D /* Kigali in Resources */,
-				010C523117FBB6F10015C86D /* CST6CDT in Resources */,
-				010C50A417FBB6F10015C86D /* Nouakchott in Resources */,
-				010C514117FBB6F10015C86D /* Rothera in Resources */,
-				010C512717FBB6F10015C86D /* Scoresbysund in Resources */,
-				010C4D3C17FBB2D90015C86D /* InfoPlist.strings in Resources */,
-				010C514917FBB6F10015C86D /* Aqtobe in Resources */,
-				010C522F17FBB6F10015C86D /* AST4ADT in Resources */,
-				010C51A617FBB6F10015C86D /* Lord_Howe in Resources */,
-				010C522D17FBB6F10015C86D /* PST8PDT in Resources */,
-				010C51E817FBB6F10015C86D /* Rome in Resources */,
-				010C518D17FBB6F10015C86D /* Ulaanbaatar in Resources */,
-				010C517117FBB6F10015C86D /* Manila in Resources */,
-				010C512517FBB6F10015C86D /* Santo_Domingo in Resources */,
-				010C509617FBB6F10015C86D /* Libreville in Resources */,
-				010C506C17FBB6F10015C86D /* java.security in Resources */,
-				010C50B117FBB6F10015C86D /* Catamarca in Resources */,
-				010C507D17FBB6F10015C86D /* Bangui in Resources */,
-				010C510917FBB6F10015C86D /* Montreal in Resources */,
-				010C50C717FBB6F10015C86D /* Boise in Resources */,
-				010C513017FBB6F10015C86D /* Thule in Resources */,
-				010C508E17FBB6F10015C86D /* Harare in Resources */,
-				010C518A17FBB6F10015C86D /* Tehran in Resources */,
-				010C51DF17FBB6F10015C86D /* Madrid in Resources */,
-				010C51D917FBB6F10015C86D /* Istanbul in Resources */,
-				010C522317FBB6F10015C86D /* Pitcairn in Resources */,
-				010C522417FBB6F10015C86D /* Pohnpei in Resources */,
-				010C51A817FBB6F10015C86D /* Perth in Resources */,
-				010C523D17FBB6F10015C86D /* LICENSE in Resources */,
-				010C51B717FBB6F10015C86D /* GMT+5 in Resources */,
-				010C521817FBB6F10015C86D /* Kosrae in Resources */,
-				010C520A17FBB6F10015C86D /* Chuuk in Resources */,
-				010C521217FBB6F10015C86D /* Gambier in Resources */,
-				010C515817FBB6F10015C86D /* Dubai in Resources */,
-				010C51A517FBB6F10015C86D /* Lindeman in Resources */,
-				010C51B417FBB6F10015C86D /* GMT+2 in Resources */,
-				010C500F17FBB6F10015C86D /* LucidaSansDemiBold.ttf in Resources */,
-				010C515C17FBB6F10015C86D /* Hebron in Resources */,
-				010C50D817FBB6F10015C86D /* Detroit in Resources */,
-				010C511117FBB6F10015C86D /* Center in Resources */,
-				010C520117FBB6F10015C86D /* Mauritius in Resources */,
-				010C518717FBB6F10015C86D /* Taipei in Resources */,
-				010C50AC17FBB6F10015C86D /* Anchorage in Resources */,
-				010C509917FBB6F10015C86D /* Lubumbashi in Resources */,
-				010C50B517FBB6F10015C86D /* Mendoza in Resources */,
-				010C50C917FBB6F10015C86D /* Campo_Grande in Resources */,
-				010C519017FBB6F10015C86D /* Vladivostok in Resources */,
-				010C511817FBB6F10015C86D /* Port-au-Prince in Resources */,
-				010C521C17FBB6F10015C86D /* Midway in Resources */,
-				010C516217FBB6F10015C86D /* Jayapura in Resources */,
-				010C50C017FBB6F10015C86D /* Bahia_Banderas in Resources */,
-				010C515A17FBB6F10015C86D /* Gaza in Resources */,
-				010C518317FBB6F10015C86D /* Samarkand in Resources */,
-				010C518917FBB6F10015C86D /* Tbilisi in Resources */,
-				010C521E17FBB6F10015C86D /* Niue in Resources */,
-				010C501917FBB6F10015C86D /* motif_CopyNoDrop32x32.gif in Resources */,
-				010C507817FBB6F10015C86D /* Accra in Resources */,
-				010C50D317FBB6F10015C86D /* Curacao in Resources */,
-				010C50F817FBB6F10015C86D /* La_Paz in Resources */,
-				010C519B17FBB6F10015C86D /* South_Georgia in Resources */,
-				010C519617FBB6F10015C86D /* Canary in Resources */,
-				010C51F217FBB6F10015C86D /* Vilnius in Resources */,
-				010C523817FBB6F10015C86D /* PST8PDT in Resources */,
-				010C50E017FBB6F10015C86D /* Goose_Bay in Resources */,
-				010C521917FBB6F10015C86D /* Kwajalein in Resources */,
-				010C4FF817FBB6F10015C86D /* CIEXYZ.pf in Resources */,
-				010C507E17FBB6F10015C86D /* Banjul in Resources */,
-				010C522117FBB6F10015C86D /* Pago_Pago in Resources */,
-				010C50EB17FBB6F10015C86D /* Knox in Resources */,
-				010C51CD17FBB6F10015C86D /* Andorra in Resources */,
-				010C50A317FBB6F10015C86D /* Niamey in Resources */,
-				010C51E117FBB6F10015C86D /* Minsk in Resources */,
-				010C50ED17FBB6F10015C86D /* Petersburg in Resources */,
-				010C50A517FBB6F10015C86D /* Ouagadougou in Resources */,
-				010C50C417FBB6F10015C86D /* Blanc-Sablon in Resources */,
-				010C513E17FBB6F10015C86D /* Mawson in Resources */,
-				010C517017FBB6F10015C86D /* Makassar in Resources */,
-				010C500817FBB6F10015C86D /* fontconfig.bfc in Resources */,
-				010C51ED17FBB6F10015C86D /* Tallinn in Resources */,
-				010C50CE17FBB6F10015C86D /* Chicago in Resources */,
-				010C501617FBB6F10015C86D /* cursors.properties in Resources */,
-				010C513417FBB6F10015C86D /* Tortola in Resources */,
-				010C523417FBB6F10015C86D /* HST10 in Resources */,
-				010C4FEE17FBB6F10015C86D /* rmid in Resources */,
-				010C519917FBB6F10015C86D /* Madeira in Resources */,
-				010C4FFD17FBB6F10015C86D /* content-types.properties in Resources */,
-				010C505E17FBB6F10015C86D /* jmxremote.password.template in Resources */,
-				010C522517FBB6F10015C86D /* Port_Moresby in Resources */,
-				010C50CF17FBB6F10015C86D /* Chihuahua in Resources */,
-				010C51D617FBB6F10015C86D /* Dublin in Resources */,
-				010C500C17FBB6F10015C86D /* LucidaBrightDemiItalic.ttf in Resources */,
-				010C50C517FBB6F10015C86D /* Boa_Vista in Resources */,
-				010C4FEF17FBB6F10015C86D /* rmiregistry in Resources */,
-				010C512E17FBB6F10015C86D /* Swift_Current in Resources */,
-				010C501C17FBB6F10015C86D /* motif_MoveDrop32x32.gif in Resources */,
-				010C50F917FBB6F10015C86D /* Lima in Resources */,
-				010C51BC17FBB6F10015C86D /* GMT-1 in Resources */,
-				010C507B17FBB6F10015C86D /* Asmara in Resources */,
-				010C51C317FBB6F10015C86D /* GMT-3 in Resources */,
-				010C509517FBB6F10015C86D /* Lagos in Resources */,
-				010C50B017FBB6F10015C86D /* Buenos_Aires in Resources */,
-				010C523B17FBB6F10015C86D /* WET in Resources */,
-				010C514B17FBB6F10015C86D /* Baghdad in Resources */,
-				010C51C917FBB6F10015C86D /* GMT-9 in Resources */,
-				010C513D17FBB6F10015C86D /* Macquarie in Resources */,
-				010C515917FBB6F10015C86D /* Dushanbe in Resources */,
-				010C517417FBB6F10015C86D /* Novokuznetsk in Resources */,
-				010C51D417FBB6F10015C86D /* Chisinau in Resources */,
-				010C51C517FBB6F10015C86D /* GMT-5 in Resources */,
-				010C507717FBB6F10015C86D /* Abidjan in Resources */,
-				010C501B17FBB6F10015C86D /* motif_LinkNoDrop32x32.gif in Resources */,
-				010C51EB17FBB6F10015C86D /* Sofia in Resources */,
-				010C514017FBB6F10015C86D /* Palmer in Resources */,
-				010C514517FBB6F10015C86D /* Almaty in Resources */,
-				010C523917FBB6F10015C86D /* YST9 in Resources */,
-				010C509A17FBB6F10015C86D /* Lusaka in Resources */,
-				010C500B17FBB6F10015C86D /* LucidaBrightDemiBold.ttf in Resources */,
-				010C51CF17FBB6F10015C86D /* Belgrade in Resources */,
-				010C513917FBB6F10015C86D /* Yellowknife in Resources */,
-				010C517917FBB6F10015C86D /* Pontianak in Resources */,
-				010C51E917FBB6F10015C86D /* Samara in Resources */,
-				010C520217FBB6F10015C86D /* Mayotte in Resources */,
-				010C508417FBB6F10015C86D /* Casablanca in Resources */,
-				010C51C617FBB6F10015C86D /* GMT-6 in Resources */,
-				010C501117FBB6F10015C86D /* LucidaTypewriterBold.ttf in Resources */,
-				010C4FEB17FBB6F10015C86D /* orbd in Resources */,
-				010C517C17FBB6F10015C86D /* Qyzylorda in Resources */,
-				010C51E617FBB6F10015C86D /* Prague in Resources */,
-				010C516817FBB6F10015C86D /* Kathmandu in Resources */,
-				010C523E17FBB6F10015C86D /* README in Resources */,
-				010C518217FBB6F10015C86D /* Sakhalin in Resources */,
-				010C514F17FBB6F10015C86D /* Beirut in Resources */,
-				010C512C17FBB6F10015C86D /* St_Thomas in Resources */,
-				010C51C117FBB6F10015C86D /* GMT-14 in Resources */,
-				010C515F17FBB6F10015C86D /* Hovd in Resources */,
-				010C512A17FBB6F10015C86D /* St_Kitts in Resources */,
-				010C51DC17FBB6F10015C86D /* Lisbon in Resources */,
-				010C506017FBB6F10015C86D /* snmp.acl.template in Resources */,
-				010C515217FBB6F10015C86D /* Choibalsan in Resources */,
-				010C516617FBB6F10015C86D /* Karachi in Resources */,
-				010C520417FBB6F10015C86D /* MET in Resources */,
-				010C50AB17FBB6F10015C86D /* Adak in Resources */,
-				010C510E17FBB6F10015C86D /* Nome in Resources */,
-				010C51AE17FBB6F10015C86D /* EST5EDT in Resources */,
-				010C513A17FBB6F10015C86D /* Casey in Resources */,
-				010C519217FBB6F10015C86D /* Yekaterinburg in Resources */,
-				010C51FC17FBB6F10015C86D /* Cocos in Resources */,
-				010C516117FBB6F10015C86D /* Jakarta in Resources */,
-				010C51BB17FBB6F10015C86D /* GMT+9 in Resources */,
-				010C507F17FBB6F10015C86D /* Bissau in Resources */,
-				010C51AA17FBB6F10015C86D /* CET in Resources */,
-				010C520D17FBB6F10015C86D /* Enderbury in Resources */,
-				010C517B17FBB6F10015C86D /* Qatar in Resources */,
-				010C51D717FBB6F10015C86D /* Gibraltar in Resources */,
-				010C520B17FBB6F10015C86D /* Easter in Resources */,
-				010C50E717FBB6F10015C86D /* Halifax in Resources */,
-				010C513617FBB6F10015C86D /* Whitehorse in Resources */,
-				010C511C17FBB6F10015C86D /* Rainy_River in Resources */,
-				010C522917FBB6F10015C86D /* Tarawa in Resources */,
-				010C507517FBB6F10015C86D /* sound.properties in Resources */,
-				010C51DD17FBB6F10015C86D /* London in Resources */,
-				010C514717FBB6F10015C86D /* Anadyr in Resources */,
-				010C51F117FBB6F10015C86D /* Vienna in Resources */,
-				010C520317FBB6F10015C86D /* Reunion in Resources */,
-				010C513F17FBB6F10015C86D /* McMurdo in Resources */,
-				010C521617FBB6F10015C86D /* Johnston in Resources */,
-				010C50BC17FBB6F10015C86D /* Aruba in Resources */,
-				010C513117FBB6F10015C86D /* Thunder_Bay in Resources */,
-				010C51FF17FBB6F10015C86D /* Mahe in Resources */,
-				010C4FED17FBB6F10015C86D /* policytool in Resources */,
-				010C508317FBB6F10015C86D /* Cairo in Resources */,
-				010C523617FBB6F10015C86D /* MST7MDT in Resources */,
-				010C51F717FBB6F10015C86D /* GMT in Resources */,
-				010C515117FBB6F10015C86D /* Brunei in Resources */,
-				010C519E17FBB6F10015C86D /* Adelaide in Resources */,
-				010C4FFC17FBB6F10015C86D /* sRGB.pf in Resources */,
-				010C500717FBB6F10015C86D /* flavormap.properties in Resources */,
-				010C51EF17FBB6F10015C86D /* Uzhgorod in Resources */,
-				010C50E217FBB6F10015C86D /* Grenada in Resources */,
-				010C50E617FBB6F10015C86D /* Guyana in Resources */,
-				010C512F17FBB6F10015C86D /* Tegucigalpa in Resources */,
-				010C51CC17FBB6F10015C86D /* Amsterdam in Resources */,
-				010C50F417FBB6F10015C86D /* Jamaica in Resources */,
-				010C50C317FBB6F10015C86D /* Belize in Resources */,
-				010C511417FBB6F10015C86D /* Panama in Resources */,
-				010C521F17FBB6F10015C86D /* Norfolk in Resources */,
-				010C4FEC17FBB6F10015C86D /* pack200 in Resources */,
-				010C50DE17FBB6F10015C86D /* Glace_Bay in Resources */,
-				010C51F317FBB6F10015C86D /* Volgograd in Resources */,
-				010C518B17FBB6F10015C86D /* Thimphu in Resources */,
-				010C50BA17FBB6F10015C86D /* Tucuman in Resources */,
-				010C505F17FBB6F10015C86D /* management.properties in Resources */,
-				010C51E717FBB6F10015C86D /* Riga in Resources */,
-				010C507417FBB6F10015C86D /* jdk_header.png in Resources */,
-				010C521B17FBB6F10015C86D /* Marquesas in Resources */,
-				010C523A17FBB6F10015C86D /* YST9YDT in Resources */,
-				010C50A817FBB6F10015C86D /* Tripoli in Resources */,
-				010C50F217FBB6F10015C86D /* Inuvik in Resources */,
-				010C50E317FBB6F10015C86D /* Guadeloupe in Resources */,
-				010C512D17FBB6F10015C86D /* St_Vincent in Resources */,
-				010C51C717FBB6F10015C86D /* GMT-7 in Resources */,
-				010C511217FBB6F10015C86D /* New_Salem in Resources */,
-				010C522017FBB6F10015C86D /* Noumea in Resources */,
-				010C513217FBB6F10015C86D /* Tijuana in Resources */,
-				010C51A217FBB6F10015C86D /* Darwin in Resources */,
-				010C522A17FBB6F10015C86D /* Tongatapu in Resources */,
-				010C519117FBB6F10015C86D /* Yakutsk in Resources */,
-				010C510117FBB6F10015C86D /* Menominee in Resources */,
-				010C50FC17FBB6F10015C86D /* Managua in Resources */,
-				010C524017FBB6F10015C86D /* THIRDPARTYLICENSEREADME.txt in Resources */,
-				010C51FA17FBB6F10015C86D /* Chagos in Resources */,
-				010C4FF917FBB6F10015C86D /* GRAY.pf in Resources */,
-				010C517617FBB6F10015C86D /* Omsk in Resources */,
-				010C509817FBB6F10015C86D /* Luanda in Resources */,
-				010C50B617FBB6F10015C86D /* Rio_Gallegos in Resources */,
-				010C51BE17FBB6F10015C86D /* GMT-11 in Resources */,
-				010C513C17FBB6F10015C86D /* DumontDUrville in Resources */,
-				010C51DA17FBB6F10015C86D /* Kaliningrad in Resources */,
-				010C520E17FBB6F10015C86D /* Fakaofo in Resources */,
-				010C50DC17FBB6F10015C86D /* El_Salvador in Resources */,
-				010C520817FBB6F10015C86D /* Auckland in Resources */,
-				010C519517FBB6F10015C86D /* Bermuda in Resources */,
-				010C508A17FBB6F10015C86D /* Douala in Resources */,
-				010C516B17FBB6F10015C86D /* Kuala_Lumpur in Resources */,
-				010C50F617FBB6F10015C86D /* Louisville in Resources */,
-				010C510D17FBB6F10015C86D /* Nipigon in Resources */,
-				010C51E317FBB6F10015C86D /* Moscow in Resources */,
-				010C51E517FBB6F10015C86D /* Paris in Resources */,
-				010C4FFE17FBB6F10015C86D /* currency.data in Resources */,
-				010C515617FBB6F10015C86D /* Dhaka in Resources */,
-				010C508917FBB6F10015C86D /* Djibouti in Resources */,
-				010C508B17FBB6F10015C86D /* El_Aaiun in Resources */,
-				010C522217FBB6F10015C86D /* Palau in Resources */,
-				010C50E417FBB6F10015C86D /* Guatemala in Resources */,
-				010C4FF217FBB6F10015C86D /* unpack200 in Resources */,
-				010C518117FBB6F10015C86D /* Riyadh89 in Resources */,
-				010C515017FBB6F10015C86D /* Bishkek in Resources */,
-				010C511E17FBB6F10015C86D /* Recife in Resources */,
-				010C524117FBB6F10015C86D /* Welcome.html in Resources */,
-				010C51DE17FBB6F10015C86D /* Luxembourg in Resources */,
-				010C50A717FBB6F10015C86D /* Sao_Tome in Resources */,
-				010C51F017FBB6F10015C86D /* Vaduz in Resources */,
-				010C515D17FBB6F10015C86D /* Ho_Chi_Minh in Resources */,
-				010C521017FBB6F10015C86D /* Funafuti in Resources */,
-				010C511017FBB6F10015C86D /* Beulah in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2808,12 +1782,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		015336EA17FDB5A5001D4DD4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "copyTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/JVM\njavaRoot=$SRCROOT/EmbeddedJvm\necho ====================\necho Copying $javaRoot/jre and $javaRoot/jdk to $copyTo\necho ====================\n[ -d $copyTo ] || mkdir $copyTo\ncp -pRL $javaRoot/jre $copyTo\ncp -pRL $javaRoot/jdk $copyTo";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		010C4D2917FBB2D90015C86D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010C4D4017FBB2DA0015C86D /* JvmHost.mm in Sources */,
+				011DA20A17FDAE7000CCD96A /* EmbeddedJvm.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2821,7 +1812,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010C4D5317FBB2DA0015C86D /* JvmHostTests.mm in Sources */,
+				015336E717FDB0F3001D4DD4 /* EmbeddedJvmTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2931,17 +1922,9 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/EmbeddedJvm-Prefix.pch";
-				INFOPLIST_FILE = "JvmHost/EmbeddedJvm-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/headless,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/jli,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/lwawt,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/server,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/xawt,
-				);
+				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
+				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
@@ -2956,17 +1939,9 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/EmbeddedJvm-Prefix.pch";
-				INFOPLIST_FILE = "JvmHost/EmbeddedJvm-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/headless,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/jli,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/lwawt,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/server,
-					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/xawt,
-				);
+				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
+				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
@@ -2976,19 +1951,19 @@
 		010C4D5A17FBB2DA0015C86D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JvmHost.framework/Versions/A/JvmHost";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EmbeddedJvm.framework/Versions/A/EmbeddedJvm";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/JvmHost-Prefix.pch";
+				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "JvmHostTests/EmbeddedJvmTests-Info.plist";
+				INFOPLIST_FILE = "EmbeddedJvmTests/EmbeddedJvmTests-Info.plist";
 				PRODUCT_NAME = EmbeddedJvmTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -2998,15 +1973,15 @@
 		010C4D5B17FBB2DA0015C86D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/JvmHost.framework/Versions/A/JvmHost";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EmbeddedJvm.framework/Versions/A/EmbeddedJvm";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/JvmHost-Prefix.pch";
-				INFOPLIST_FILE = "JvmHostTests/EmbeddedJvmTests-Info.plist";
+				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
+				INFOPLIST_FILE = "EmbeddedJvmTests/EmbeddedJvmTests-Info.plist";
 				PRODUCT_NAME = EmbeddedJvmTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

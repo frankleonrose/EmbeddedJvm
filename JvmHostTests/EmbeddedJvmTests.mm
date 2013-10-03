@@ -1,13 +1,13 @@
 //
-//  JvmHostTests.m
-//  JvmHostTests
+//  EmbeddedJvmTests.m
+//  EmbeddedJvmTests
 //
 //  Created by Frank on 2013/10/1.
 //  Copyright (c) 2013 Futurose. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
-#import "JvmHost.h"
+#import "EmbeddedJvm.h"
 
 // One shot waiter.  Create a new one to wait again so that there are no notify messages coming in from prior async calls.
 @interface Waiter : NSObject 
@@ -39,11 +39,11 @@
 }
 @end
 
-@interface JvmHostTests : XCTestCase
+@interface EmbeddedJvmTests : XCTestCase
 
 @end
 
-@implementation JvmHostTests
+@implementation EmbeddedJvmTests
 
 - (void)setUp
 {
@@ -60,14 +60,15 @@
 - (void)testJvmCreation
 {
     NSError *error = nil;
-    JvmHost *jvm = [[JvmHost alloc] initWithClassPaths:@[@"jre/lib/*.jar"] options:@{} error:&error];
+    EmbeddedJvm *jvm = [[EmbeddedJvm alloc] initWithClassPaths:@[@"jre/lib/*.jar"] options:@{} error:&error];
     XCTAssertNotNil(jvm, @"JVM should successfully initialize");
 }
 
 -(void)testDispatchingJvmBlock {
     NSError *error = nil;
-    JvmHost *jvm = [[JvmHost alloc] initWithClassPaths:@[@"jre/lib/*.jar"] options:@{} error:&error];
+    EmbeddedJvm *jvm = [[EmbeddedJvm alloc] initWithClassPaths:@[@"jre/lib/*.jar"] options:@{} error:&error];
     XCTAssertNotNil(jvm, @"JVM should successfully initialize");
+    if (jvm==nil) { return; }
 
     Waiter *waiter = [[Waiter alloc] init];
     __block NSString *result;
