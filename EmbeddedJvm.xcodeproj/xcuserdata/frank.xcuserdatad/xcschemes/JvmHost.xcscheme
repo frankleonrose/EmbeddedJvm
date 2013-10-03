@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "010C4D2D17FBB2D90015C86D"
                BuildableName = "JvmHost.framework"
-               BlueprintName = "JvmHost"
-               ReferencedContainer = "container:JvmHost.xcodeproj">
+               BlueprintName = "EmbeddedJvm"
+               ReferencedContainer = "container:EmbeddedJvm.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "010C4D4417FBB2DA0015C86D"
                BuildableName = "JvmHostTests.xctest"
-               BlueprintName = "JvmHostTests"
-               ReferencedContainer = "container:JvmHost.xcodeproj">
+               BlueprintName = "EmbeddedJvmTests"
+               ReferencedContainer = "container:EmbeddedJvm.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

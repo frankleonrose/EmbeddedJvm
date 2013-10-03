@@ -12,9 +12,9 @@
 		010C4D4017FBB2DA0015C86D /* JvmHost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 010C4D3F17FBB2DA0015C86D /* JvmHost.mm */; };
 		010C4D4717FBB2DA0015C86D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D4617FBB2DA0015C86D /* XCTest.framework */; };
 		010C4D4817FBB2DA0015C86D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D3117FBB2D90015C86D /* Cocoa.framework */; };
-		010C4D4B17FBB2DA0015C86D /* JvmHost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* JvmHost.framework */; };
+		010C4D4B17FBB2DA0015C86D /* EmbeddedJvm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */; };
 		010C4D5117FBB2DA0015C86D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010C4D4F17FBB2DA0015C86D /* InfoPlist.strings */; };
-		010C4D5317FBB2DA0015C86D /* JvmHostTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 010C4D5217FBB2DA0015C86D /* JvmHostTests.m */; };
+		010C4D5317FBB2DA0015C86D /* JvmHostTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */; };
 		010C4D6717FBB69F0015C86D /* classfile_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D5E17FBB69F0015C86D /* classfile_constants.h */; };
 		010C4D6817FBB69F0015C86D /* jawt_md.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6017FBB69F0015C86D /* jawt_md.h */; };
 		010C4D6917FBB69F0015C86D /* jni_md.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6117FBB69F0015C86D /* jni_md.h */; };
@@ -82,7 +82,6 @@
 		010C506C17FBB6F10015C86D /* java.security in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0017FBB6EF0015C86D /* java.security */; };
 		010C506D17FBB6F10015C86D /* javafx.policy in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0117FBB6EF0015C86D /* javafx.policy */; };
 		010C506F17FBB6F10015C86D /* trusted.libraries in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0317FBB6EF0015C86D /* trusted.libraries */; };
-		010C507217FBB6F10015C86D /* libjvm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4E0717FBB6EF0015C86D /* libjvm.dylib */; };
 		010C507317FBB6F10015C86D /* Xusage.txt in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0817FBB6EF0015C86D /* Xusage.txt */; };
 		010C507417FBB6F10015C86D /* jdk_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0A17FBB6EF0015C86D /* jdk_header.png */; };
 		010C507517FBB6F10015C86D /* sound.properties in Resources */ = {isa = PBXBuildFile; fileRef = 010C4E0B17FBB6EF0015C86D /* sound.properties */; };
@@ -558,21 +557,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		010C4D2E17FBB2D90015C86D /* JvmHost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JvmHost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EmbeddedJvm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		010C4D3117FBB2D90015C86D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		010C4D3417FBB2D90015C86D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		010C4D3517FBB2D90015C86D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		010C4D3617FBB2D90015C86D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		010C4D3917FBB2D90015C86D /* JvmHost-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JvmHost-Info.plist"; sourceTree = "<group>"; };
+		010C4D3917FBB2D90015C86D /* EmbeddedJvm-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmbeddedJvm-Info.plist"; sourceTree = "<group>"; };
 		010C4D3B17FBB2D90015C86D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		010C4D3D17FBB2DA0015C86D /* JvmHost-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JvmHost-Prefix.pch"; sourceTree = "<group>"; };
+		010C4D3D17FBB2DA0015C86D /* EmbeddedJvm-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EmbeddedJvm-Prefix.pch"; sourceTree = "<group>"; };
 		010C4D3E17FBB2DA0015C86D /* JvmHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JvmHost.h; sourceTree = "<group>"; };
 		010C4D3F17FBB2DA0015C86D /* JvmHost.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JvmHost.mm; sourceTree = "<group>"; };
-		010C4D4517FBB2DA0015C86D /* JvmHostTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JvmHostTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		010C4D4517FBB2DA0015C86D /* EmbeddedJvmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmbeddedJvmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		010C4D4617FBB2DA0015C86D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		010C4D4E17FBB2DA0015C86D /* JvmHostTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JvmHostTests-Info.plist"; sourceTree = "<group>"; };
+		010C4D4E17FBB2DA0015C86D /* EmbeddedJvmTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "EmbeddedJvmTests-Info.plist"; sourceTree = "<group>"; };
 		010C4D5017FBB2DA0015C86D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		010C4D5217FBB2DA0015C86D /* JvmHostTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JvmHostTests.m; sourceTree = "<group>"; };
+		010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JvmHostTests.mm; sourceTree = "<group>"; };
 		010C4D5E17FBB69F0015C86D /* classfile_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = classfile_constants.h; sourceTree = "<group>"; };
 		010C4D6017FBB69F0015C86D /* jawt_md.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jawt_md.h; sourceTree = "<group>"; };
 		010C4D6117FBB69F0015C86D /* jni_md.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jni_md.h; sourceTree = "<group>"; };
@@ -1189,7 +1188,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010C507217FBB6F10015C86D /* libjvm.dylib in Frameworks */,
 				010C4D3217FBB2D90015C86D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1200,7 +1198,7 @@
 			files = (
 				010C4D4817FBB2DA0015C86D /* Cocoa.framework in Frameworks */,
 				010C4D4717FBB2DA0015C86D /* XCTest.framework in Frameworks */,
-				010C4D4B17FBB2DA0015C86D /* JvmHost.framework in Frameworks */,
+				010C4D4B17FBB2DA0015C86D /* EmbeddedJvm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1220,8 +1218,8 @@
 		010C4D2F17FBB2D90015C86D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				010C4D2E17FBB2D90015C86D /* JvmHost.framework */,
-				010C4D4517FBB2DA0015C86D /* JvmHostTests.xctest */,
+				010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */,
+				010C4D4517FBB2DA0015C86D /* EmbeddedJvmTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1261,9 +1259,9 @@
 		010C4D3817FBB2D90015C86D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				010C4D3917FBB2D90015C86D /* JvmHost-Info.plist */,
+				010C4D3917FBB2D90015C86D /* EmbeddedJvm-Info.plist */,
 				010C4D3A17FBB2D90015C86D /* InfoPlist.strings */,
-				010C4D3D17FBB2DA0015C86D /* JvmHost-Prefix.pch */,
+				010C4D3D17FBB2DA0015C86D /* EmbeddedJvm-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1271,7 +1269,7 @@
 		010C4D4C17FBB2DA0015C86D /* JvmHostTests */ = {
 			isa = PBXGroup;
 			children = (
-				010C4D5217FBB2DA0015C86D /* JvmHostTests.m */,
+				010C4D5217FBB2DA0015C86D /* JvmHostTests.mm */,
 				010C4D4D17FBB2DA0015C86D /* Supporting Files */,
 			);
 			path = JvmHostTests;
@@ -1280,7 +1278,7 @@
 		010C4D4D17FBB2DA0015C86D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				010C4D4E17FBB2DA0015C86D /* JvmHostTests-Info.plist */,
+				010C4D4E17FBB2DA0015C86D /* EmbeddedJvmTests-Info.plist */,
 				010C4D4F17FBB2DA0015C86D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -2202,9 +2200,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		010C4D2D17FBB2D90015C86D /* JvmHost */ = {
+		010C4D2D17FBB2D90015C86D /* EmbeddedJvm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 010C4D5617FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "JvmHost" */;
+			buildConfigurationList = 010C4D5617FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvm" */;
 			buildPhases = (
 				010C4D2917FBB2D90015C86D /* Sources */,
 				010C4D2A17FBB2D90015C86D /* Frameworks */,
@@ -2215,14 +2213,14 @@
 			);
 			dependencies = (
 			);
-			name = JvmHost;
+			name = EmbeddedJvm;
 			productName = JvmHost;
-			productReference = 010C4D2E17FBB2D90015C86D /* JvmHost.framework */;
+			productReference = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		010C4D4417FBB2DA0015C86D /* JvmHostTests */ = {
+		010C4D4417FBB2DA0015C86D /* EmbeddedJvmTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 010C4D5917FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "JvmHostTests" */;
+			buildConfigurationList = 010C4D5917FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvmTests" */;
 			buildPhases = (
 				010C4D4117FBB2DA0015C86D /* Sources */,
 				010C4D4217FBB2DA0015C86D /* Frameworks */,
@@ -2233,9 +2231,9 @@
 			dependencies = (
 				010C4D4A17FBB2DA0015C86D /* PBXTargetDependency */,
 			);
-			name = JvmHostTests;
+			name = EmbeddedJvmTests;
 			productName = JvmHostTests;
-			productReference = 010C4D4517FBB2DA0015C86D /* JvmHostTests.xctest */;
+			productReference = 010C4D4517FBB2DA0015C86D /* EmbeddedJvmTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -2252,7 +2250,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 010C4D2817FBB2D90015C86D /* Build configuration list for PBXProject "JvmHost" */;
+			buildConfigurationList = 010C4D2817FBB2D90015C86D /* Build configuration list for PBXProject "EmbeddedJvm" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2264,8 +2262,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				010C4D2D17FBB2D90015C86D /* JvmHost */,
-				010C4D4417FBB2DA0015C86D /* JvmHostTests */,
+				010C4D2D17FBB2D90015C86D /* EmbeddedJvm */,
+				010C4D4417FBB2DA0015C86D /* EmbeddedJvmTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2823,7 +2821,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010C4D5317FBB2DA0015C86D /* JvmHostTests.m in Sources */,
+				010C4D5317FBB2DA0015C86D /* JvmHostTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2832,7 +2830,7 @@
 /* Begin PBXTargetDependency section */
 		010C4D4A17FBB2DA0015C86D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 010C4D2D17FBB2D90015C86D /* JvmHost */;
+			target = 010C4D2D17FBB2D90015C86D /* EmbeddedJvm */;
 			targetProxy = 010C4D4917FBB2DA0015C86D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2933,8 +2931,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/JvmHost-Prefix.pch";
-				INFOPLIST_FILE = "JvmHost/JvmHost-Info.plist";
+				GCC_PREFIX_HEADER = "JvmHost/EmbeddedJvm-Prefix.pch";
+				INFOPLIST_FILE = "JvmHost/EmbeddedJvm-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib,
@@ -2945,7 +2943,7 @@
 					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/xawt,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -2958,8 +2956,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JvmHost/JvmHost-Prefix.pch";
-				INFOPLIST_FILE = "JvmHost/JvmHost-Info.plist";
+				GCC_PREFIX_HEADER = "JvmHost/EmbeddedJvm-Prefix.pch";
+				INFOPLIST_FILE = "JvmHost/EmbeddedJvm-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib,
@@ -2970,7 +2968,7 @@
 					/Users/frank/Futurose/Frameworks/JvmHost/JvmHost/jre/lib/xawt,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -2990,8 +2988,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "JvmHostTests/JvmHostTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "JvmHostTests/EmbeddedJvmTests-Info.plist";
+				PRODUCT_NAME = EmbeddedJvmTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -3008,8 +3006,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JvmHost/JvmHost-Prefix.pch";
-				INFOPLIST_FILE = "JvmHostTests/JvmHostTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "JvmHostTests/EmbeddedJvmTests-Info.plist";
+				PRODUCT_NAME = EmbeddedJvmTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -3018,7 +3016,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		010C4D2817FBB2D90015C86D /* Build configuration list for PBXProject "JvmHost" */ = {
+		010C4D2817FBB2D90015C86D /* Build configuration list for PBXProject "EmbeddedJvm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				010C4D5417FBB2DA0015C86D /* Debug */,
@@ -3027,7 +3025,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		010C4D5617FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "JvmHost" */ = {
+		010C4D5617FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				010C4D5717FBB2DA0015C86D /* Debug */,
@@ -3036,7 +3034,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		010C4D5917FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "JvmHostTests" */ = {
+		010C4D5917FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvmTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				010C4D5A17FBB2DA0015C86D /* Debug */,

@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "jni.h"
 
-@interface JvmHost : NSObject {
-    JavaVM *jvm;       /* denotes a Java VM */
-    JNIEnv *env;       /* pointer to native method interface */
-}
-- (JvmHost*) init;
-- (JvmHost*) initWithOptions:(NSDictionary*)options;
-- (void)destroy;
+@interface JvmHost : NSObject
+- (JvmHost*) initWithClassPaths:(NSArray*)path options:(NSDictionary*)options error:(NSError**)error;
+- (void) close;
+
+- (void) doWithJvmThread:(void(^)(JNIEnv* env))block;
 @end

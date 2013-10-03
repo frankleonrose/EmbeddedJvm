@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:JvmHost.xcodeproj">
+      location = "self:EmbeddedJvm.xcodeproj">
    </FileRef>
 </Workspace>
