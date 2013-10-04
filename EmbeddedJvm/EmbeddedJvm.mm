@@ -65,7 +65,8 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSURL *exeUrl = [app executableURL];
         NSString *path;
         if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
-            path = @"EmbeddedJvm/jre/lib/server/libjvm.dylib";
+            NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"JAVA_HOME"];
+            path = [NSString stringWithFormat:@"%@/jre/lib/server/libjvm.dylib", javaHome];
             NSLog(@"XCTest deployment loading %@", path);
         }
         else {
@@ -119,7 +120,6 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         optionsArray[7].optionString = const_cast<char *>("-XX:-TraceClassLoading");
         optionsArray[8].optionString = const_cast<char *>("-Xcheck:jni");
         
-
         self.commands = [[NSMutableArray alloc] init];
 
         NSLog(@"Initializing mainThreadLoop (self=%@)", self);
@@ -136,8 +136,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 -(void)dealloc {
     NSLog(@"Deallocating EmbeddedJvm");
     [self printErrors];
-    delete[] optionsArray[0].optionString; // Classpath
-    delete[] optionsArray;
+    if (optionsArray!=nil) {
+        delete[] optionsArray[0].optionString; // Classpath
+        delete[] optionsArray;
+    }
 }
 
 -(void)printErrors {
