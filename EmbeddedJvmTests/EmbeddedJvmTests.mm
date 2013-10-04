@@ -66,7 +66,7 @@
 
 -(void)testDispatchingJvmBlock {
     NSError *error = nil;
-    EmbeddedJvm *jvm = [[EmbeddedJvm alloc] initWithClassPaths:@[@"jre/lib/*.jar"] options:@{} error:&error];
+    EmbeddedJvm *jvm = [[EmbeddedJvm alloc] initWithClassPaths:@[@"jre/lib/*"] options:@{} error:&error];
     XCTAssertNotNil(jvm, @"JVM should successfully initialize");
     if (jvm==nil) { return; }
 
