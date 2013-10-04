@@ -5,6 +5,20 @@
 //  Created by Frank on 2013/10/1.
 //  Copyright (c) 2013 Futurose. All rights reserved.
 //
+/*
+ If we want to use this JVM from more threads, we should offer classes that can be requested of the JVM that manage attaching
+ and detaching their threads.
+   getQueuedAccessor - This is like the current model where the caller submits a block to be run on the right thread.
+   getDirectAccessor - Used to attach the calling thread and allow JVM access from that thread alone.
+   getUniversalAccessor - At the cost of attach/detach bookkeeping, this accessor guarantees that all users are attached and ready to call into the JVM.
+
+ jint AttachCurrentThread(JavaVM* vm, void** penv, void* args);
+ jint AttachCurrentThreadAsDaemon(JavaVM* vm, void** penv, void* args);
+ 
+ 
+ Demonstrate using RegisterNatives to link functions in the host to classes loaded into the Embedded JVM.
+ */
+
 
 #import "EmbeddedJvm.h"
 #include <dlfcn.h>
@@ -14,13 +28,15 @@ typedef jint (*JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
 typedef jint (*JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
 //typedef jint (*jni_DestroyJavaVM_t)(JavaVM *vm);
 
+static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args);
+static NSMutableArray *errors = [NSMutableArray array];
+
 // These are the CFRunLoopSourceRef callback functions.
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 void RunLoopSourcePerformRoutine (void *info);
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 @interface EmbeddedJvm () {
-    NSString *path;
     JavaVMOption* optionsArray;
     int optionCount;
     void *jvmlib;       /* The handle to the JVM library */
@@ -30,6 +46,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     JNIEnv *env;       /* pointer to native method interface */
 
 }
+@property NSString *classpath;
 @property NSThread* mainThread;
 @property NSMutableArray* commands;
 @property CFRunLoopRef runLoop;
@@ -46,6 +63,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         
         NSBundle *app = [NSBundle mainBundle];
         NSURL *exeUrl = [app executableURL];
+        NSString *path;
         if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
             path = @"EmbeddedJvm/jre/lib/server/libjvm.dylib";
             NSLog(@"XCTest deployment loading %@", path);
@@ -82,15 +100,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         //    options[1].optionString = "-Djava.class.path=c:\myclasses"; /* user classes */
         //    options[2].optionString = "-Djava.library.path=c:\mylibs";  /* set native library path */
         //    options[3].optionString = "-verbose:jni";                   /* print JNI-related messages */
-        optionCount = 5;
+        optionCount = 9;
         optionsArray = new JavaVMOption[optionCount];
-        NSString *classpath = [paths componentsJoinedByString:@";"];
+        NSString *classpath = [paths componentsJoinedByString:@":"]; // Unix & OSX path separator
+        NSLog(@"Classpath: %@", classpath);
         NSString *classpathDef = [NSString stringWithFormat:@"-Djava.class.path=%@", classpath];
-        optionsArray[0].optionString = [self asciiString:classpathDef];
-        optionsArray[1].optionString = [self asciiString:@"-verbose[:class|gc|jni]"];
-        optionsArray[2].optionString = [self asciiString:@"-XX:MaxPermSize=256m"];
-        optionsArray[3].optionString = [self asciiString:@"-Xms200m"];
-        optionsArray[4].optionString = [self asciiString:@"-Xmx1500m"];
+        NSUInteger bufferSize = [classpathDef length] + 100; // Room for nul terminator (and 99 random bytes?)
+        char *buffer = new char[bufferSize];
+        [classpathDef getCString:buffer maxLength:bufferSize encoding:NSASCIIStringEncoding];
+        optionsArray[0].optionString = buffer;
+        optionsArray[1].optionString = const_cast<char *>("-verbose:class"); // class,gc,jni
+        optionsArray[2].optionString = const_cast<char *>("-XX:MaxPermSize=256m");
+        optionsArray[3].optionString = const_cast<char *>("-Xms200m");
+        optionsArray[4].optionString = const_cast<char *>("-Xmx1500m");
+        optionsArray[5].optionString = const_cast<char *>("vfprintf");
+        optionsArray[5].extraInfo = (void *)my_vfprintf;
+        optionsArray[6].optionString = const_cast<char *>("-XX:-PrintCommandLineFlags");
+        optionsArray[7].optionString = const_cast<char *>("-XX:-TraceClassLoading");
+        optionsArray[8].optionString = const_cast<char *>("-Xcheck:jni");
+        
 
         self.commands = [[NSMutableArray alloc] init];
 
@@ -105,13 +133,26 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return self;
 }
 
--(char *)asciiString:(NSString*)s {
-    return const_cast<char *>([s cStringUsingEncoding:NSASCIIStringEncoding]);
-}
-
 -(void)dealloc {
     NSLog(@"Deallocating EmbeddedJvm");
+    [self printErrors];
+    delete[] optionsArray[0].optionString; // Classpath
     delete[] optionsArray;
+}
+
+-(void)printErrors {
+    if ([errors count]>0) {
+        NSArray *toPrint;
+        @synchronized (errors) {
+            toPrint = errors;
+            errors = [NSMutableArray array];
+        }
+        NSLog(@"JVM output ---------");
+        for (NSString *err in toPrint) {
+            NSLog(@"%@", err);
+        }
+        NSLog(@"JVM output ---------");
+    }
 }
 
 -(void)close {
@@ -124,16 +165,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     vm_args.version = JNI_VERSION_1_6;
     vm_args.nOptions = optionCount;
     vm_args.options = optionsArray;
-    vm_args.ignoreUnrecognized = false;
+    vm_args.ignoreUnrecognized = JNI_FALSE;
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
     //JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+    NSLog(@"JVM Options");
+    NSLog(@"-----------");
+    for (int i=0; i<optionCount; ++i) {
+        NSLog(@"%s", optionsArray[i].optionString);
+    }
+    NSLog(@"-----------");
     jint result = createJavaVM(&jvm, (void**)&env, &vm_args);
     if (result!=0) {
-        NSString *msg = [NSString stringWithFormat:@"Failed to load JVM with error code: %d", result];
+        NSString *msg = [NSString stringWithFormat:@"Failed to create JVM with error code: %d", result];
         NSLog(@"%@", msg);
         if (error!=nil) {
-            *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": path}];
+            *error = [NSError errorWithDomain:@"EmbeddedJvm" code:100 userInfo:@{@"msg": msg}];
+        }
+        for (int i=0; i<optionCount; ++i) {
+            NSLog(@"%s", optionsArray[i].optionString);
         }
     }
     return result==0;
@@ -215,6 +265,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 // jthrowable ex = env->ExceptionOccurred(); // TODO: Send an error notification?
                 env->ExceptionClear();
             }
+            [self printErrors];
             command = nil; // Release the block
         }
     } while (!done);
@@ -236,7 +287,39 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     }
 }
 
+- (void) dumpClass:(jclass)cls {
+    jclass methodClass = env->FindClass("java/lang/reflect/Method");
+    jmethodID getGenericNameMethod = env->GetMethodID(methodClass, "toGenericString", "()Ljava/lang/String;");
+    
+    jclass classClass = env->FindClass("java/lang/Class");
+    jmethodID getMethodsMethod = env->GetMethodID(classClass, "getDeclaredMethods", "()[Ljava/lang/reflect/Method;");
+    
+    jobjectArray methods = (jobjectArray)env->CallObjectMethod(cls, getMethodsMethod);
+    int mcount = env->GetArrayLength(methods);
+    for (int i=0; i<mcount; ++i) {
+        jobject method = env->GetObjectArrayElement(methods, i);
+        jstring name = (jstring)env->CallObjectMethod(method, getGenericNameMethod);
+        jboolean isCopy = 0;
+        const char *cname = env->GetStringUTFChars(name, &isCopy);
+        NSLog(@"%s", cname);
+        if (isCopy) {
+            env->ReleaseStringUTFChars(name, cname);
+        }
+    }
+}
+
 @end
+
+static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
+{
+    char buf[5000];
+    vsnprintf(buf, sizeof(buf), format, args);
+    NSString *err = [NSString stringWithCString:buf encoding:NSASCIIStringEncoding];
+    @synchronized (errors) {
+        [errors addObject:err];
+    }
+    return 0;
+}
 
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)

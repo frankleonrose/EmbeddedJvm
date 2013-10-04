@@ -75,8 +75,9 @@
     
     [jvm doWithJvmThread:^(JNIEnv *env) {
         /* invoke the Main.test method using the JNI */
-        jclass cls = env->FindClass("Main");
+        jclass cls = env->FindClass("com/futurose/filaware/App");
         if (cls!=nil) {
+            [jvm dumpClass:cls];
             jmethodID mid = env->GetStaticMethodID(cls, "test", "(I)V");
             if (mid!=nil) {
                 env->CallStaticVoidMethod(cls, mid, 100);

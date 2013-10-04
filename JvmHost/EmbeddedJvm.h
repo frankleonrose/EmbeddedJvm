@@ -14,4 +14,6 @@
 - (void) close;
 
 - (void) doWithJvmThread:(void(^)(JNIEnv* env))block;
+
+- (void) dumpClass:(jclass)cls;
 @end
