@@ -4,4 +4,4 @@ EmbeddedJvm Framework
 Introduction
 ------------
 
-Copyright 2013 Futurose
+Copyright (c) 2014 Futurose

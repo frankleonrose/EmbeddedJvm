@@ -23,6 +23,22 @@
 #import "EmbeddedJvm.h"
 #include <dlfcn.h>
 
+NSData *jbytesToData(jbyteArray bytes, JNIEnv *env) {
+    jsize length = env->GetArrayLength(bytes);
+    jboolean isCopy = false;
+    jbyte *jbytes = env->GetByteArrayElements(bytes, &isCopy);
+    return [NSData dataWithBytes:jbytes length:length];
+}
+
+jbyteArray dataToJbytes(NSData *data, JNIEnv *env) {
+    assert([data length]<=INT_MAX);
+    jsize responseSize = (int)[data length];
+    jbyteArray response = env->NewByteArray(responseSize);
+    jbyte *jbytes = const_cast<jbyte*>(static_cast<const jbyte *>([data bytes]));
+    env->SetByteArrayRegion(response, 0, responseSize, jbytes);
+    return response;
+}
+
 typedef jint (*JNI_GetDefaultJavaVMInitArgs_t)(void *args);
 typedef jint (*JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
 typedef jint (*JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
@@ -64,7 +80,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSBundle *app = [NSBundle mainBundle];
         NSURL *exeUrl = [app executableURL];
         NSString *path;
-        if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
+        NSString *overrideJavaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
+        if (overrideJavaHome!=nil) {
+            NSLog(@"Using overridden JAVA_HOME %@", overrideJavaHome);
+            path = [NSString stringWithFormat:@"%@/jre/lib/server/libjvm.dylib", overrideJavaHome];
+        }
+        else if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
             NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"JAVA_HOME"];
             path = [NSString stringWithFormat:@"%@/jre/lib/server/libjvm.dylib", javaHome];
             NSLog(@"XCTest deployment loading %@", path);
@@ -101,7 +122,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         //    options[1].optionString = "-Djava.class.path=c:\myclasses"; /* user classes */
         //    options[2].optionString = "-Djava.library.path=c:\mylibs";  /* set native library path */
         //    options[3].optionString = "-verbose:jni";                   /* print JNI-related messages */
-        optionCount = 9;
+        optionCount = 10; // 9;
         optionsArray = new JavaVMOption[optionCount];
         NSString *classpath = [paths componentsJoinedByString:@":"]; // Unix & OSX path separator
         NSLog(@"Classpath: %@", classpath);
@@ -119,6 +140,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         optionsArray[6].optionString = const_cast<char *>("-XX:-PrintCommandLineFlags");
         optionsArray[7].optionString = const_cast<char *>("-XX:-TraceClassLoading");
         optionsArray[8].optionString = const_cast<char *>("-Xcheck:jni");
+        optionsArray[9].optionString = const_cast<char *>("-Djava.compiler=NONE");
         
         self.commands = [[NSMutableArray alloc] init];
 
@@ -262,7 +284,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 NSLog(@"ERROR: %@", e);
             }
             if (env->ExceptionCheck()) {
-                NSLog(@"Unchecked Java exception in user block");
+                NSLog(@"Unchecked Java exception in user block.  You should call env->ExceptionCheck() within the blocks you submit to doWithJvmThread.");
                 env->ExceptionDescribe(); // Log exception details in case there is nothing else to do with it.
                 // jthrowable ex = env->ExceptionOccurred(); // TODO: Send an error notification?
                 env->ExceptionClear();
@@ -287,6 +309,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     else {
         NSLog(@"JVM runloop not yet started");
     }
+}
+
+- (JNIEnv *) getEnv {
+    JNIEnv *threadEnv = nil;
+    jvm->GetEnv(reinterpret_cast<void**>(&threadEnv), JNI_VERSION_1_6);
+    return threadEnv;
 }
 
 - (void) dumpClass:(jclass)cls {

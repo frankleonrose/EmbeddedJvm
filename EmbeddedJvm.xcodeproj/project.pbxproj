@@ -26,6 +26,7 @@
 		015336EE17FDC526001D4DD4 /* EmbeddedJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0153370317FE04A6001D4DD4 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
 		0153370417FE04B7001D4DD4 /* Readme.md in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
+		018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,10 +83,11 @@
 		010C4D6417FBB69F0015C86D /* jni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jni.h; sourceTree = "<group>"; };
 		010C4D6517FBB69F0015C86D /* jvmti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmti.h; sourceTree = "<group>"; };
 		010C4D6617FBB69F0015C86D /* jvmticmlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmticmlr.h; sourceTree = "<group>"; };
-		011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvm.mm; path = ../EmbeddedJvm/EmbeddedJvm.mm; sourceTree = "<group>"; };
+		011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EmbeddedJvm.mm; sourceTree = "<group>"; };
 		011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvmTests.mm; path = ../EmbeddedJvmTests/EmbeddedJvmTests.mm; sourceTree = "<group>"; };
 		015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvm.h; sourceTree = "<group>"; };
 		0153370217FE04A6001D4DD4 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
+		018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EmbeddedJvm.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
+				018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */,
 				0153370217FE04A6001D4DD4 /* Readme.md */,
 				010C4D3717FBB2D90015C86D /* EmbeddedJvm */,
 				010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */,
@@ -318,6 +321,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */,
 				0153370317FE04A6001D4DD4 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,6 +403,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -432,7 +437,7 @@
 					"$(SRCROOT)/EmbeddedJvm/jdk/include",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -442,6 +447,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -470,7 +476,7 @@
 					"$(SRCROOT)/EmbeddedJvm/jdk/include",
 				);
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -487,7 +493,7 @@
 				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -505,7 +511,7 @@
 				INFOPLIST_FILE = "EmbeddedJvm/EmbeddedJvm-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = EmbeddedJvm;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -514,7 +520,6 @@
 		010C4D5A17FBB2DA0015C86D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EmbeddedJvm.framework/Versions/A/EmbeddedJvm";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -527,8 +532,8 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "EmbeddedJvmTests/EmbeddedJvmTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = EmbeddedJvmTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -536,7 +541,6 @@
 		010C4D5B17FBB2DA0015C86D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/EmbeddedJvm.framework/Versions/A/EmbeddedJvm";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -545,8 +549,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EmbeddedJvm/EmbeddedJvm-Prefix.pch";
 				INFOPLIST_FILE = "EmbeddedJvmTests/EmbeddedJvmTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = EmbeddedJvmTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

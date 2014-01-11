@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "jni.h"
 
+NSData *jbytesToData(jbyteArray bytes, JNIEnv *env);
+jbyteArray dataToJbytes(NSData *data, JNIEnv *env);
+
 @interface EmbeddedJvm : NSObject
 - (EmbeddedJvm*) initWithClassPaths:(NSArray*)path options:(NSDictionary*)options error:(NSError**)error;
 - (void) close;
 
 - (void) doWithJvmThread:(void(^)(JNIEnv* env))block;
+- (JNIEnv *) getEnv;
 
 - (void) dumpClass:(jclass)cls;
 @end
