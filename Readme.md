@@ -13,4 +13,6 @@ How to Use
      using $JAVA_HOME by default.
   c. Add the "--deep" option to Other Code Signing Flags.  Otherwise codesign chokes on the JRE.
 
+(If anyone knows how to do step 2 within the podspec, lemme know!)
+
 Copyright (c) 2014 Futurose
