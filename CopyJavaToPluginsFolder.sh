@@ -1,17 +1,22 @@
 #!/bin/sh
 
-#  CopyJavaToPluginsFolder.sh
-#  EmbeddedJvm
-#
-#  Created by Frank on 2014/1/13.
+#  EmbeddedJvm/CopyJavaToPluginsFolder.sh
 #  Copyright (c) 2014 Futurose. All rights reserved.
 
-linkTo=$BUILT_PRODUCTS_DIR/$PLUGINS_FOLDER_PATH/Java
-[ -d $linkTo ] || mkdir -p $linkTo
+copyTo=$BUILT_PRODUCTS_DIR/$PLUGINS_FOLDER_PATH/Java
+[ -d $copyTo ] || mkdir -p $copyTo
 
-javaHome=${1-$JAVA_HOME}
+javaHome=$1
+[ -n "$javaHome" ] || javaHome=$JAVA_HOME
+[ -n "$javaHome" ] || echo CopyJavaToPluginsFolder.sh needs parameter or JAVA_HOME set in environment
+[ -n "$javaHome" ] || exit 1
 jre=$javaHome/jre
 
-echo ====================
-echo Linking $jre to $linkTo
-rsync -avz $jre $linkTo
+if [ $CONFIGURATION = "Release" ]
+then
+  echo Copying $jre to $copyTo
+  rsync -avz $jre $copyTo
+else
+  echo Linking $jre to $copyTo
+  ln -shvfF $jre $copyTo
+fi

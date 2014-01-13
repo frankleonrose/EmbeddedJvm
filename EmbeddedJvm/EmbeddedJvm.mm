@@ -70,6 +70,8 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 -(void)doCommand;
 @end
 
+#define JVM_SHARED_LIB @"jre/lib/server/libjvm.dylib"
+
 @implementation EmbeddedJvm
 - (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
     if (self = [super init]) {
@@ -82,17 +84,17 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSString *path;
         NSString *overrideJavaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
         if (overrideJavaHome!=nil) {
-            NSLog(@"Using overridden JAVA_HOME %@", overrideJavaHome);
-            path = [NSString stringWithFormat:@"%@/jre/lib/server/libjvm.dylib", overrideJavaHome];
+            NSLog(@"Using EMBEDDEDJVM_JAVA_HOME environment variable: \"%@\"", overrideJavaHome);
+            path = [NSString stringWithFormat:@"%@/" JVM_SHARED_LIB, overrideJavaHome];
         }
         else if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
             NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"JAVA_HOME"];
-            path = [NSString stringWithFormat:@"%@/jre/lib/server/libjvm.dylib", javaHome];
+            path = [NSString stringWithFormat:@"%@/" JVM_SHARED_LIB, javaHome];
             NSLog(@"XCTest deployment loading %@", path);
         }
         else {
             NSURL *contentsPath = [[exeUrl URLByDeletingLastPathComponent] URLByDeletingLastPathComponent];
-            path = [NSString stringWithFormat:@"%@/Frameworks/EmbeddedJvm.framework/Versions/A/JVM/jre/lib/server/libjvm.dylib", [contentsPath path]];
+            path = [NSString stringWithFormat:@"%@/PlugIns/Java/" JVM_SHARED_LIB, [contentsPath path]];
         }
         jvmlib = dlopen([path cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
         
