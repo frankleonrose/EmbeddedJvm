@@ -27,7 +27,6 @@
 		0153370317FE04A6001D4DD4 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
 		0153370417FE04B7001D4DD4 /* Readme.md in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0153370217FE04A6001D4DD4 /* Readme.md */; };
 		018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */; };
-		01BEB6BC18827FB800EBB508 /* add_jre_link_script.rb in Resources */ = {isa = PBXBuildFile; fileRef = 01BEB6BB18827FB800EBB508 /* add_jre_link_script.rb */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +88,7 @@
 		015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvm.h; sourceTree = "<group>"; };
 		0153370217FE04A6001D4DD4 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 		018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EmbeddedJvm.podspec; sourceTree = "<group>"; };
-		01BEB6BB18827FB800EBB508 /* add_jre_link_script.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = add_jre_link_script.rb; sourceTree = "<group>"; };
+		01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = CopyJavaToPluginsFolder.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +116,7 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
-				01BEB6BB18827FB800EBB508 /* add_jre_link_script.rb */,
+				01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */,
 				018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */,
 				0153370217FE04A6001D4DD4 /* Readme.md */,
 				010C4D3717FBB2D90015C86D /* EmbeddedJvm */,
@@ -256,7 +255,6 @@
 				010C4D2A17FBB2D90015C86D /* Frameworks */,
 				010C4D2B17FBB2D90015C86D /* Headers */,
 				010C4D2C17FBB2D90015C86D /* Resources */,
-				015336EA17FDB5A5001D4DD4 /* ShellScript */,
 				0153370117FE040F001D4DD4 /* CopyFiles */,
 			);
 			buildRules = (
@@ -325,7 +323,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */,
-				01BEB6BC18827FB800EBB508 /* add_jre_link_script.rb in Resources */,
 				0153370317FE04A6001D4DD4 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,22 +336,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		015336EA17FDB5A5001D4DD4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_17.jdk/Contents/Home\n\nlinkTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/JVM\njavaRoot=$JAVA_HOME\necho ====================\necho Linking $javaRoot/jre and $javaRoot/include to $copyTo and $copyTo/jdk, respectively\n[ -d $linkTo ] || mkdir $linkTo\nln -sF  $javaRoot/jre $linkTo\n[ -d $linkTo/jdk ] || mkdir $linkTo/jdk\nln -sF $javaRoot/include $linkTo/jdk\n\necho ====================\necho Copying Framework to Release directory\n[ ! -d $SRCROOT/Release/EmbeddedJvm.framework ] || rm -rf $SRCROOT/Release/EmbeddedJvm.framework\ncp -pR $BUILT_PRODUCTS_DIR/EmbeddedJvm.framework $SRCROOT/Release";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		010C4D2917FBB2D90015C86D /* Sources */ = {

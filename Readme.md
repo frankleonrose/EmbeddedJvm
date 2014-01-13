@@ -11,5 +11,6 @@ How to Use
   b. Specify the 'CopyJavaToPluginsFolder.sh' script with optional parameter pointing
      to the JRE you would like to embed.  If no parameter is specified, the script
      using $JAVA_HOME by default.
+  c. Add the "--deep" option to Other Code Signing Flags.  Otherwise codesign chokes on the JRE.
 
 Copyright (c) 2014 Futurose

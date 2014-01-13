@@ -16,17 +16,21 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.5"
+  s.version      = "0.0.6"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
 
   s.description  = <<-DESC
-                   A longer description of EmbeddedJvm in Markdown format.
-
-                   * Think: Why did you write this? What is the focus? What does it do?
-                   * CocoaPods will be using this to generate tags, and improve search results.
-                   * Try to keep it short, snappy and to the point.
-                   * Finally, don't worry about the indent, CocoaPods strips it!
-                   DESC
+                   I'm writing a native Mac app for sale in the Mac App Store, but
+                   part of it is written in cross-platform Scala that needs a JVM.
+                   In order to host a JVM there are details that don't change that you
+                   have to get exactly right.  Sounds like a pod!
+                   
+                   The one thing I was not able to make the pod do is embed the actual
+                   JRE in the target app's PlugIns directory.  But there is a shell
+                   script included in the pod that will copy the appropriate files
+                   into the right place.  You need to add a Run Script build phase
+                   that runs the shell script and bundles the JRE you specify.
+                    DESC
 
   s.homepage     = "http://github.com/esorf/EmbeddedJvm"
 
