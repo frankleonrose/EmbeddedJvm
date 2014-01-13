@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.8"
+  s.version      = "0.0.9"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
   s.description  = <<-DESC
                    EmbeddedJvm loads a JRE into an Objective-C app and presents
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.platform     = :osx, '10.7'
 
   s.source       = { :git => "https://github.com/esorf/EmbeddedJvm.git", :tag => "v#{s.version}" }
-  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}', 'CopyJavaToPluginsFolder.sh'
+  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}', 'CopyJavaToPluginsFolder.sh', 'LICENSE.md'
 
   s.library = 'stdc++'
   s.requires_arc = true
