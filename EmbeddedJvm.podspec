@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
 
   s.description  = <<-DESC
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   # s.resource  = "icon.png"
   # s.resources = "Resources/*.png"
 
-  s.preserve_paths = "Plugin"
+  s.preserve_paths = "Plugin/**/*"
 
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
