@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
 
   s.description  = <<-DESC
