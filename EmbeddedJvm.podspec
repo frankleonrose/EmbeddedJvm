@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
   s.license      = 'MIT'
 
   s.author       = { "Frank Leon Rose" => "frankleonrose@gmail.com" }
+  s.social_media_url = 'https://twitter.com/frankleonrose'
 
   s.platform     = :osx, '10.7'
 
@@ -54,7 +55,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = 'add_jre_link_script.rb', 'EmbeddedJvm/**/*.{h,m,mm}'
+  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}'
   s.exclude_files = 'Classes/Exclude', 'EmbeddedJvm/**/Thrift.{h,m}'
 
   # s.public_header_files = 'Classes/**/*.h'
@@ -71,7 +72,7 @@ Pod::Spec.new do |s|
   # s.resource  = "icon.png"
   # s.resources = "Resources/*.png"
 
-  s.preserve_paths = "Plugin/**/*"
+  s.preserve_paths = "CopyJavaToPluginsFolder.sh"
 
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
