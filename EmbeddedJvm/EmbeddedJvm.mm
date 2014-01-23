@@ -70,9 +70,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 -(void)doCommand;
 @end
 
-#define JVM_SHARED_LIB @"jre/lib/server/libjvm.dylib"
+#define JRE_JVM_SHARED_LIB @"lib/server/libjvm.dylib"
+#define JDK_JVM_SHARED_LIB @"jre/" JRE_JVM_SHARED_LIB
 
 @implementation EmbeddedJvm
++(NSString *)readJvmPath {
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSString *jvmBundle = (NSString *)[mainBundle objectForInfoDictionaryKey:@"EmbeddedJvm"];
+    return jvmBundle;
+}
+
++(NSString *)appendJvmToJre:(NSString *)javaHome {
+    NSString *lib = JRE_JVM_SHARED_LIB;
+    if ([javaHome rangeOfString:@"jre"].location == NSNotFound) {
+        // Assume we have JDK
+        lib = JDK_JVM_SHARED_LIB;
+    }
+    return [NSString stringWithFormat:@"%@/%@", javaHome, lib];
+}
+
 - (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
     if (self = [super init]) {
         if (const char *err = dlerror()) {
@@ -81,22 +97,36 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         
         NSBundle *app = [NSBundle mainBundle];
         NSURL *exeUrl = [app executableURL];
-        NSString *path;
-        NSString *overrideJavaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
-        if (overrideJavaHome!=nil) {
-            NSLog(@"Using EMBEDDEDJVM_JAVA_HOME environment variable: \"%@\"", overrideJavaHome);
-            path = [NSString stringWithFormat:@"%@/" JVM_SHARED_LIB, overrideJavaHome];
+        NSURL *appContents = [[exeUrl URLByDeletingLastPathComponent] URLByDeletingLastPathComponent];
+        NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
+        if (javaHome!=nil) {
+            NSLog(@"Using EMBEDDEDJVM_JAVA_HOME environment variable: \"%@\"", javaHome);
         }
         else if ([[exeUrl lastPathComponent] isEqualToString:@"xctest"]) {
-            NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"JAVA_HOME"];
-            path = [NSString stringWithFormat:@"%@/" JVM_SHARED_LIB, javaHome];
-            NSLog(@"XCTest deployment loading %@", path);
+            // If we haven't been overridden and we're running tests, don't try to use embedded JVM.
+            javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"JAVA_HOME"];
+            NSLog(@"Using JAVA_HOME environment variable for XCTest: \"%@\"", javaHome);
         }
         else {
-            NSURL *contentsPath = [[exeUrl URLByDeletingLastPathComponent] URLByDeletingLastPathComponent];
-            path = [NSString stringWithFormat:@"%@/PlugIns/Java/" JVM_SHARED_LIB, [contentsPath path]];
+            // app/Contents/PlugIns/jre1.7.0_51.jre/Contents/Home
+            javaHome = [NSString stringWithFormat:@"%@/PlugIns/%@/Contents/Home", [appContents path], [EmbeddedJvm readJvmPath]];
+            NSLog(@"Using EmbeddedJvm with plugin name from Info.plist: \"%@\"", javaHome);
         }
-        jvmlib = dlopen([path cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
+        NSString *appJvm = [EmbeddedJvm appendJvmToJre:javaHome];
+
+        NSString *appJava = [NSString stringWithFormat:@"%@/Resources/Java", [appContents path]];
+        {
+            // Convenience method replaces APP_JAVA with actual app's Java path
+            NSMutableArray *adjustedPaths = [NSMutableArray arrayWithCapacity:[paths count]];
+            for(id o in paths){
+                NSString *p = (NSString *)o;
+                p = [p stringByReplacingOccurrencesOfString:@"$APP_JAVA" withString:appJava];
+                [adjustedPaths addObject:p];
+            }
+            paths = adjustedPaths;
+        }
+    
+        jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
         
         if (jvmlib==nil) {
             const char *derror = dlerror();
@@ -105,7 +135,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             NSString *msg = [NSString stringWithFormat:@"Error dl loading JVM: %s (from %@)", derror, cwd];
             NSLog(@"%@", msg);
             if (error!=nil) {
-                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": path, @"cwd": cwd}];
+                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": appJvm, @"cwd": cwd}];
             }
             return self = nil;
         }
@@ -115,7 +145,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             NSString *msg = @"Failed to load JNI_CreateJavaVM symbol";
             NSLog(@"%@", msg);
             if (error!=nil) {
-                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": path}];
+                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": appJvm}];
             }
             return self = nil;
         }
@@ -195,11 +225,11 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
     //JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
-    NSLog(@"JVM Options");
-    NSLog(@"-----------");
-    for (int i=0; i<optionCount; ++i) {
-        NSLog(@"%s", optionsArray[i].optionString);
-    }
+    //NSLog(@"JVM Options");
+    //NSLog(@"-----------");
+    //for (int i=0; i<optionCount; ++i) {
+    //    NSLog(@"%s", optionsArray[i].optionString);
+    //}
     NSLog(@"-----------");
     jint result = createJavaVM(&jvm, (void**)&env, &vm_args);
     if (result!=0) {
@@ -344,9 +374,31 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
 {
-    char buf[5000];
-    vsnprintf(buf, sizeof(buf), format, args);
-    NSString *err = [NSString stringWithCString:buf encoding:NSASCIIStringEncoding];
+    char staticBuffer[5000];
+    size_t size = sizeof(staticBuffer);
+    int ret = vsnprintf(staticBuffer, size, format, args);
+    char *msg = staticBuffer;
+
+    char *allocated = NULL;
+    NSString *err = nil;
+    if (ret<0) {
+        err = @"Encoding error attempting to vsnprintf string";
+    }
+    else if ((ret+1)>size) {
+        size = ret + 1;
+        allocated = reinterpret_cast<char *>(malloc(size));
+        ret = vsnprintf(allocated, size, format, args);
+        msg = allocated;
+        if (ret<0) {
+            err = @"Encoding error attempting to vsnprintf string";
+        }
+    }
+    if (err==nil) {
+        err = [NSString stringWithCString:msg encoding:NSASCIIStringEncoding];
+    }
+    if (allocated!=NULL) {
+        free(allocated);
+    }
     @synchronized (errors) {
         [errors addObject:err];
     }

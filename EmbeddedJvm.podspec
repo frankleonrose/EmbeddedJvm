@@ -1,10 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.10"
+  s.version      = "0.0.11"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
   s.description  = <<-DESC
                    EmbeddedJvm loads a JRE into an Objective-C app and presents
-                   a block-based API for calling Java or other JVM based code.
+                   a block-based API for calling Java, Scala, Clojure, or other 
+                   JVM based code.
                     DESC
   s.homepage     = "http://github.com/esorf/EmbeddedJvm"
   s.license      = 'MIT'
