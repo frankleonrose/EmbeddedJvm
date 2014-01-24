@@ -97,7 +97,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         
         NSBundle *app = [NSBundle mainBundle];
         NSURL *exeUrl = [app executableURL];
-        NSURL *appContents = [[exeUrl URLByDeletingLastPathComponent] URLByDeletingLastPathComponent];
+        NSURL *appContents = [[app bundleURL] URLByAppendingPathComponent:@"Contents"];
         NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
         if (javaHome!=nil) {
             NSLog(@"Using EMBEDDEDJVM_JAVA_HOME environment variable: \"%@\"", javaHome);
@@ -109,12 +109,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         else {
             // app/Contents/PlugIns/jre1.7.0_51.jre/Contents/Home
-            javaHome = [NSString stringWithFormat:@"%@/PlugIns/%@/Contents/Home", [appContents path], [EmbeddedJvm readJvmPath]];
+            javaHome = [NSString stringWithFormat:@"%@/%@/Contents/Home", [app builtInPlugInsPath], [EmbeddedJvm readJvmPath]];
             NSLog(@"Using EmbeddedJvm with plugin name from Info.plist: \"%@\"", javaHome);
         }
         NSString *appJvm = [EmbeddedJvm appendJvmToJre:javaHome];
 
-        NSString *appJava = [NSString stringWithFormat:@"%@/Resources/Java", [appContents path]];
+        NSString *appJava = [NSString stringWithFormat:@"%@/Java", [appContents path]];
         {
             // Convenience method replaces APP_JAVA with actual app's Java path
             NSMutableArray *adjustedPaths = [NSMutableArray arrayWithCapacity:[paths count]];
@@ -126,7 +126,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             paths = adjustedPaths;
         }
     
-        jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW); // or RTLD_LAZY, no difference.
+        jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
         
         if (jvmlib==nil) {
             const char *derror = dlerror();
