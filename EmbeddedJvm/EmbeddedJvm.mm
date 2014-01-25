@@ -408,17 +408,17 @@ static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
+    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
     [host setRunLoop:rl];
 }
 void RunLoopSourcePerformRoutine (void *info)
 {
-    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
+    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
     [host doCommand];
 }
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (__bridge_transfer EmbeddedJvm*)(info);
+    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
     [host setRunLoop:nil];
     NSLog(@"Unexpected cancelation of run loop source");
 }
