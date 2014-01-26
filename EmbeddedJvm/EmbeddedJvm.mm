@@ -56,6 +56,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     JavaVMOption* optionsArray;
     int optionCount;
     void *jvmlib;       /* The handle to the JVM library */
+    CFBundleRef jreBundle;
     JNI_CreateJavaVM_t createJavaVM;
     
     JavaVM *jvm;       /* denotes a Java VM */
@@ -73,6 +74,11 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 #define JRE_JVM_SHARED_LIB @"lib/server/libjvm.dylib"
 #define JDK_JVM_SHARED_LIB @"jre/" JRE_JVM_SHARED_LIB
 
+#define kLaunchFailure "JavaAppLauncherFailure"
+#define CREATE_JVM_FN "JNI_CreateJavaVM"
+
+typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
+
 @implementation EmbeddedJvm
 +(NSString *)readJvmPath {
     NSBundle* mainBundle = [NSBundle mainBundle];
@@ -89,16 +95,69 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return [NSString stringWithFormat:@"%@/%@", javaHome, lib];
 }
 
+// CFBundle strategy from https://bugs.eclipse.org/bugs/show_bug.cgi?id=411361#c7
+// Silenio Quarti (IBM Eclipse Team Lead): <<It turns out that JNI_CreateJavaVM() pops up the dialog only if the VM library/function has been loaded using dlopen/dlsym.  The problem does not happen if the function is loaded using the CFBundle APIs (CFBundleCreate/CFBundleGetFunctionPointerForName). Somehow loading the JDK 1.7 bundle avoids the problem.>>
+// And sample code from OpenJDK: http://cr.openjdk.java.net/~michaelm/7113349/7u4/4/jdk7u-osx/new/src/macosx/bundle/JavaAppLauncher/src/JavaAppLauncher.m.html
+- (JNI_CreateJavaVM_t) loadAsBundle:(NSURL *)jreBundleURL error:(NSError**)error {
+    // load the libjli.dylib of the embedded JRE (or JDK) bundle
+    jreBundle = CFBundleCreate(NULL, (__bridge CFURLRef)jreBundleURL);
+    
+    //NSError *err = nil;
+    CFErrorRef err = NULL;
+    Boolean jreBundleLoaded = CFBundleLoadExecutableAndReturnError(jreBundle, &err);
+    if (err != nil || !jreBundleLoaded) {
+        NSError *nserr = (__bridge NSError *)err;
+        if (error!=nil) {
+            *error = nserr;
+        }
+        NSLog(@"could not load the JRE/JDK: %@", nserr);
+        return NULL;
+    }
+    
+    // if there is a preferred libjvm to load, set it here
+    //         if (args.preferredJVMLib != NULL) {
+    //             SetPreferredJVM_t setPrefJVMFxnPtr = CFBundleGetFunctionPointerForName(jreBundle, CFSTR("JLI_SetPreferredJVM"));
+    //             if (setPrefJVMFxnPtr != NULL) {
+    //                 setPrefJVMFxnPtr(args.preferredJVMLib);
+    //             } else {
+    //                 NSLog(@"No JLI_SetPreferredJVM in JRE/JDK primary executable, failed to set preferred JVM library to: %s", args->preferredJVMLib);
+    //             }
+    //         }
+    
+    // pull the JNI_CreateJavaVM function pointer out of the primary executable of the JRE/JDK bundle
+    void *rawCreateFn = CFBundleGetFunctionPointerForName(jreBundle, CFSTR(CREATE_JVM_FN));
+    return reinterpret_cast<JNI_CreateJavaVM_t>(rawCreateFn);
+}
+
+- (JNI_CreateJavaVM_t) loadAsDylib:(NSString *)appJvm error:(NSError**)error {
+    if (const char *err = dlerror()) {
+        NSLog(@"Flushing existing dl error: %s", err);
+    }
+
+    jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
+    
+    if (jvmlib==nil) {
+        const char *derror = dlerror();
+        NSFileManager *fm = [[NSFileManager alloc] init];
+        NSString *cwd = [fm currentDirectoryPath];
+        NSString *msg = [NSString stringWithFormat:@"Error dl loading JVM: %s (from %@)", derror, cwd];
+        NSLog(@"%@", msg);
+        if (error!=nil) {
+            *error = [NSError errorWithDomain:@"load" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm, @"cwd": cwd}];
+        }
+        return NULL;
+    }
+    
+    return (JNI_CreateJavaVM_t)dlsym(jvmlib, CREATE_JVM_FN);
+}
+
 - (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
     if (self = [super init]) {
-        if (const char *err = dlerror()) {
-            NSLog(@"Flushing existing dl error: %s", err);
-        }
-        
         NSBundle *app = [NSBundle mainBundle];
         NSURL *exeUrl = [app executableURL];
         NSURL *appContents = [[app bundleURL] URLByAppendingPathComponent:@"Contents"];
         NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
+        NSURL *jreBundleURL = nil;
         if (javaHome!=nil) {
             NSLog(@"Using EMBEDDEDJVM_JAVA_HOME environment variable: \"%@\"", javaHome);
         }
@@ -108,11 +167,27 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             NSLog(@"Using JAVA_HOME environment variable for XCTest: \"%@\"", javaHome);
         }
         else {
-            // app/Contents/PlugIns/jre1.7.0_51.jre/Contents/Home
-            javaHome = [NSString stringWithFormat:@"%@/%@/Contents/Home", [app builtInPlugInsPath], [EmbeddedJvm readJvmPath]];
-            NSLog(@"Using EmbeddedJvm with plugin name from Info.plist: \"%@\"", javaHome);
+            // app/Contents/PlugIns/jre1.7.0_.jre/Contents/Home
+            jreBundleURL = [[app builtInPlugInsURL] URLByAppendingPathComponent:[EmbeddedJvm readJvmPath]];
+            javaHome = [[jreBundleURL path] stringByAppendingPathComponent:@"Contents/Home"];
+            NSLog(@"Using EmbeddedJvm with plugin name from Info.plist: \"%@\"", [jreBundleURL path]);
+        }
+        if (jreBundleURL==nil) {
+            jreBundleURL = [NSURL URLWithString:[[javaHome stringByDeletingLastPathComponent] stringByDeletingLastPathComponent]];
         }
         NSString *appJvm = [EmbeddedJvm appendJvmToJre:javaHome];
+
+//        createJavaVM = [self loadAsDylib:appJvm error:error];
+        createJavaVM = [self loadAsBundle:jreBundleURL error:error];
+        
+        if (createJavaVM==nil) {
+            NSString *msg = @"Failed to load JNI_CreateJavaVM symbol";
+            NSLog(@"%@", msg);
+            if (error!=nil) {
+                *error = [NSError errorWithDomain:@"load" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
+            }
+            return self = nil;
+        }
 
         NSString *appJava = [NSString stringWithFormat:@"%@/Java", [appContents path]];
         {
@@ -124,30 +199,6 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 [adjustedPaths addObject:p];
             }
             paths = adjustedPaths;
-        }
-    
-        jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
-        
-        if (jvmlib==nil) {
-            const char *derror = dlerror();
-            NSFileManager *fm = [[NSFileManager alloc] init];
-            NSString *cwd = [fm currentDirectoryPath];
-            NSString *msg = [NSString stringWithFormat:@"Error dl loading JVM: %s (from %@)", derror, cwd];
-            NSLog(@"%@", msg);
-            if (error!=nil) {
-                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": appJvm, @"cwd": cwd}];
-            }
-            return self = nil;
-        }
-        
-        createJavaVM = (JNI_CreateJavaVM_t)dlsym(jvmlib, "JNI_CreateJavaVM");
-        if (createJavaVM==nil) {
-            NSString *msg = @"Failed to load JNI_CreateJavaVM symbol";
-            NSLog(@"%@", msg);
-            if (error!=nil) {
-                *error = [NSError errorWithDomain:@"load" code:100 userInfo:@{@"msg": msg, @"jvm": appJvm}];
-            }
-            return self = nil;
         }
 
         //    options[0].optionString = "-Djava.compiler=NONE";           /* disable JIT */
@@ -225,12 +276,6 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
     //JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
-    //NSLog(@"JVM Options");
-    //NSLog(@"-----------");
-    //for (int i=0; i<optionCount; ++i) {
-    //    NSLog(@"%s", optionsArray[i].optionString);
-    //}
-    NSLog(@"-----------");
     jint result = createJavaVM(&jvm, (void**)&env, &vm_args);
     if (result!=0) {
         NSString *msg = [NSString stringWithFormat:@"Failed to create JVM with error code: %d", result];
@@ -289,7 +334,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSString *msg = [NSString stringWithFormat:@"Failed to destroy JVM with error code: %d", result];
         NSLog(@"%@", msg);
     }
-    dlclose(jvmlib);
+    if (jvmlib!=NULL) {
+        dlclose(jvmlib);
+    }
+    if (jreBundle!=nil) {
+        CFRelease(jreBundle);
+    }
 }
 
 -(void)doCommand {
