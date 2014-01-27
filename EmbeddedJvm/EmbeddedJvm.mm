@@ -80,12 +80,6 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
 
 @implementation EmbeddedJvm
-+(NSString *)readJvmPath {
-    NSBundle* mainBundle = [NSBundle mainBundle];
-    NSString *jvmBundle = (NSString *)[mainBundle objectForInfoDictionaryKey:@"EmbeddedJvm"];
-    return jvmBundle;
-}
-
 +(NSString *)appendJvmToJre:(NSString *)javaHome {
     NSString *lib = JRE_JVM_SHARED_LIB;
     if ([javaHome rangeOfString:@"jre"].location == NSNotFound) {
@@ -93,6 +87,66 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
         lib = JDK_JVM_SHARED_LIB;
     }
     return [NSString stringWithFormat:@"%@/%@", javaHome, lib];
+}
+
++(char *)createCString:(NSString *)s {
+    NSUInteger bufferSize = [s length] + 1; // Room for nul terminator
+    char *buffer = new char[bufferSize];
+    BOOL success = [s getCString:buffer maxLength:bufferSize encoding:NSASCIIStringEncoding];
+    if (!success) {
+        delete [] buffer;
+        return NULL;
+    }
+    return buffer;
+}
+
++(NSArray *)findSubPaths:(NSString *)directoryToScan
+{
+    NSFileManager *localFileManager=[[NSFileManager alloc] init];
+    NSDirectoryEnumerator *dirEnumerator = [localFileManager enumeratorAtURL:[NSURL fileURLWithPath:directoryToScan]
+                                                  includingPropertiesForKeys:@[NSURLIsDirectoryKey]
+                                                                     options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                errorHandler:nil];
+    NSMutableArray *subPaths=[NSMutableArray array];
+    for (NSURL *theURL in dirEnumerator) {
+        NSNumber *isDirectory;
+        [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+        if ([isDirectory boolValue]==YES) {
+            [subPaths addObject:[theURL path]];
+        }
+    }
+    return subPaths;
+}
+
++(NSArray *)findJars:(NSString *)directoryToScan
+{
+    NSFileManager *localFileManager=[[NSFileManager alloc] init];
+    NSDirectoryEnumerator *dirEnumerator = [localFileManager enumeratorAtURL:[NSURL fileURLWithPath:directoryToScan]
+                                                  includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
+                                                                     options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                                errorHandler:nil];
+    NSMutableArray *jars=[NSMutableArray array];
+    for (NSURL *theURL in dirEnumerator) {
+        if ([dirEnumerator level]>=1) {
+            // Keep to a single level.  In the future we may do a more clever scan to separate
+            // .jar library directories and .class file package structures.
+            [dirEnumerator skipDescendants];
+        }
+        
+        NSString *name = nil;
+        [theURL getResourceValue:&name forKey:NSURLNameKey error:NULL];
+        
+        NSNumber *isDirectory;
+        [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+        
+        NSRange substring = [name rangeOfString:@".jar" options:NSCaseInsensitiveSearch];
+        
+        // Not directory and string ends with .jar
+        if ([isDirectory boolValue]==NO && substring.location==([name length]-4)) {
+            [jars addObject:[theURL path]];
+        }
+    }
+    return jars;
 }
 
 // CFBundle strategy from https://bugs.eclipse.org/bugs/show_bug.cgi?id=411361#c7
@@ -151,11 +205,14 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
     return (JNI_CreateJavaVM_t)dlsym(jvmlib, CREATE_JVM_FN);
 }
 
-- (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSDictionary*)options error:(NSError**)error {
+- (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError**)error {
     if (self = [super init]) {
-        NSBundle *app = [NSBundle mainBundle];
-        NSURL *exeUrl = [app executableURL];
-        NSURL *appContents = [[app bundleURL] URLByAppendingPathComponent:@"Contents"];
+        if (paths==nil) {
+            paths = @[];
+        }
+        NSBundle *appBundle = [NSBundle mainBundle];
+        NSURL *exeUrl = [appBundle executableURL];
+        NSURL *appContents = [[appBundle bundleURL] URLByAppendingPathComponent:@"Contents"];
         NSString *javaHome = [[[NSProcessInfo processInfo] environment] objectForKey:@"EMBEDDEDJVM_JAVA_HOME"];
         NSURL *jreBundleURL = nil;
         if (javaHome!=nil) {
@@ -168,9 +225,18 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
         }
         else {
             // app/Contents/PlugIns/jre1.7.0_.jre/Contents/Home
-            jreBundleURL = [[app builtInPlugInsURL] URLByAppendingPathComponent:[EmbeddedJvm readJvmPath]];
+            NSString *jvmRuntime = (NSString *)[appBundle objectForInfoDictionaryKey:@"JVMRuntime"];
+            if (jvmRuntime==nil) {
+                NSString *msg = @"Unable to read Info.plist key \"JVMRuntime\"";
+                NSLog(@"%@", msg);
+                if (error!=nil) {
+                    *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg}];
+                }
+                return self = nil;
+            }
+            jreBundleURL = [[appBundle builtInPlugInsURL] URLByAppendingPathComponent:jvmRuntime];
             javaHome = [[jreBundleURL path] stringByAppendingPathComponent:@"Contents/Home"];
-            NSLog(@"Using EmbeddedJvm with plugin name from Info.plist: \"%@\"", [jreBundleURL path]);
+            NSLog(@"Using embedded JVM with plugin name from Info.plist: \"%@\"", [jreBundleURL path]);
         }
         if (jreBundleURL==nil) {
             jreBundleURL = [NSURL URLWithString:[[javaHome stringByDeletingLastPathComponent] stringByDeletingLastPathComponent]];
@@ -184,7 +250,7 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
             NSString *msg = @"Failed to load JNI_CreateJavaVM symbol";
             NSLog(@"%@", msg);
             if (error!=nil) {
-                *error = [NSError errorWithDomain:@"load" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
+                *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
             }
             return self = nil;
         }
@@ -200,31 +266,81 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
             }
             paths = adjustedPaths;
         }
+        
+        {
+            NSMutableArray *buildPaths = [NSMutableArray arrayWithArray:paths];
+            
+            NSArray *jars = [EmbeddedJvm findJars:appJava];
+            [buildPaths addObjectsFromArray:jars];
 
-        //    options[0].optionString = "-Djava.compiler=NONE";           /* disable JIT */
-        //    options[1].optionString = "-Djava.class.path=c:\myclasses"; /* user classes */
-        //    options[2].optionString = "-Djava.library.path=c:\mylibs";  /* set native library path */
-        //    options[3].optionString = "-verbose:jni";                   /* print JNI-related messages */
-        optionCount = 10; // 9;
-        optionsArray = new JavaVMOption[optionCount];
+            NSArray *subPaths = [EmbeddedJvm findSubPaths:appJava];
+            // Append /* to subPaths
+            {
+                NSMutableArray *adjustedPaths = [NSMutableArray arrayWithCapacity:[subPaths count]];
+                for(id o in subPaths){
+                    NSString *p = (NSString *)o;
+                    p = [p stringByAppendingPathComponent:@"*"];
+                    [adjustedPaths addObject:p];
+                }
+                subPaths = adjustedPaths;
+            }
+            [buildPaths addObjectsFromArray:subPaths];
+
+            paths = buildPaths;
+        }
+        
+        // "-Djava.compiler=NONE";           /* disable JIT */
+        // "-Djava.class.path=c:\myclasses"; /* user classes */
+        // "-Djava.library.path=c:\mylibs";  /* set native library path */
+        // "-verbose:jni";                   /* print JNI-related messages */
+
+        if (options==nil) {
+            options = @[];
+        }
+        NSMutableArray *buildOptions = [NSMutableArray arrayWithArray:options];
+
         NSString *classpath = [paths componentsJoinedByString:@":"]; // Unix & OSX path separator
         NSLog(@"Classpath: %@", classpath);
         NSString *classpathDef = [NSString stringWithFormat:@"-Djava.class.path=%@", classpath];
-        NSUInteger bufferSize = [classpathDef length] + 100; // Room for nul terminator (and 99 random bytes?)
-        char *buffer = new char[bufferSize];
-        [classpathDef getCString:buffer maxLength:bufferSize encoding:NSASCIIStringEncoding];
-        optionsArray[0].optionString = buffer;
-        optionsArray[1].optionString = const_cast<char *>("-verbose:class"); // class,gc,jni
-        optionsArray[2].optionString = const_cast<char *>("-XX:MaxPermSize=256m");
-        optionsArray[3].optionString = const_cast<char *>("-Xms200m");
-        optionsArray[4].optionString = const_cast<char *>("-Xmx1500m");
-        optionsArray[5].optionString = const_cast<char *>("vfprintf");
-        optionsArray[5].extraInfo = (void *)my_vfprintf;
-        optionsArray[6].optionString = const_cast<char *>("-XX:-PrintCommandLineFlags");
-        optionsArray[7].optionString = const_cast<char *>("-XX:-TraceClassLoading");
-        optionsArray[8].optionString = const_cast<char *>("-Xcheck:jni");
-        optionsArray[9].optionString = const_cast<char *>("-Djava.compiler=NONE");
+        [buildOptions addObject:classpathDef];
         
+        id bundleOptions = (NSString *)[appBundle objectForInfoDictionaryKey:@"JVMOptions"];
+        if ([bundleOptions isKindOfClass:[NSArray class]]) {
+            options = bundleOptions;
+            for (id opt in options) {
+                if ([opt isKindOfClass:[NSString class]]) {
+                    [buildOptions addObject:opt];
+                }
+                else {
+                    NSLog(@"Warning: And item in JVMOptions in Info.plist is not a string (%@).", opt);
+                }
+            }
+        }
+        else {
+            NSLog(@"Warning: JVMOptions in Info.plist does not appear to be an array.");
+        }
+        
+        optionCount = (int)[buildOptions count] + 1;
+        optionsArray = new JavaVMOption[optionCount];
+        optionsArray[0].optionString = const_cast<char *>("vfprintf");
+        optionsArray[0].extraInfo = (void *)my_vfprintf;
+        for (int j=1; j<optionCount; ++j) {
+            optionsArray[j].optionString = NULL;
+        }
+        int i = 1;
+        for (NSString *option in buildOptions) {
+            char *buffer = [EmbeddedJvm createCString:option];
+            if (buffer==NULL) {
+                NSString *msg = [NSString stringWithFormat:@"Failed to encode JVM option as cstring (%@)", option];
+                NSLog(@"%@", msg);
+                if (error!=nil) {
+                    *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
+                }
+                return self = nil;
+            }
+            optionsArray[i++].optionString = buffer;
+        }
+
         self.commands = [[NSMutableArray alloc] init];
 
         NSLog(@"Initializing mainThreadLoop (self=%@)", self);
@@ -242,7 +358,10 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
     NSLog(@"Deallocating EmbeddedJvm");
     [self printErrors];
     if (optionsArray!=nil) {
-        delete[] optionsArray[0].optionString; // Classpath
+        // 0th entry was not allocated on stack!
+        for (int j=1; j<optionCount; ++j) {
+            delete[] optionsArray[j].optionString;
+        }
         delete[] optionsArray;
     }
 }

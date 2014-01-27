@@ -27,6 +27,14 @@ then
 # a: archive.  "Preserve almost everything"
 # z: compress
   rsync -az "$javaBundle" "$copyTo/"
+
+  # Codesign materializes symbolic links.  jre/Contents/MacOS/libjli.dylib is a symbolic link.
+  # If it gets materialized, libjli.dylib can no longer find libjava.dylib.  So we need to
+  # load libjli.dylib in its expected location so that it can find libjava.dylib in the directory
+  # above.
+  # Learned about materialization here: https://lists.macosforge.org/pipermail/macruby-devel/2012-June/008839.html
+  javaInfoPlist="$copyTo"/$(basename "$javaBundle")/Contents/Info.plist
+  /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable Home/lib/jli/libjli.dylib" "$javaInfoPlist"
 else
   echo Linking $javaBundle to $copyTo
 # s: symbolic link
@@ -44,9 +52,10 @@ copyTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
 # Make certain that copyTo directory exists
 [ -d $copyTo ] || mkdir -p $copyTo
 
-for f in $@
-do
-  # Don't try linking because sandboxed apps won't be able to read linked-to files.
-  echo Copying $f to $copyTo
-  rsync -az "$f" "$copyTo"
+for ((i=0; i < SCRIPT_INPUT_FILE_COUNT ; i++)) ; do
+  inputFile=`eval echo '$SCRIPT_INPUT_FILE_'$i`
+  if [ -e $inputFile ] ; then
+    echo Copying $inputFile to $copyTo
+    rsync -az "$inputFile" "$copyTo"
+  fi
 done
