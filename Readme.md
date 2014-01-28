@@ -37,6 +37,8 @@ Tips
 - Disable JIT compilation with -Djava.compiler=NONE when you encounter mysterious issues.
 
 Code Sample
+
+``` objc
     NSError *error = nil;
     // Often no need to pass classpaths because default is generated from jars in app/Contents/Java
     // Options are read from JVMOptions in the Info.plist but may be passed as an array here
@@ -48,5 +50,6 @@ Code Sample
     [jvm doWithJvmThread:^(JNIEnv *env) {
         ... block runs on attached JVM thread with valid env ...
     }];
+```
 
 Copyright (c) 2014 Futurose

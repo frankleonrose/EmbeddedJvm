@@ -33,8 +33,14 @@ then
   # load libjli.dylib in its expected location so that it can find libjava.dylib in the directory
   # above.
   # Learned about materialization here: https://lists.macosforge.org/pipermail/macruby-devel/2012-June/008839.html
-  javaInfoPlist="$copyTo"/$(basename "$javaBundle")/Contents/Info.plist
+  appJREBundle="$copyTo"/$(basename "$javaBundle")
+  javaInfoPlist="$appJREBundle/Contents/Info.plist"
   /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable Home/lib/jli/libjli.dylib" "$javaInfoPlist"
+
+  # Remove the two files referring to the now-deprecated (10.9) QTKit
+  # otool -L $appJREBundle/Contents/Home/jre/lib/*dylib | grep QTKit should yield nothing
+  rm $appJREBundle/Contents/Home/lib/libgstplugins-lite.dylib
+  rm $appJREBundle/Contents/Home/lib/libjfxmedia.dylib
 else
   echo Linking $javaBundle to $copyTo
 # s: symbolic link
@@ -59,3 +65,27 @@ for ((i=0; i < SCRIPT_INPUT_FILE_COUNT ; i++)) ; do
     rsync -az "$inputFile" "$copyTo"
   fi
 done
+
+
+######## Sign code
+# Per discussion here: http://mail.openjdk.java.net/pipermail/macosx-port-dev/2012-August/004771.html
+# and http://www.bornsleepy.com/bornsleepy/signing-nested-app-bundles
+if [ $CONFIGURATION = "Release" ]
+then
+  cd /Users/frank/Futurose/Fotocount/FotocountMac
+  CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+
+  entitlements=$PROJECT_DIR/$CODE_SIGN_ENTITLEMENTS
+
+  appIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH")
+  jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
+  echo Signing all .jar files in $jarPath with $appIdentifier
+  find "$jarPath" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -print -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$appIdentifier" {} \;
+
+  jreIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$javaInfoPlist")
+
+  echo Signing all .jar and dylib files in $appJREBundle with identifier $jreIdentifier
+  find "$appJREBundle" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$jreIdentifier" {} \;
+
+  /usr/bin/codesign --force --identifier "$jreIdentifier" --sign "$CODE_SIGN_IDENTITY" --verbose=4 "$appJREBundle"
+fi
