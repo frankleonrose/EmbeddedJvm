@@ -43,7 +43,7 @@ Code Sample
     // Often no need to pass classpaths because default is generated from jars in app/Contents/Java
     // Options are read from JVMOptions in the Info.plist but may be passed as an array here
     EmbeddedJvm *jvm = [[EmbeddedJvm alloc] initWithClassPaths:nil options:nil error:&error];
-    if (self.jvm==nil) {
+    if (jvm==nil) {
         ... error handling ...
     }
     ...
