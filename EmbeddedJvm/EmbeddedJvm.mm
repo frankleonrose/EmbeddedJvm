@@ -39,10 +39,10 @@ jbyteArray dataToJbytes(NSData *data, JNIEnv *env) {
     return response;
 }
 
-typedef jint (*JNI_GetDefaultJavaVMInitArgs_t)(void *args);
-typedef jint (*JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
-typedef jint (*JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
-//typedef jint (*jni_DestroyJavaVM_t)(JavaVM *vm);
+typedef jint (JNICALL *JNI_GetDefaultJavaVMInitArgs_t)(void *args);
+typedef jint (JNICALL *JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
+typedef jint (JNICALL *JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
+typedef jint (JNICALL *JNI_DestroyJavaVM_t)(JavaVM *vm);
 
 static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args);
 static NSMutableArray *errors = [NSMutableArray array];
@@ -76,8 +76,6 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 #define kLaunchFailure "JavaAppLauncherFailure"
 #define CREATE_JVM_FN "JNI_CreateJavaVM"
-
-typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
 
 @implementation EmbeddedJvm
 +(NSString *)appendJvmToJre:(NSString *)javaHome {
@@ -394,8 +392,9 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
     vm_args.ignoreUnrecognized = JNI_FALSE;
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
-    //JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+//    NSLog(@"Calling createJavaVM()");
     jint result = createJavaVM(&jvm, (void**)&env, &vm_args);
+//    NSLog(@"Returned from createJavaVM()");
     if (result!=0) {
         NSString *msg = [NSString stringWithFormat:@"Failed to create JVM with error code: %d", result];
         NSLog(@"%@", msg);
@@ -410,13 +409,14 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
 }
 
 - (void)mainThreadLoop:(NSObject*)parameter {
-    NSLog(@"Starting mainThreadLoop (self=%@)", self);
+    NSLog(@"Starting EmbeddedJvm main thread (self=%@)", self);
     NSError *error = nil;
     [self createJvm:&error];
     if (error!=nil) {
         // TODO: Send error back to caller
         return;
     }
+    NSLog(@"Created JVM in main thread");
     
     NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
     
@@ -462,7 +462,7 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
 }
 
 -(void)doCommand {
-    //NSLog(@"Run all enqueued commands");
+//    NSLog(@"Run all enqueued commands");
     bool done = false;
     do {
         NSObject *command = nil;
@@ -476,7 +476,7 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
             }
         }
         if (command!=nil) {
-            NSLog(@"Picked a command from the JVM queue");
+//            NSLog(@"Picked a command from the JVM queue");
             void (^cmdBlock)(JNIEnv* env) = (__bridge void(^)(JNIEnv* env))((__bridge void*)(command));
             @try {
                 cmdBlock(env);
@@ -494,21 +494,21 @@ typedef jint (JNICALL *CreateJavaVM_t)(JavaVM **pvm, void **env, void *args);
             command = nil; // Release the block
         }
     } while (!done);
-    //NSLog(@"Done running commands");
+//    NSLog(@"Done running commands");
 }
 
 - (void) doWithJvmThread:(void(^)(JNIEnv* env))block {
-    NSLog(@"Enqueuing command to JVM queue");
+//    NSLog(@"Enqueuing command to JVM queue");
     @synchronized(self.commands) {
         [self.commands addObject:block];
     }
     if (self.runLoop!=nil && self.runLoopSource!=nil) {
-        NSLog(@"Alerting JVM runloop about new command");
+//        NSLog(@"Alerting JVM runloop about new command");
         CFRunLoopSourceSignal(self.runLoopSource);
         CFRunLoopWakeUp(self.runLoop);
     }
     else {
-        NSLog(@"JVM runloop not yet started");
+//        NSLog(@"JVM runloop not yet started");
     }
 }
 
