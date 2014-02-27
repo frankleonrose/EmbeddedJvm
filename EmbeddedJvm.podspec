@@ -21,5 +21,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.compiler_flags = '-DOS_OBJECT_USE_OBJC=0'
 
-  spec.preserve_path = 'Java'
+  s.preserve_path = 'Java'
 end
