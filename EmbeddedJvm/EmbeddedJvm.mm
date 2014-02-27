@@ -23,6 +23,11 @@
 #import "EmbeddedJvm.h"
 #include <dlfcn.h>
 
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_write(JNIEnv *env, jobject obj, jbyteArray bytes, jint offset, jint len);
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_open(JNIEnv *env, jobject obj, jstring tag);
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_flush(JNIEnv *env, jobject obj);
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_close(JNIEnv *env, jobject obj);
+
 NSData *jbytesToData(jbyteArray bytes, JNIEnv *env) {
     jsize length = env->GetArrayLength(bytes);
     jboolean isCopy = false;
@@ -371,11 +376,9 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             toPrint = errors;
             errors = [NSMutableArray array];
         }
-        NSLog(@"JVM output ---------");
         for (NSString *err in toPrint) {
-            NSLog(@"%@", err);
+            NSLog(@"JVM: %@", err);
         }
-        NSLog(@"JVM output ---------");
     }
 }
 
@@ -432,6 +435,8 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     
     CFRunLoopAddSource(self.runLoop, self.runLoopSource, kCFRunLoopDefaultMode);
     
+    [self connectNativeOutput];
+    
     [self doCommand]; // Run all the commands queued while waiting for this thread to start.
 
     bool threadTerminated = false;
@@ -444,6 +449,45 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         [self doCommand];
     }
     NSLog(@"Terminated EmbeddedJvm main thread");
+}
+
+#define NATIVE_OUTPUT_CLASS @"com/futurose/embeddedjvm/EmbeddedJvmOutputStream"
+
+- (void)connectNativeOutput {
+    static JNINativeMethod method_table[] = {
+        EJ_JVM_NATIVE("nativeWrite", "([BII)V", EmbeddedJvmOutputStream_write),
+        EJ_JVM_NATIVE("nativeOpen", "(Ljava/lang/String;)V", EmbeddedJvmOutputStream_open),
+        EJ_JVM_NATIVE("nativeFlush", "()V", EmbeddedJvmOutputStream_flush),
+        EJ_JVM_NATIVE("nativeClose", "()V", EmbeddedJvmOutputStream_close),
+    };
+
+    NSError *error = nil;
+    JvmClass *cls = [[JvmClass alloc] initWithClassName:NATIVE_OUTPUT_CLASS env:env error:&error];
+    if (cls==nil) {
+        NSLog(@"Native output class \"%@\" unavailable.", NATIVE_OUTPUT_CLASS);
+        NSLog(@"%@", [error description]);
+    }
+    else {
+        BOOL success = [cls registerNativeMethods:method_table count:4 env:env error:&error];
+        if (!success) {
+            NSLog(@"Unable to register methods with output class \"%@\".", NATIVE_OUTPUT_CLASS);
+            NSLog(@"%@", [error description]);
+        }
+        else {
+            jmethodID redirect = [cls getStaticMethod:@"redirectStandardStreams" signature:@"()V" env:env error:&error];
+            if (redirect==nil) {
+                NSLog(@"Unable to redirect standard streams.");
+                NSLog(@"%@", [error description]);
+            }
+            else {
+                env->CallStaticVoidMethod(cls.jclass, redirect);
+                if (env->ExceptionCheck()) {
+                    env->ExceptionDescribe();
+                    env->ExceptionClear();
+                }
+            }
+        }
+    }
 }
 
 - (void)destroy {
@@ -517,32 +561,11 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     jvm->GetEnv(reinterpret_cast<void**>(&threadEnv), JNI_VERSION_1_6);
     return threadEnv;
 }
-
-- (void) dumpClass:(jclass)cls {
-    jclass methodClass = env->FindClass("java/lang/reflect/Method");
-    jmethodID getGenericNameMethod = env->GetMethodID(methodClass, "toGenericString", "()Ljava/lang/String;");
-    
-    jclass classClass = env->FindClass("java/lang/Class");
-    jmethodID getMethodsMethod = env->GetMethodID(classClass, "getDeclaredMethods", "()[Ljava/lang/reflect/Method;");
-    
-    jobjectArray methods = (jobjectArray)env->CallObjectMethod(cls, getMethodsMethod);
-    int mcount = env->GetArrayLength(methods);
-    for (int i=0; i<mcount; ++i) {
-        jobject method = env->GetObjectArrayElement(methods, i);
-        jstring name = (jstring)env->CallObjectMethod(method, getGenericNameMethod);
-        jboolean isCopy = 0;
-        const char *cname = env->GetStringUTFChars(name, &isCopy);
-        NSLog(@"%s", cname);
-        if (isCopy) {
-            env->ReleaseStringUTFChars(name, cname);
-        }
-    }
-}
-
 @end
 
 static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
 {
+    //NSLog(@"vfprintf %llx - %s", (long long)fp, format);
     char staticBuffer[5000];
     size_t size = sizeof(staticBuffer);
     int ret = vsnprintf(staticBuffer, size, format, args);
@@ -574,6 +597,26 @@ static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
     return 0;
 }
 
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_write(JNIEnv *env, jobject obj, jbyteArray bytes, jint offset, jint len) {
+    NSData *data = jbytesToData(bytes, env);
+    NSData *section = [data subdataWithRange:NSMakeRange(offset, len)];
+    NSString *s = [[NSString alloc] initWithData:section encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", s);
+}
+
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_open(JNIEnv *env, jobject obj, jstring tag) {
+    
+}
+
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_flush(JNIEnv *env, jobject obj) {
+    
+}
+
+JNIEXPORT void JNICALL EmbeddedJvmOutputStream_close(JNIEnv *env, jobject obj) {
+    
+}
+
+
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
@@ -591,3 +634,122 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
     [host setRunLoop:nil];
     NSLog(@"Unexpected cancelation of run loop source");
 }
+
+@interface JvmClass() {
+    jclass cls;
+    jmethodID ctor;
+}
+@property NSString *name;
+@end
+
+@implementation JvmClass
+- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError**)error {
+    self = [super init];
+    if (self) {
+        cls = env->FindClass([className cStringUsingEncoding:NSASCIIStringEncoding]);
+        if (cls==nil) {
+            self = nil;
+            [self clearJvmException:env];
+            if (error!=nil) {
+                NSString *msg = [NSString stringWithFormat:@"Could not find class \"%@\"", className];
+                *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+            }
+        }
+        else {
+            self.name = className;
+        }
+    }
+    return self;
+}
+- (jclass)jclass {
+    return cls;
+}
+- (jobject) createObject:(JNIEnv *)env error:(NSError**)error {
+    if (ctor==NULL) {
+        ctor = env->GetMethodID(cls, "<init>", "()V");
+        if (ctor==NULL) {
+            [self clearJvmException:env];
+            if (error!=nil) {
+                NSString *msg = @"Could not find method: default constructor";
+                *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+            }
+        }
+    }
+    jobject obj = NULL;
+    if (ctor!=NULL) {
+        obj = env->NewObject(cls, ctor);
+        if (obj==NULL) {
+            [self clearJvmException:env];
+            if (error!=nil) {
+                NSString *msg = @"Failed to create object using default constructor";
+                *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+            }
+        }
+    }
+    return obj;
+}
+- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error {
+    jmethodID m = env->GetMethodID(cls,
+                                   [methodName cStringUsingEncoding:NSASCIIStringEncoding],
+                                   [methodSignature cStringUsingEncoding:NSASCIIStringEncoding]);
+    if (m==nil) {
+        [self clearJvmException:env];
+        if (error!=nil) {
+            NSString *msg = [NSString stringWithFormat:@"Could not find object method \"%@\"", methodName];
+            *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+        }
+    }
+    return m;
+}
+- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error {
+    jmethodID m = env->GetStaticMethodID(cls,
+                                   [methodName cStringUsingEncoding:NSASCIIStringEncoding],
+                                   [methodSignature cStringUsingEncoding:NSASCIIStringEncoding]);
+    if (m==nil) {
+        [self clearJvmException:env];
+        if (error!=nil) {
+            NSString *msg = [NSString stringWithFormat:@"Could not find static method \"%@\".", methodName];
+            *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+        }
+    }
+    return m;
+}
+- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError**)error {
+    jint ret = env->RegisterNatives(cls, methods, count);
+    if (ret!=0) {
+        [self clearJvmException:env];
+        if (error!=nil) {
+            NSString *msg = [NSString stringWithFormat:@"Could not register native methods for class \"%@\"", self.name];
+            *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+        }
+    }
+    return ret==0;
+}
+- (void) printMethods:(JNIEnv *)env {
+    jclass methodClass = env->FindClass("java/lang/reflect/Method");
+    jmethodID getGenericNameMethod = env->GetMethodID(methodClass, "toGenericString", "()Ljava/lang/String;");
+    
+    jclass classClass = env->FindClass("java/lang/Class");
+    jmethodID getMethodsMethod = env->GetMethodID(classClass, "getDeclaredMethods", "()[Ljava/lang/reflect/Method;");
+    
+    jobjectArray methods = (jobjectArray)env->CallObjectMethod(cls, getMethodsMethod);
+    int mcount = env->GetArrayLength(methods);
+    for (int i=0; i<mcount; ++i) {
+        jobject method = env->GetObjectArrayElement(methods, i);
+        jstring name = (jstring)env->CallObjectMethod(method, getGenericNameMethod);
+        jboolean isCopy = 0;
+        const char *cname = env->GetStringUTFChars(name, &isCopy);
+        NSLog(@"%s", cname);
+        if (isCopy) {
+            env->ReleaseStringUTFChars(name, cname);
+        }
+    }
+}
+-(void)clearJvmException:(JNIEnv *)env {
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
+}
+@end
+

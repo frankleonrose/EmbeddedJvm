@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "jni.h"
 
+#define EJ_JVM_NATIVE(name, signature, fn) { const_cast<char *>(name), const_cast<char *>(signature), (void *) fn }
+
 NSData *jbytesToData(jbyteArray bytes, JNIEnv *env);
 jbyteArray dataToJbytes(NSData *data, JNIEnv *env);
 
@@ -18,6 +20,14 @@ jbyteArray dataToJbytes(NSData *data, JNIEnv *env);
 
 - (void) doWithJvmThread:(void(^)(JNIEnv* env))block;
 - (JNIEnv *) getEnv;
+@end
 
-- (void) dumpClass:(jclass)cls;
+@interface JvmClass : NSObject
+- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError**)error;
+- (jobject) createObject:(JNIEnv *)env error:(NSError**)error;
+- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error;
+- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error;
+- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError**)error;
+- (void) printMethods:(JNIEnv *)env;
+@property (readonly) jclass jclass;
 @end
