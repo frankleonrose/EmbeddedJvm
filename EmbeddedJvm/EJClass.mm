@@ -7,6 +7,8 @@
 //
 
 #import "EJClass.h"
+#import "EJJvm.h"
+#include <dlfcn.h>
 
 @interface EJClass() {
     jclass cls;

@@ -6,10 +6,5 @@
 //
 //
 
-#ifndef EmbeddedJvm_h
-#define EmbeddedJvm_h
-
 #import "EJJvm.h"
 #import "EJClass.h"
-
-#endif
