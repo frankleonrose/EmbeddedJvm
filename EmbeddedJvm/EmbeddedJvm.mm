@@ -57,7 +57,7 @@ void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode
 void RunLoopSourcePerformRoutine (void *info);
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
-@interface EmbeddedJvm () {
+@interface EJJvm () {
     JavaVMOption* optionsArray;
     int optionCount;
     void *jvmlib;       /* The handle to the JVM library */
@@ -82,7 +82,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 #define kLaunchFailure "JavaAppLauncherFailure"
 #define CREATE_JVM_FN "JNI_CreateJavaVM"
 
-@implementation EmbeddedJvm
+@implementation EJJvm
 +(NSString *)appendJvmToJre:(NSString *)javaHome {
     NSString *lib = JRE_JVM_SHARED_LIB;
     if ([javaHome rangeOfString:@"jre"].location == NSNotFound) {
@@ -208,7 +208,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return (JNI_CreateJavaVM_t)dlsym(jvmlib, CREATE_JVM_FN);
 }
 
-- (EmbeddedJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError**)error {
+- (EJJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError**)error {
     if (self = [super init]) {
         if (paths==nil) {
             paths = @[];
@@ -244,7 +244,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         if (jreBundleURL==nil) {
             jreBundleURL = [NSURL URLWithString:[[javaHome stringByDeletingLastPathComponent] stringByDeletingLastPathComponent]];
         }
-        NSString *appJvm = [EmbeddedJvm appendJvmToJre:javaHome];
+        NSString *appJvm = [EJJvm appendJvmToJre:javaHome];
 
 //        createJavaVM = [self loadAsDylib:appJvm error:error];
         createJavaVM = [self loadAsBundle:jreBundleURL error:error];
@@ -273,10 +273,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         {
             NSMutableArray *buildPaths = [NSMutableArray arrayWithArray:paths];
             
-            NSArray *jars = [EmbeddedJvm findJars:appJava];
+            NSArray *jars = [EJJvm findJars:appJava];
             [buildPaths addObjectsFromArray:jars];
 
-            NSArray *subPaths = [EmbeddedJvm findSubPaths:appJava];
+            NSArray *subPaths = [EJJvm findSubPaths:appJava];
             // Append /* to subPaths
             {
                 NSMutableArray *adjustedPaths = [NSMutableArray arrayWithCapacity:[subPaths count]];
@@ -332,7 +332,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         int i = 1;
         for (NSString *option in buildOptions) {
-            char *buffer = [EmbeddedJvm createCString:option];
+            char *buffer = [EJJvm createCString:option];
             if (buffer==NULL) {
                 NSString *msg = [NSString stringWithFormat:@"Failed to encode JVM option as cstring (%@)", option];
                 NSLog(@"%@", msg);
@@ -462,7 +462,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     };
 
     NSError *error = nil;
-    JvmClass *cls = [[JvmClass alloc] initWithClassName:NATIVE_OUTPUT_CLASS env:env error:&error];
+    EJClass *cls = [[EJClass alloc] initWithClassName:NATIVE_OUTPUT_CLASS env:env error:&error];
     if (cls==nil) {
         NSLog(@"Native output class \"%@\" unavailable.", NATIVE_OUTPUT_CLASS);
         NSLog(@"%@", [error description]);
@@ -480,7 +480,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 NSLog(@"%@", [error description]);
             }
             else {
-                env->CallStaticVoidMethod(cls.jclass, redirect);
+                env->CallStaticVoidMethod(cls.theclass, redirect);
                 if (env->ExceptionCheck()) {
                     env->ExceptionDescribe();
                     env->ExceptionClear();
@@ -620,29 +620,29 @@ JNIEXPORT void JNICALL EmbeddedJvmOutputStream_close(JNIEnv *env, jobject obj) {
 // C-linked functions used to wire up CFRunLoopSource
 void RunLoopSourceScheduleRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
+    EJJvm *host = (__bridge EJJvm*)(info);
     [host setRunLoop:rl];
 }
 void RunLoopSourcePerformRoutine (void *info)
 {
-    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
+    EJJvm *host = (__bridge EJJvm*)(info);
     [host doCommand];
 }
 void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
-    EmbeddedJvm *host = (__bridge EmbeddedJvm*)(info);
+    EJJvm *host = (__bridge EJJvm*)(info);
     [host setRunLoop:nil];
     NSLog(@"Unexpected cancelation of run loop source");
 }
 
-@interface JvmClass() {
+@interface EJClass() {
     jclass cls;
     jmethodID ctor;
 }
 @property NSString *name;
 @end
 
-@implementation JvmClass
+@implementation EJClass
 - (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError**)error {
     self = [super init];
     if (self) {
@@ -665,6 +665,13 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
     return cls;
 }
 - (jobject) createObject:(JNIEnv *)env error:(NSError**)error {
+    /*
+     TODO: Variable arg list. http://www.cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html
+     va_list args;
+     va_start(args, signature);
+     env->NewObjectV(theclass, ctor, args);
+     va_end(args);
+     */
     if (ctor==NULL) {
         ctor = env->GetMethodID(cls, "<init>", "()V");
         if (ctor==NULL) {

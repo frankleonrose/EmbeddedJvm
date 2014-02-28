@@ -259,6 +259,7 @@
 				010C4D2B17FBB2D90015C86D /* Headers */,
 				010C4D2C17FBB2D90015C86D /* Resources */,
 				0153370117FE040F001D4DD4 /* CopyFiles */,
+				012C0AC018C02325007F0151 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -340,6 +341,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		012C0AC018C02325007F0151 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc -o Docs --project-name EmbeddedJvm --project-company Futurose --company-id com.futurose.embeddedjvm --create-docset ${SOURCE_ROOT}/EmbeddedJvm/*.mm EmbeddedJvm/*.h";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		010C4D2917FBB2D90015C86D /* Sources */ = {
