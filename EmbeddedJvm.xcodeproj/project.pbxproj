@@ -21,6 +21,10 @@
 		010C4D6E17FBB69F0015C86D /* jvmticmlr.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6617FBB69F0015C86D /* jvmticmlr.h */; };
 		011DA20A17FDAE7000CCD96A /* EmbeddedJvm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */; };
 		011DA20D17FDAFEB00CCD96A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D4617FBB2DA0015C86D /* XCTest.framework */; };
+		014DC17318C79D5E00E939E5 /* EJClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 014DC16F18C79D5E00E939E5 /* EJClass.h */; };
+		014DC17418C79D5E00E939E5 /* EJClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = 014DC17018C79D5E00E939E5 /* EJClass.mm */; };
+		014DC17518C79D5E00E939E5 /* EJJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 014DC17118C79D5E00E939E5 /* EJJvm.h */; };
+		014DC17618C79D5E00E939E5 /* EJJvm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 014DC17218C79D5E00E939E5 /* EJJvm.mm */; };
 		015336E717FDB0F3001D4DD4 /* EmbeddedJvmTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */; };
 		015336EC17FDBA26001D4DD4 /* EmbeddedJvm.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 010C4D2E17FBB2D90015C86D /* EmbeddedJvm.framework */; };
 		015336EE17FDC526001D4DD4 /* EmbeddedJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -86,6 +90,10 @@
 		010C4D6617FBB69F0015C86D /* jvmticmlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmticmlr.h; sourceTree = "<group>"; };
 		011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EmbeddedJvm.mm; sourceTree = "<group>"; };
 		011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvmTests.mm; path = ../EmbeddedJvmTests/EmbeddedJvmTests.mm; sourceTree = "<group>"; };
+		014DC16F18C79D5E00E939E5 /* EJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EJClass.h; sourceTree = "<group>"; };
+		014DC17018C79D5E00E939E5 /* EJClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EJClass.mm; sourceTree = "<group>"; };
+		014DC17118C79D5E00E939E5 /* EJJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EJJvm.h; sourceTree = "<group>"; };
+		014DC17218C79D5E00E939E5 /* EJJvm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EJJvm.mm; sourceTree = "<group>"; };
 		015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvm.h; sourceTree = "<group>"; };
 		0153370217FE04A6001D4DD4 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 		018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EmbeddedJvm.podspec; sourceTree = "<group>"; };
@@ -161,6 +169,10 @@
 		010C4D3717FBB2D90015C86D /* EmbeddedJvm */ = {
 			isa = PBXGroup;
 			children = (
+				014DC16F18C79D5E00E939E5 /* EJClass.h */,
+				014DC17018C79D5E00E939E5 /* EJClass.mm */,
+				014DC17118C79D5E00E939E5 /* EJJvm.h */,
+				014DC17218C79D5E00E939E5 /* EJJvm.mm */,
 				010C4D5C17FBB69F0015C86D /* jdk */,
 				011DA20817FDAE7000CCD96A /* EmbeddedJvm.mm */,
 				015336ED17FDC526001D4DD4 /* EmbeddedJvm.h */,
@@ -239,6 +251,8 @@
 				010C4D6C17FBB69F0015C86D /* jni.h in Headers */,
 				010C4D6917FBB69F0015C86D /* jni_md.h in Headers */,
 				010C4D6D17FBB69F0015C86D /* jvmti.h in Headers */,
+				014DC17518C79D5E00E939E5 /* EJJvm.h in Headers */,
+				014DC17318C79D5E00E939E5 /* EJClass.h in Headers */,
 				010C4D6E17FBB69F0015C86D /* jvmticmlr.h in Headers */,
 				010C4D6B17FBB69F0015C86D /* jdwpTransport.h in Headers */,
 				010C4D6717FBB69F0015C86D /* classfile_constants.h in Headers */,
@@ -364,6 +378,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				011DA20A17FDAE7000CCD96A /* EmbeddedJvm.mm in Sources */,
+				014DC17418C79D5E00E939E5 /* EJClass.mm in Sources */,
+				014DC17618C79D5E00E939E5 /* EJJvm.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

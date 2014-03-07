@@ -26,11 +26,11 @@
  
  @return the EJClass wrapper or nil on error.
  */
-- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError**)error;
-- (jobject) createObject:(JNIEnv *)env error:(NSError**)error; // Support passing signature and variable arg lists
-- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error;
-- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error;
-- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError**)error;
+- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error; // Support passing signature and variable arg lists
+- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
 - (void) printMethods:(JNIEnv *)env;
 
 /**
@@ -40,5 +40,5 @@
  to theclass in order to get things done, like creating objects, getting and setting
  static values, or any reflection work.
  */
-@property (readonly) jclass theclass;
+@property (readonly) jclass theClass;
 @end

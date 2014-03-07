@@ -33,7 +33,7 @@ jbyteArray dataToJbytes(NSData *data, JNIEnv *env);
  // @see -dataTaskWithRequest:completionHandler:
  // @warning Some warning
  */
-- (EJJvm*) initWithClassPaths:(NSArray*)path options:(NSDictionary*)options error:(NSError**)error;
+- (EJJvm*) initWithClassPaths:(NSArray*)path options:(NSDictionary*)options error:(NSError * __autoreleasing *)error;
 
 - (void) close;
 

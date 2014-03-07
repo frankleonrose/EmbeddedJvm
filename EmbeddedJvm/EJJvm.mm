@@ -155,15 +155,14 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 // CFBundle strategy from https://bugs.eclipse.org/bugs/show_bug.cgi?id=411361#c7
 // Silenio Quarti (IBM Eclipse Team Lead): <<It turns out that JNI_CreateJavaVM() pops up the dialog only if the VM library/function has been loaded using dlopen/dlsym.  The problem does not happen if the function is loaded using the CFBundle APIs (CFBundleCreate/CFBundleGetFunctionPointerForName). Somehow loading the JDK 1.7 bundle avoids the problem.>>
 // And sample code from OpenJDK: http://cr.openjdk.java.net/~michaelm/7113349/7u4/4/jdk7u-osx/new/src/macosx/bundle/JavaAppLauncher/src/JavaAppLauncher.m.html
-- (JNI_CreateJavaVM_t) loadAsBundle:(NSURL *)jreBundleURL error:(NSError**)error {
+- (JNI_CreateJavaVM_t) loadAsBundle:(NSURL *)jreBundleURL error:(NSError * __autoreleasing *)error {
     // load the libjli.dylib of the embedded JRE (or JDK) bundle
     jreBundle = CFBundleCreate(NULL, (__bridge CFURLRef)jreBundleURL);
     
-    //NSError *err = nil;
     CFErrorRef err = NULL;
     Boolean jreBundleLoaded = CFBundleLoadExecutableAndReturnError(jreBundle, &err);
     if (err != nil || !jreBundleLoaded) {
-        NSError *nserr = (__bridge NSError *)err;
+        NSError *nserr = (__bridge_transfer NSError *)err;
         if (error!=nil) {
             *error = nserr;
         }
@@ -186,7 +185,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return reinterpret_cast<JNI_CreateJavaVM_t>(rawCreateFn);
 }
 
-- (JNI_CreateJavaVM_t) loadAsDylib:(NSString *)appJvm error:(NSError**)error {
+- (JNI_CreateJavaVM_t) loadAsDylib:(NSString *)appJvm error:(NSError * __autoreleasing *)error {
     if (const char *err = dlerror()) {
         NSLog(@"Flushing existing dl error: %s", err);
     }
@@ -208,7 +207,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return (JNI_CreateJavaVM_t)dlsym(jvmlib, CREATE_JVM_FN);
 }
 
-- (EJJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError**)error {
+- (EJJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError * __autoreleasing *)error {
     if (self = [super init]) {
         if (paths==nil) {
             paths = @[];
@@ -324,12 +323,13 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         
         optionCount = (int)[buildOptions count] + 1;
+        
         optionsArray = new JavaVMOption[optionCount];
+        memset(optionsArray, 0, optionCount * sizeof(JavaVMOption));
+
         optionsArray[0].optionString = const_cast<char *>("vfprintf");
         optionsArray[0].extraInfo = (void *)my_vfprintf;
-        for (int j=1; j<optionCount; ++j) {
-            optionsArray[j].optionString = NULL;
-        }
+        
         int i = 1;
         for (NSString *option in buildOptions) {
             char *buffer = [EJJvm createCString:option];
@@ -386,13 +386,18 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     
 }
 
-- (bool)createJvm:(NSError**)error {
+- (bool)createJvm:(NSError * __autoreleasing *)error {
     // R"(Maybe use raw strings?)";
     JavaVMInitArgs vm_args; /* JDK/JRE 6 VM initialization arguments */
     vm_args.version = JNI_VERSION_1_6;
     vm_args.nOptions = optionCount;
     vm_args.options = optionsArray;
-    vm_args.ignoreUnrecognized = JNI_FALSE;
+    vm_args.ignoreUnrecognized = JNI_TRUE; // With this set to JNI_FALSE, the JVM initialization failed with settings like -Xmanagement:... and -XXrunjdwp:...
+
+    NSLog(@"JVM Options:");
+    for (int i=0; i<optionCount; ++i) {
+        NSLog(@"%s", optionsArray[i].optionString);
+    }
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
 //    NSLog(@"Calling createJavaVM()");
@@ -480,7 +485,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 NSLog(@"%@", [error description]);
             }
             else {
-                env->CallStaticVoidMethod(cls.theclass, redirect);
+                env->CallStaticVoidMethod(cls.theClass, redirect);
                 if (env->ExceptionCheck()) {
                     env->ExceptionDescribe();
                     env->ExceptionClear();

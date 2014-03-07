@@ -31,8 +31,12 @@ The JVM loading code looks for properties in the applications bundle info dictio
     - -Xmx1500m
 
 Tips
+- Debugging Objective-C: Disable JIT compilation with -Djava.compiler=NONE when running under the XCode debugger.  Otherwise you will drown in a sea of SIGSEGV and SIGBUS signals.
+- Debugging JVM code: Disable the XCode debugger.  If you run under the XCode debugger and attempt to connect a JVM debugger or even Java Mission Control, you will again face a deluge of SIGSEGV and SIGBUS signals.
 - Use the -Xcheck:jni and -verbose:jni options while working out JNI issues
-- Disable JIT compilation with -Djava.compiler=NONE when you encounter mysterious issues.
+- Use -Xmanagement:port=7091,ssl=false,authenticate=false,autodiscovery=true to easily
+  connect to Java Mission Control for advanced JVM monitoring. Tighten up security options (ssl, authenticate) as necessary.
+  Make sure to turn the App Sandbox OFF in order to debug with the Java Mission Control. (I tried enabling "incoming network" capability instead but was not able to use Java Mission Control without getting out of the sandbox.)
 
 Code Sample
 

@@ -18,7 +18,7 @@
 @end
 
 @implementation EJClass
-- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError**)error {
+- (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
     self = [super init];
     if (self) {
         cls = env->FindClass([className cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -36,10 +36,10 @@
     }
     return self;
 }
-- (jclass)jclass {
+- (jclass)theClass {
     return cls;
 }
-- (jobject) createObject:(JNIEnv *)env error:(NSError**)error {
+- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
     /*
      TODO: Variable arg list. http://www.cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html
      va_list args;
@@ -70,7 +70,7 @@
     }
     return obj;
 }
-- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error {
+- (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
     jmethodID m = env->GetMethodID(cls,
                                    [methodName cStringUsingEncoding:NSASCIIStringEncoding],
                                    [methodSignature cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -83,7 +83,7 @@
     }
     return m;
 }
-- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError**)error {
+- (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
     jmethodID m = env->GetStaticMethodID(cls,
                                          [methodName cStringUsingEncoding:NSASCIIStringEncoding],
                                          [methodSignature cStringUsingEncoding:NSASCIIStringEncoding]);
@@ -96,7 +96,7 @@
     }
     return m;
 }
-- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError**)error {
+- (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
     jint ret = env->RegisterNatives(cls, methods, count);
     if (ret!=0) {
         [self clearJvmException:env];
