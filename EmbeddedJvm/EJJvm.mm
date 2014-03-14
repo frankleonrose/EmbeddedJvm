@@ -1,5 +1,5 @@
 //
-//  EmbeddedJvm.mm
+//  EJJvm.mm
 //  EmbeddedJvm
 //
 //  Created by Frank on 2013/10/1.

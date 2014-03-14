@@ -27,10 +27,72 @@
  @return the EJClass wrapper or nil on error.
  */
 - (id) initWithClassName:(NSString *)className env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+/**
+ Create an object of the represented class using the default (no parameter) constructor.
+ 
+ @param env The JNIEnv for the current operation.  Presumably you passed a void(^)(JNIEnv* env) block to EJJvm
+ doWithJvmThread and you are now within that block with a valid JNIEnv.
+ @param error Optional error reporting.  If this method returns nil, the NSError object will contain
+ information about what happened.  Pass nil to ignore error report.
+ 
+ @return the newly created jobject or nil on error.
+ */
 - (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error; // Support passing signature and variable arg lists
+/**
+ Retrieve the jmethodID for an object method on the represented class.
+ 
+ @param methodName the name of the method
+ @param methodSignature the method signature in JNI string format.  For example, "(L/java/lang/String;I[B)V" is the signature of a method taking String, int, and an array of bytes, returning void.
+ @param env The JNIEnv for the current operation.  @see initWithClassName:env:error:
+ @param error Optional error reporting.  @see initWithClassName:env:error:
+ 
+ @return the jmethodID or nil on error.
+ */
 - (jmethodID) getObjectMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+/**
+ Retrieve the jmethodID for a static method on the represented class.
+ 
+ @param methodName the name of the method
+ @param methodSignature the method signature in JNI string format.  For example, "(L/java/lang/String;I[B)V" is the signature of a method taking String, int, and an array of bytes, returning void.
+ @param env The JNIEnv for the current operation.  @see initWithClassName:env:error:
+ @param error Optional error reporting.  @see initWithClassName:env:error:
+ 
+ @return the jmethodID or nil on error.
+ */
 - (jmethodID) getStaticMethod:(NSString *)methodName signature:(NSString *)methodSignature env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+/**
+ Register C function calls to be linked to Java native methods.
+ 
+ The following is an example of the method table to pass to registerNativeMethods.
+ 
+<code>
+ 
+     // Forward declaration of cFunction
+     JNIEXPORT jbyteArray cFunction(JNIEnv *env, jobject obj, jbyteArray bytes);
+ 
+     static JNINativeMethod method_table[] = {
+         { const_cast<char *>("javaMethodName"), const_cast<char *>("([B)[B"), (void *) cFunction }
+         // The identical entry using a convenience macro for all the casts
+         EJ_JVM_NATIVE("javaMethodName", "([B)[B", cFunction),
+     };
+ 
+</code>
+ 
+ @param methods an array of JNINativeMethod structures
+ @param count the count of JNINativeMethod structures in the array
+ @param env The JNIEnv for the current operation.  @see initWithClassName:env:error:
+ @param error Optional error reporting.  @see initWithClassName:env:error:
+ 
+ @return YES if successful, NO if unsuccessful.
+ */
 - (BOOL) registerNativeMethods:(JNINativeMethod *)methods count:(int)count env:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+/**
+ Print the names and signatures of the methods of the represented class.
+
+ This method is useful when debugging signatures.
+ 
+ @param env The JNIEnv for the current operation.  @see initWithClassName:env:error:
+ */
 - (void) printMethods:(JNIEnv *)env;
 
 /**
