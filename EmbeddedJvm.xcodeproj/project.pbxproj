@@ -20,6 +20,7 @@
 		010C4D6D17FBB69F0015C86D /* jvmti.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6517FBB69F0015C86D /* jvmti.h */; };
 		010C4D6E17FBB69F0015C86D /* jvmticmlr.h in Headers */ = {isa = PBXBuildFile; fileRef = 010C4D6617FBB69F0015C86D /* jvmticmlr.h */; };
 		011DA20D17FDAFEB00CCD96A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010C4D4617FBB2DA0015C86D /* XCTest.framework */; };
+		0127551C18D4C9BC0086234A /* Java in Resources */ = {isa = PBXBuildFile; fileRef = 0127551B18D4C9BC0086234A /* Java */; };
 		014DC17318C79D5E00E939E5 /* EJClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 014DC16F18C79D5E00E939E5 /* EJClass.h */; };
 		014DC17418C79D5E00E939E5 /* EJClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = 014DC17018C79D5E00E939E5 /* EJClass.mm */; };
 		014DC17518C79D5E00E939E5 /* EJJvm.h in Headers */ = {isa = PBXBuildFile; fileRef = 014DC17118C79D5E00E939E5 /* EJJvm.h */; };
@@ -88,6 +89,7 @@
 		010C4D6517FBB69F0015C86D /* jvmti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmti.h; sourceTree = "<group>"; };
 		010C4D6617FBB69F0015C86D /* jvmticmlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jvmticmlr.h; sourceTree = "<group>"; };
 		011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EmbeddedJvmTests.mm; path = ../EmbeddedJvmTests/EmbeddedJvmTests.mm; sourceTree = "<group>"; };
+		0127551B18D4C9BC0086234A /* Java */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Java; sourceTree = "<group>"; };
 		014DC16F18C79D5E00E939E5 /* EJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EJClass.h; sourceTree = "<group>"; };
 		014DC17018C79D5E00E939E5 /* EJClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EJClass.mm; sourceTree = "<group>"; };
 		014DC17118C79D5E00E939E5 /* EJJvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EJJvm.h; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
+				0127551B18D4C9BC0086234A /* Java */,
 				01C90C16188481FA00873596 /* LICENSE.md */,
 				01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */,
 				018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */,
@@ -339,6 +342,7 @@
 			files = (
 				018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */,
 				01C90C17188481FA00873596 /* LICENSE.md in Resources */,
+				0127551C18D4C9BC0086234A /* Java in Resources */,
 				0153370317FE04A6001D4DD4 /* Readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
