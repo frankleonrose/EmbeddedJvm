@@ -15,11 +15,11 @@ Pod::Spec.new do |s|
   s.platform     = :osx, '10.7'
 
   s.source       = { :git => "https://github.com/esorf/EmbeddedJvm.git", :tag => "v#{s.version}" }
-  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}', 'CopyJavaToPluginsFolder.sh', 'LICENSE.md'
+  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}', 'CopyJavaToPluginsFolder.sh'
 
   s.library = 'stdc++'
   s.requires_arc = true
   s.compiler_flags = '-DOS_OBJECT_USE_OBJC=0'
 
-  s.preserve_paths = 'Java/**/*.java'
+  s.preserve_paths = 'Java/**/*.java', 'LICENSE.md'
 end
