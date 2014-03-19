@@ -28,14 +28,14 @@ JNIEXPORT void JNICALL EmbeddedJvmOutputStream_open(JNIEnv *env, jobject obj, js
 JNIEXPORT void JNICALL EmbeddedJvmOutputStream_flush(JNIEnv *env, jobject obj);
 JNIEXPORT void JNICALL EmbeddedJvmOutputStream_close(JNIEnv *env, jobject obj);
 
-NSData *jbytesToData(jbyteArray bytes, JNIEnv *env) {
+NSData *EJJBytesToData(jbyteArray bytes, JNIEnv *env) {
     jsize length = env->GetArrayLength(bytes);
     jboolean isCopy = false;
     jbyte *jbytes = env->GetByteArrayElements(bytes, &isCopy);
     return [NSData dataWithBytes:jbytes length:length];
 }
 
-jbyteArray dataToJbytes(NSData *data, JNIEnv *env) {
+jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env) {
     assert([data length]<=INT_MAX);
     jsize responseSize = (int)[data length];
     jbyteArray response = env->NewByteArray(responseSize);
@@ -603,7 +603,7 @@ static jint JNICALL my_vfprintf(FILE *fp, const char *format, va_list args)
 }
 
 JNIEXPORT void JNICALL EmbeddedJvmOutputStream_write(JNIEnv *env, jobject obj, jbyteArray bytes, jint offset, jint len) {
-    NSData *data = jbytesToData(bytes, env);
+    NSData *data = EJJBytesToData(bytes, env);
     NSData *section = [data subdataWithRange:NSMakeRange(offset, len)];
     NSString *s = [[NSString alloc] initWithData:section encoding:NSUTF8StringEncoding];
     NSLog(@"%@", s);

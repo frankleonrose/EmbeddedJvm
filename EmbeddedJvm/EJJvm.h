@@ -11,8 +11,8 @@
 
 #define EJ_JVM_NATIVE(name, signature, fn) { const_cast<char *>(name), const_cast<char *>(signature), (void *) fn }
 
-NSData *jbytesToData(jbyteArray bytes, JNIEnv *env);
-jbyteArray dataToJbytes(NSData *data, JNIEnv *env);
+NSData *EJJBytesToData(jbyteArray bytes, JNIEnv *env);
+jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env);
 
 /**
  EJJvm presents a block-based interface to a JVM hosted in your app.
