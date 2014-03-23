@@ -36,8 +36,8 @@ Tips
 ----
 
 - Debugging Objective-C: When hosting a JVM under LLDB, the debugger will stop every time a SIGSEGV or SIGBUS signal is thrown, which is many times. Oddly, the JVM option '-Xrs' (reduce signal use) was NOT effective here. Two options to enable debugging without constant interruption are:
-    1. Add a Symbolic Breakpoint that configures the debugger to ignore the signals. ![Symbolic Breakpoint disabling SIGSEGV and SIGBUS](Readme-img1.png)
-       ([Thanks, puzzle on stackoverflow.](http://stackoverflow.com/a/10456557/1207583))
+    1. Add a Symbolic Breakpoint that configures the debugger to ignore the signals. ([Thanks, puzzle on stackoverflow.](http://stackoverflow.com/a/10456557/1207583))
+        ![Symbolic Breakpoint disabling SIGSEGV and SIGBUS](Readme-img1.png)
     2. Disable JIT compilation with -Djava.compiler=NONE
 - Use the -Xcheck:jni and -verbose:jni options while working out JNI issues
 - Use -Xmanagement:port=7091,ssl=false,authenticate=false,autodiscovery=true to easily
@@ -98,7 +98,7 @@ Code Sample
             return;
         }
         // This example using an array of bytes for both input and output.
-        // Of course the env->Call*Method set of methods support simpler data types, too.
+        // Of course the env->Call*Method set of methods support other data types, too.
         NSData *data = ... // input data
         jbyteArray bytes = EJDataToJBytes(data, env); // Utility function
         jbyteArray out = (jbyteArray)env->CallObjectMethod(obj, bytesInAndOut, bytes);

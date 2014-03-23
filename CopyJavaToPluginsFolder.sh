@@ -32,8 +32,8 @@ then
 
   # Remove the two files referring to the now-deprecated (10.9) QTKit
   # otool -L $appJREBundle/Contents/Home/jre/lib/*dylib | grep QTKit should yield nothing
-  rm $appJREBundle/Contents/Home/lib/libgstplugins-lite.dylib
-  rm $appJREBundle/Contents/Home/lib/libjfxmedia.dylib
+  rm -f $appJREBundle/Contents/Home/lib/libgstplugins-lite.dylib
+  rm -f $appJREBundle/Contents/Home/lib/libjfxmedia.dylib
 else
   echo Linking $javaBundle to $copyTo
 # s: symbolic link
