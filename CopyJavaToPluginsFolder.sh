@@ -65,7 +65,7 @@ done
 # and http://www.bornsleepy.com/bornsleepy/signing-nested-app-bundles
 if [ $CONFIGURATION = "Release" ]
 then
-  cd /Users/frank/Futurose/Fotocount/FotocountMac
+  cd $PROJECT_DIR
   CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
 
   entitlements=$PROJECT_DIR/$CODE_SIGN_ENTITLEMENTS
@@ -73,7 +73,7 @@ then
   appIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH")
   jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
   echo Signing all .jar files in $jarPath with $appIdentifier
-  find "$jarPath" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -print -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$appIdentifier" {} \;
+  find "$jarPath" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$appIdentifier" {} \;
 
   jreIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$javaInfoPlist")
 
