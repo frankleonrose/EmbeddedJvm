@@ -33,7 +33,7 @@ jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env);
  // @see -dataTaskWithRequest:completionHandler:
  // @warning Some warning
  */
-- (EJJvm*) initWithClassPaths:(NSArray*)path options:(NSDictionary*)options error:(NSError * __autoreleasing *)error;
+- (EJJvm*) initWithClassPaths:(NSArray*)path options:(NSArray*)options error:(NSError * __autoreleasing *)error;
 
 - (void) close;
 
@@ -48,7 +48,9 @@ jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env);
  
  @param block The block of work that needs to happen on the JVM thread.
  */
-- (void) doWithJvmThread:(void(^)(JNIEnv* env))block;
+- (void) callJvmSyncVoid:(void(^)(JNIEnv* env))block;
+- (int) callJvmSyncInt:(int(^)(JNIEnv* env))block;
+- (id) callJvmSyncObject:(id(^)(JNIEnv* env))block;
 //- (JNIEnv *) getEnv;
 @end
 

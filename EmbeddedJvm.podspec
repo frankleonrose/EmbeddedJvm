@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "EmbeddedJvm"
-  s.version      = "0.0.16"
+  s.version      = "0.0.17"
   s.summary      = "EmbeddedJvm simplifies communicating with an embedded JVM."
   s.description  = <<-DESC
                    EmbeddedJvm loads a JRE into an Objective-C app and presents

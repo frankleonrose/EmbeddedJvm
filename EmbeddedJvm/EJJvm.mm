@@ -546,19 +546,67 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 //    NSLog(@"Done running commands");
 }
 
-- (void) doWithJvmThread:(void(^)(JNIEnv* env))block {
-//    NSLog(@"Enqueuing command to JVM queue");
+- (void)enqueueCommand:(void(^)(JNIEnv *))block {
+    //    NSLog(@"Enqueuing command to JVM queue");
     @synchronized(self.commands) {
         [self.commands addObject:block];
     }
+    
+    // Notify runLoop that it should wake up and process commands...
     if (self.runLoop!=nil && self.runLoopSource!=nil) {
-//        NSLog(@"Alerting JVM runloop about new command");
+        //        NSLog(@"Alerting JVM runloop about new command");
         CFRunLoopSourceSignal(self.runLoopSource);
         CFRunLoopWakeUp(self.runLoop);
     }
     else {
-//        NSLog(@"JVM runloop not yet started");
+        //        NSLog(@"JVM runloop not yet started");
     }
+}
+
+- (void) callJvmSyncVoid:(void(^)(JNIEnv *))block {
+    dispatch_semaphore_t done = dispatch_semaphore_create(0);
+    
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        block(blockEnv);
+        dispatch_semaphore_signal(done);
+    };
+    
+    [self enqueueCommand:blockWithDone];
+
+    dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
+    dispatch_release(done);
+}
+
+- (int) callJvmSyncInt:(int(^)(JNIEnv* env))block {
+    dispatch_semaphore_t done = dispatch_semaphore_create(0);
+    
+    int __block ret = 0;
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        ret = block(blockEnv);
+        dispatch_semaphore_signal(done);
+    };
+    
+    [self enqueueCommand:blockWithDone];
+    
+    dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
+    dispatch_release(done);
+    return ret;
+}
+
+- (id) callJvmSyncObject:(id(^)(JNIEnv* env))block {
+    dispatch_semaphore_t done = dispatch_semaphore_create(0);
+    
+    id __block ret = 0;
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        ret = block(blockEnv);
+        dispatch_semaphore_signal(done);
+    };
+    
+    [self enqueueCommand:blockWithDone];
+    
+    dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
+    dispatch_release(done);
+    return ret;
 }
 
 - (JNIEnv *) getEnv {
