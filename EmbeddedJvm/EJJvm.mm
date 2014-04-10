@@ -67,12 +67,14 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     JavaVM *jvm;       /* denotes a Java VM */
     JNIEnv *env;       /* pointer to native method interface */
 
+    dispatch_semaphore_t mainThreadEndSignal;
 }
 @property NSString *classpath;
 @property NSThread* mainThread;
 @property NSMutableArray* commands;
 @property CFRunLoopRef runLoop;
 @property CFRunLoopSourceRef runLoopSource;
+@property BOOL shutdown;
 -(void)doCommand;
 @end
 
@@ -209,6 +211,9 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 - (EJJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError * __autoreleasing *)error {
     if (self = [super init]) {
+        self.shutdown = NO;
+        self->mainThreadEndSignal = dispatch_semaphore_create(0);
+        
         if (paths==nil) {
             paths = @[];
         }
@@ -383,7 +388,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 -(void)close {
-    
+    [self destroy];
 }
 
 - (bool)createJvm:(NSError * __autoreleasing *)error {
@@ -422,6 +427,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     [self createJvm:&error];
     if (error!=nil) {
         // TODO: Send error back to caller
+        NSLog(@"Error creating JVM: %@", error);
         return;
     }
     NSLog(@"Created JVM in main thread");
@@ -445,7 +451,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     [self doCommand]; // Run all the commands queued while waiting for this thread to start.
 
     bool threadTerminated = false;
-    while (!threadTerminated) {
+    while (!threadTerminated && !self.shutdown) {
         bool sourceOrTimeout = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1]];
         if (!sourceOrTimeout) {
             NSLog(@"Failed to start run loop in EmbeddedJvm");
@@ -453,7 +459,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         [self doCommand];
     }
+    
+    /* We are done. */
+    jint result = jvm->DestroyJavaVM();
+    if (result!=0) {
+        NSString *msg = [NSString stringWithFormat:@"Failed to destroy JVM with error code: %d", result];
+        NSLog(@"%@", msg);
+    }
+    
+    if (jvmlib!=NULL) {
+        dlclose(jvmlib);
+        jvmlib = NULL;
+    }
+    if (jreBundle!=NULL) {
+        CFRelease(jreBundle);
+        jreBundle = NULL;
+    }
+
     NSLog(@"Terminated EmbeddedJvm main thread");
+    dispatch_semaphore_signal(self->mainThreadEndSignal);
 }
 
 #define NATIVE_OUTPUT_CLASS @"com/futurose/embeddedjvm/EmbeddedJvmOutputStream"
@@ -496,18 +520,15 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (void)destroy {
-    /* We are done. */
-    jint result = jvm->DestroyJavaVM();
-    if (result!=0) {
-        NSString *msg = [NSString stringWithFormat:@"Failed to destroy JVM with error code: %d", result];
-        NSLog(@"%@", msg);
-    }
-    if (jvmlib!=NULL) {
-        dlclose(jvmlib);
-    }
-    if (jreBundle!=nil) {
-        CFRelease(jreBundle);
-    }
+    // PoisonPill block that sets shutdown=YES so that main thread knows to terminate
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        self.shutdown = YES;
+    };
+    
+    [self enqueueCommand:blockWithDone];
+    
+    dispatch_semaphore_wait(self->mainThreadEndSignal, DISPATCH_TIME_FOREVER);
+    dispatch_release(self->mainThreadEndSignal);
 }
 
 -(void)doCommand {
@@ -685,6 +706,8 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
     EJJvm *host = (__bridge EJJvm*)(info);
     [host setRunLoop:nil];
-    NSLog(@"Unexpected cancelation of run loop source");
+    if (!host.shutdown) {
+        NSLog(@"Unexpected cancelation of run loop source");
+    }
 }
 
