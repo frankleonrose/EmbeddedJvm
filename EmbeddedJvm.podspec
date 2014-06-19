@@ -15,11 +15,27 @@ Pod::Spec.new do |s|
   s.platform     = :osx, '10.7'
 
   s.source       = { :git => "https://github.com/esorf/EmbeddedJvm.git", :tag => "v#{s.version}" }
-  s.source_files  = 'EmbeddedJvm/**/*.{h,m,mm}', 'CopyJavaToPluginsFolder.sh'
 
   s.library = 'stdc++'
   s.requires_arc = true
   s.compiler_flags = '-DOS_OBJECT_USE_OBJC=0'
 
   s.preserve_paths = 'Java/**/*.java', 'LICENSE.md'
+  
+  s.default_subspec = 'Core'
+  
+  s.subspec "Core" do |sp|
+    sp.source_files  = 'EmbeddedJvm/*.{h,m,mm}', 'EmbeddedJvm/jdk/**/*.h', 'CopyJavaToPluginsFolder.sh'
+  end
+
+  s.subspec "Thrift" do |sp|
+    sp.source_files = "EmbeddedJvm/Thrift/*.{h,m,mm}"
+    sp.dependency "EmbeddedJvm/Core"
+    sp.dependency 'thrift', '~> 0.9.1'
+  end
+
+  #subspec "Protobuf" do |sp|
+  #  sp.source_files = "Classes/Pinboard"
+  #  sp.dependency 'protobuf'
+  #end
 end
