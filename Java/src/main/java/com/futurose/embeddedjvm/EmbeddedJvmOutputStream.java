@@ -37,12 +37,8 @@ public class EmbeddedJvmOutputStream extends OutputStream {
 	}
 	
 	static void redirectStandardStreams() throws Exception {
-		try {
-			System.setOut(new PrintStream(new EmbeddedJvmOutputStream("out")));
-			System.setErr(new PrintStream(new EmbeddedJvmOutputStream("err")));
-		} catch (Throwable e) {
-			// Redirect failed. Don't worry.
-		}
+		System.setOut(new PrintStream(new EmbeddedJvmOutputStream("out")));
+		System.setErr(new PrintStream(new EmbeddedJvmOutputStream("err")));
 	}
 	
 	native void nativeWrite(byte[] bytes, int off, int len);

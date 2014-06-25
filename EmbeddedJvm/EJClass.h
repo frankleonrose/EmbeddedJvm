@@ -37,7 +37,21 @@
  
  @return the newly created jobject or nil on error.
  */
-- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error; // Support passing signature and variable arg lists
+- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error;
+/**
+ Create an object of the represented class using the default (no parameter) constructor.
+ 
+ @param env The JNIEnv for the current operation.  Presumably you passed a void(^)(JNIEnv* env) block to EJJvm
+ doWithJvmThread and you are now within that block with a valid JNIEnv.
+ @param error Optional error reporting.  If this method returns nil, the NSError object will contain
+ information about what happened.  Pass nil to ignore error report.
+ @param signature Required constructor signature in JNI string format. Constructor signature return value must be 'V'.
+ For example, "([L/java/lang/String;)V" is the signature of a constructor taking an array of String.
+ @param ... Variable argument list of JNI types passed to constructor.
+ 
+ @return the newly created jobject or nil on error.
+ */
+- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error signature:(NSString *)signature, ...;
 /**
  Retrieve the jmethodID for an object method on the represented class.
  

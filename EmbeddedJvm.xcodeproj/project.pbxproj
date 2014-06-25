@@ -35,7 +35,13 @@
 		018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */; };
 		01BB540E1952674500AADB92 /* EJThriftChannelTransport.h in Headers */ = {isa = PBXBuildFile; fileRef = 01BB540C1952674500AADB92 /* EJThriftChannelTransport.h */; };
 		01BB540F1952674500AADB92 /* EJThriftChannelTransport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01BB540D1952674500AADB92 /* EJThriftChannelTransport.mm */; };
+		01C46AAD1959E9B1000FF725 /* EmbeddedJvmTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C46AAC1959E9B1000FF725 /* EmbeddedJvmTest.m */; };
+		01C5C709195747AA00C4ED90 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 01C5C708195747AA00C4ED90 /* Podfile */; };
+		01C5C70E1958876500C4ED90 /* EJClassTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C5C70D1958876500C4ED90 /* EJClassTest.m */; };
+		01C5C7121958879800C4ED90 /* EJThriftTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C5C7111958879800C4ED90 /* EJThriftTest.m */; };
 		01C90C17188481FA00873596 /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 01C90C16188481FA00873596 /* LICENSE.md */; };
+		1A95CB3AD2C8465B9F59C29F /* libPods-EmbeddedJvmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957A0933E4CC4097BA955E1E /* libPods-EmbeddedJvmTests.a */; };
+		C222B9D4293F4D40BAB372BD /* libPods-EmbeddedJvm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 093BD26186FD483DAD821D55 /* libPods-EmbeddedJvm.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,8 +111,18 @@
 		018D38E01839349E00F12EF2 /* EmbeddedJvm.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EmbeddedJvm.podspec; sourceTree = "<group>"; };
 		01BB540C1952674500AADB92 /* EJThriftChannelTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EJThriftChannelTransport.h; path = Thrift/EJThriftChannelTransport.h; sourceTree = "<group>"; };
 		01BB540D1952674500AADB92 /* EJThriftChannelTransport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = EJThriftChannelTransport.mm; path = Thrift/EJThriftChannelTransport.mm; sourceTree = "<group>"; };
+		01C46AA61959DD50000FF725 /* EmbeddedJvmTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvmTests.h; sourceTree = "<group>"; };
+		01C46AAB1959E9B1000FF725 /* EmbeddedJvmTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvmTest.h; sourceTree = "<group>"; };
+		01C46AAC1959E9B1000FF725 /* EmbeddedJvmTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmbeddedJvmTest.m; sourceTree = "<group>"; };
+		01C5C708195747AA00C4ED90 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		01C5C70D1958876500C4ED90 /* EJClassTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EJClassTest.m; sourceTree = "<group>"; };
+		01C5C7111958879800C4ED90 /* EJThriftTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EJThriftTest.m; sourceTree = "<group>"; };
 		01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = CopyJavaToPluginsFolder.sh; sourceTree = "<group>"; };
 		01C90C16188481FA00873596 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.md; sourceTree = "<group>"; };
+		093BD26186FD483DAD821D55 /* libPods-EmbeddedJvm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EmbeddedJvm.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		55022E075277451B9E6DBE74 /* Pods-EmbeddedJvmTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmbeddedJvmTests.xcconfig"; path = "Pods/Pods-EmbeddedJvmTests.xcconfig"; sourceTree = "<group>"; };
+		957A0933E4CC4097BA955E1E /* libPods-EmbeddedJvmTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EmbeddedJvmTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4EC3513CC6E4A05ACE47A06 /* Pods-EmbeddedJvm.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmbeddedJvm.xcconfig"; path = "Pods/Pods-EmbeddedJvm.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				010C4D3217FBB2D90015C86D /* Cocoa.framework in Frameworks */,
+				C222B9D4293F4D40BAB372BD /* libPods-EmbeddedJvm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +142,7 @@
 				011DA20D17FDAFEB00CCD96A /* XCTest.framework in Frameworks */,
 				010C4D4817FBB2DA0015C86D /* Cocoa.framework in Frameworks */,
 				010C4D4B17FBB2DA0015C86D /* EmbeddedJvm.framework in Frameworks */,
+				1A95CB3AD2C8465B9F59C29F /* libPods-EmbeddedJvmTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +152,7 @@
 		010C4D2417FBB2D90015C86D = {
 			isa = PBXGroup;
 			children = (
+				01C5C708195747AA00C4ED90 /* Podfile */,
 				0127551B18D4C9BC0086234A /* Java */,
 				01C90C16188481FA00873596 /* LICENSE.md */,
 				01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */,
@@ -143,6 +162,8 @@
 				010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */,
 				010C4D3017FBB2D90015C86D /* Frameworks */,
 				010C4D2F17FBB2D90015C86D /* Products */,
+				55022E075277451B9E6DBE74 /* Pods-EmbeddedJvmTests.xcconfig */,
+				A4EC3513CC6E4A05ACE47A06 /* Pods-EmbeddedJvm.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +182,8 @@
 				010C4D3117FBB2D90015C86D /* Cocoa.framework */,
 				010C4D4617FBB2DA0015C86D /* XCTest.framework */,
 				010C4D3317FBB2D90015C86D /* Other Frameworks */,
+				957A0933E4CC4097BA955E1E /* libPods-EmbeddedJvmTests.a */,
+				093BD26186FD483DAD821D55 /* libPods-EmbeddedJvm.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -203,7 +226,11 @@
 		010C4D4C17FBB2DA0015C86D /* EmbeddedJvmTests */ = {
 			isa = PBXGroup;
 			children = (
+				01C46AAA1959E9B1000FF725 /* Generated */,
+				01C46AA61959DD50000FF725 /* EmbeddedJvmTests.h */,
 				011DA20B17FDAF1500CCD96A /* EmbeddedJvmTests.mm */,
+				01C5C70D1958876500C4ED90 /* EJClassTest.m */,
+				01C5C7111958879800C4ED90 /* EJThriftTest.m */,
 				010C4D4D17FBB2DA0015C86D /* Supporting Files */,
 			);
 			path = EmbeddedJvmTests;
@@ -260,6 +287,15 @@
 			name = Thrift;
 			sourceTree = "<group>";
 		};
+		01C46AAA1959E9B1000FF725 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				01C46AAB1959E9B1000FF725 /* EmbeddedJvmTest.h */,
+				01C46AAC1959E9B1000FF725 /* EmbeddedJvmTest.m */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -290,12 +326,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 010C4D5617FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvm" */;
 			buildPhases = (
+				B57719CA9351426B802E7D1E /* Check Pods Manifest.lock */,
 				010C4D2917FBB2D90015C86D /* Sources */,
 				010C4D2A17FBB2D90015C86D /* Frameworks */,
 				010C4D2B17FBB2D90015C86D /* Headers */,
 				010C4D2C17FBB2D90015C86D /* Resources */,
 				0153370117FE040F001D4DD4 /* CopyFiles */,
 				012C0AC018C02325007F0151 /* ShellScript */,
+				8760FA9B70EB4B30A98E6322 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -310,10 +348,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 010C4D5917FBB2DA0015C86D /* Build configuration list for PBXNativeTarget "EmbeddedJvmTests" */;
 			buildPhases = (
+				7C85C3A693414BE78BD38743 /* Check Pods Manifest.lock */,
 				010C4D4117FBB2DA0015C86D /* Sources */,
 				010C4D4217FBB2DA0015C86D /* Frameworks */,
 				010C4D4317FBB2DA0015C86D /* Resources */,
 				015336EB17FDBA13001D4DD4 /* CopyFiles */,
+				9EC0C31A4FAA4AA7AE95BF17 /* Copy Pods Resources */,
+				01C5C70A1957DC3600C4ED90 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -362,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01C5C709195747AA00C4ED90 /* Podfile in Resources */,
 				018D38E11839349E00F12EF2 /* EmbeddedJvm.podspec in Resources */,
 				01C90C17188481FA00873596 /* LICENSE.md in Resources */,
 				0127551C18D4C9BC0086234A /* Java in Resources */,
@@ -393,6 +435,79 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/appledoc -o Docs --project-name EmbeddedJvm --project-company Futurose --company-id com.futurose.embeddedjvm --create-docset ${SOURCE_ROOT}/EmbeddedJvm/*.mm EmbeddedJvm/*.h";
 		};
+		01C5C70A1957DC3600C4ED90 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd Java\npwd\nmkdir src/test/generated 2>/dev/null\n/usr/local/bin/thrift --out src/test/generated --gen java src/test/thrift/EmbeddedJvmTest.thrift\n/opt/local/bin/mvn test-compile package\n#thrift --out EmbeddedJvmTests/Generated --gen cocoa Java/src/test/thrift/EmbeddedJvmTest.thrift\n";
+		};
+		7C85C3A693414BE78BD38743 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8760FA9B70EB4B30A98E6322 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-EmbeddedJvm-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9EC0C31A4FAA4AA7AE95BF17 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-EmbeddedJvmTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B57719CA9351426B802E7D1E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -411,7 +526,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01C5C7121958879800C4ED90 /* EJThriftTest.m in Sources */,
 				015336E717FDB0F3001D4DD4 /* EmbeddedJvmTests.mm in Sources */,
+				01C5C70E1958876500C4ED90 /* EJClassTest.m in Sources */,
+				01C46AAD1959E9B1000FF725 /* EmbeddedJvmTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +645,7 @@
 		};
 		010C4D5717FBB2DA0015C86D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4EC3513CC6E4A05ACE47A06 /* Pods-EmbeddedJvm.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -545,6 +664,7 @@
 		};
 		010C4D5817FBB2DA0015C86D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4EC3513CC6E4A05ACE47A06 /* Pods-EmbeddedJvm.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -563,6 +683,7 @@
 		};
 		010C4D5A17FBB2DA0015C86D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55022E075277451B9E6DBE74 /* Pods-EmbeddedJvmTests.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -584,6 +705,7 @@
 		};
 		010C4D5B17FBB2DA0015C86D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55022E075277451B9E6DBE74 /* Pods-EmbeddedJvmTests.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (

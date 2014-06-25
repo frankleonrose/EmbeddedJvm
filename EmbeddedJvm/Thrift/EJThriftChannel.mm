@@ -18,72 +18,103 @@
 #define DDLogInfo(a, ...) 
 #define DDLogDebug(a, ...)
 
-static EJThriftChannel *channel = nil; // TODO: pass channel to receiveEvent method to eliminate this global
-
 @interface EJThriftChannel ()
-#define STATUS_INITIAL 0
-#define STATUS_LOADED 1
-#define STATUS_FAILED -1
-@property int status;
-
 @property (nonatomic) id<EJThriftChannelDelegate> delegate;
 @property (nonatomic, strong) EJJvm *jvm;
+
 @property (nonatomic) jobject channelCounterpart;
-@property (nonatomic) jmethodID receiveCommandMethod;
+@property (nonatomic) jmethodID callHostToJvmMethod;
+@property (nonatomic) jmethodID closeMethod;
+
 @property (assign) dispatch_queue_t eventQueue;
 
--(jbyteArray)receiveEvent:(jbyteArray)bytes env:(JNIEnv *)env;
+-(jbyteArray)callJvmToHost:(jbyteArray)bytes env:(JNIEnv *)env;
+-(void)disconnect;
 @end
 
-JNIEXPORT jbyteArray receiveEvent(JNIEnv *env, jclass clazz, jbyteArray bytes) {
-    return [channel receiveEvent:bytes env:env];
+JNIEXPORT jbyteArray callJvmToHost(JNIEnv *env, jclass clazz, jlong channelObject, jbyteArray bytes) {
+    EJThriftChannel *channel = (__bridge EJThriftChannel *)((void *)channelObject);
+    return [channel callJvmToHost:bytes env:env];
+}
+
+static jlong channelObject = 0;
+JNIEXPORT jlong getChannel(JNIEnv *env, jclass clazz, jobject counter) {
+    jlong ret = channelObject;
+    channelObject = 0;
+    return ret;
+}
+
+JNIEXPORT void releaseChannel(JNIEnv *env, jclass clazz, jlong channelObject) {
+    // Use bride_transfer to assume responsibility for object.
+    EJThriftChannel *channel = (__bridge_transfer EJThriftChannel *)((void *)channelObject);
+    [channel disconnect];
 }
 
 static JNINativeMethod method_table[] = {
-    EJ_JVM_NATIVE("receiveEvent", "([B)[B", receiveEvent),
-    //    { const_cast<char *>("receiveEvent"), const_cast<char *>("([B)[B"), (void *) receiveEvent }
+    EJ_JVM_NATIVE("callJvmToHost", "(J[B)[B", callJvmToHost),
+    EJ_JVM_NATIVE("getChannel", "(Ljava/lang/Object;)J", getChannel),
+    EJ_JVM_NATIVE("releaseChannel", "(J)V", releaseChannel),
 };
 
 @implementation EJThriftChannel
--(id)initWithDelegate:(id<EJThriftChannelDelegate>)delegate {
+-(id)initWithDelegate:(id<EJThriftChannelDelegate>)delegate jvm:(EJJvm *)jvm channelClass:(NSString *)classname error:(NSError * __autoreleasing *)error {
     self = [super init];
     if (self) {
         self.delegate = delegate;
         
-        self.status = STATUS_INITIAL;
+        
         self.eventQueue = dispatch_queue_create("EJThriftChannel", DISPATCH_QUEUE_PRIORITY_DEFAULT);
         
-        NSError *error = nil;
-        self.jvm = [[EJJvm alloc] initWithClassPaths:nil options:nil error:&error];
-        if (self.jvm==nil) {
-            DDLogError(@"Failed to load JVM: %@", error);
-            return nil;
+        if (jvm==nil) {
+            // Create default JVM
+            jvm = [[EJJvm alloc] initWithClassPaths:nil options:nil error:error];
+            if (jvm==nil) {
+                return nil;
+            }
         }
-        else {
-            DDLogInfo(@"Loaded JVM");
-        }
-        [self.jvm callJvmSyncVoid:^(JNIEnv *env) {
+        self.jvm = jvm;
+        
+        *error = (NSError *)[self.jvm callJvmSyncObject:^(JNIEnv *env) {
             NSError *error = nil;
-            int status = [self connect:env error:&error];
-            if (status==STATUS_FAILED) {
-                DDLogError([error description]);
+            BOOL success = [self connect:env channelClass:classname error:&error];
+            if (!success) {
                 [self logException:env];
             }
+            return error;
         }];
-        
-        channel = self;
+        if (*error!=nil) {
+            return nil;
+        }
     }
     return self;
 }
 
 -(void)dealloc {
-    self.jvm = nil;
+    [self close];
     dispatch_release(self.eventQueue);
 }
 
 -(void)close {
-    [self.jvm close];
-    channel = nil;
+    dispatch_sync(self.eventQueue, ^{
+        if (self.jvm!=nil) {
+            // Capture properties
+            jmethodID closeMethod = self.closeMethod;
+            jobject channelCounterpart = self.channelCounterpart;
+            [self.jvm callJvmAsyncVoid:^(JNIEnv *env) {
+                if (channelCounterpart!=NULL) {
+                    if (closeMethod!=NULL) {
+                        env->CallObjectMethod(channelCounterpart, closeMethod);
+                    }
+                    env->DeleteGlobalRef(channelCounterpart);
+                }
+            } completion:nil];
+            self.jvm = nil;
+        }
+    });
+}
+
+-(void)disconnect {
+    NSLog(@"Calling disconnect");
 }
 
 -(void)logException:(JNIEnv *)env {
@@ -93,49 +124,43 @@ static JNINativeMethod method_table[] = {
     }
 }
 
-#define ENGINE_COMMANDS_CLASS @"com/futurose/fotocounter/EngineApi"
-
--(int)connect:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
-    if (self.status==STATUS_INITIAL) {
-        DDLogDebug(@"Connecting to Java class " ENGINE_COMMANDS_CLASS);
-        BOOL loading = YES;
+-(BOOL)connect:(JNIEnv *)env channelClass:(NSString *)classname error:(NSError * __autoreleasing *)error {
+    DDLogDebug(@"Connecting to Java class %@" classname);
+    BOOL loading = YES;
+    
+    EJClass *cls = [[EJClass alloc] initWithClassName:classname env:env error:error];
+    if (cls==nil) {
+        loading = NO;
+    }
+    if (loading) {
+        [cls printMethods:env];
         
-        EJClass *cls = [[EJClass alloc] initWithClassName:ENGINE_COMMANDS_CLASS env:env error:error];
-        if (cls==nil) {
+        self.callHostToJvmMethod = [cls getObjectMethod:@"callHostToJvm" signature:@"([B)[B" env:env error:error];
+        if (self.callHostToJvmMethod==nil) {
             loading = NO;
         }
-        if (loading) {
-            [cls printMethods:env];
-            
-            self.receiveCommandMethod = [cls getObjectMethod:@"receiveCommand" signature:@"([B)[B" env:env error:error];
-            if (self.receiveCommandMethod==nil) {
-                loading = NO;
-            }
-        }
-        if (loading) {
-            BOOL success = [cls registerNativeMethods:method_table count:1 env:env error:error];
-            if (!success) {
-                loading = NO;
-            }
-        }
-        if (loading) {
-            self.channelCounterpart = [cls createObject:env error:error];
-            if (self.channelCounterpart==nil) {
-                loading = NO;
-            }
-        }
-        if (loading) {
-            DDLogDebug(@"Connected successfully");
-            self.status = STATUS_LOADED;
-        }
-        else {
-            self.status = STATUS_FAILED;
+    }
+    if (loading) {
+        self.closeMethod = [cls getObjectMethod:@"close" signature:@"()V" env:env error:error];
+        if (self.closeMethod==nil) {
+            loading = NO;
         }
     }
-    return self.status;
+    if (loading) {
+        loading = [cls registerNativeMethods:method_table count:3 env:env error:error];
+    }
+    if (loading) {
+        assert(sizeof(EJThriftChannel *)<=sizeof(jobject)); // jobject memo type is at least as large as what we're putting in it
+        channelObject = (jlong)((__bridge_retained jobject)self);
+        self.channelCounterpart = [cls createObject:env error:error signature:@"()V"];
+        if (self.channelCounterpart==nil) {
+            loading = NO;
+        }
+    }
+    return loading; // YES means Loaded
 }
 
--(jbyteArray)receiveEvent:(jbyteArray)bytes env:(JNIEnv *)env {
+-(jbyteArray)callJvmToHost:(jbyteArray)bytes env:(JNIEnv *)env {
     //    NSLog(@"receiveEvent BEGIN %d", ++receiveCount);
     NSData *data = EJJBytesToData(bytes, env);
     
@@ -147,7 +172,7 @@ static JNINativeMethod method_table[] = {
     // Try dispatching so that we're not running this code on a Java thread.
     // dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
     dispatch_sync(self.eventQueue, ^{
-        id<TProcessor> processor = [self.delegate makeEventProcessor];
+        id<TProcessor> processor = [self.delegate makeProcessor];
         [processor processOnInputProtocol:inProtocol outputProtocol:outProtocol];
     });
     
@@ -159,40 +184,24 @@ static JNINativeMethod method_table[] = {
 
 - (void)doWithClient:(void(^)(NSObject *client))block {
     [self.jvm callJvmSyncVoid:^(JNIEnv *env) {
-        NSError *error = nil;
-        int status = [self connect:env error:&error];
-        if (error!=nil) {
-            DDLogError([error description]);
-            [self logException:env];
-        }
-        if (status==STATUS_LOADED) {
-            TMemoryBuffer *transport = [[EJThriftChannelTransport alloc] initWithEnv:env receiver:self.channelCounterpart andMethod:self.receiveCommandMethod];
-            TBinaryProtocol *protocol = [[TBinaryProtocol alloc] initWithTransport:transport];
-            
-            NSObject *client = [self.delegate makeCommandInterfaceWithProtocol:protocol];
-            
-            block(client);
-        }
+        TMemoryBuffer *transport = [[EJThriftChannelTransport alloc] initWithEnv:env receiver:self.channelCounterpart andMethod:self.callHostToJvmMethod];
+        TBinaryProtocol *protocol = [[TBinaryProtocol alloc] initWithTransport:transport];
+        
+        NSObject *client = [self.delegate makeClientWithProtocol:protocol];
+        
+        block(client);
     }];
 }
 
 - (id)doWithClientReturnObject:(id(^)(NSObject *client))block {
     return [self.jvm callJvmSyncObject:^(JNIEnv *env) {
-        NSError *error = nil;
-        int status = [self connect:env error:&error];
         id ret = nil;
-        if (error!=nil) {
-            DDLogError([error description]);
-            [self logException:env];
-        }
-        else if (status==STATUS_LOADED) {
-            TMemoryBuffer *transport = [[EJThriftChannelTransport alloc] initWithEnv:env receiver:self.channelCounterpart andMethod:self.receiveCommandMethod];
-            TBinaryProtocol *protocol = [[TBinaryProtocol alloc] initWithTransport:transport];
-            
-            NSObject *client = [self.delegate makeCommandInterfaceWithProtocol:protocol];
-            
-            ret = block(client);
-        }
+        TMemoryBuffer *transport = [[EJThriftChannelTransport alloc] initWithEnv:env receiver:self.channelCounterpart andMethod:self.callHostToJvmMethod];
+        TBinaryProtocol *protocol = [[TBinaryProtocol alloc] initWithTransport:transport];
+        
+        NSObject *client = [self.delegate makeClientWithProtocol:protocol];
+        
+        ret = block(client);
         return ret;
     }];
 }

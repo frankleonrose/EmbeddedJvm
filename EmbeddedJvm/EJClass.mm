@@ -23,12 +23,12 @@
     if (self) {
         cls = env->FindClass([className cStringUsingEncoding:NSASCIIStringEncoding]);
         if (cls==nil) {
-            self = nil;
             [self clearJvmException:env];
             if (error!=nil) {
                 NSString *msg = [NSString stringWithFormat:@"Could not find class \"%@\"", className];
                 *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
             }
+            self = nil;
         }
         else {
             self.name = className;
@@ -39,14 +39,34 @@
 - (jclass)theClass {
     return cls;
 }
+- (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error signature:(NSString *)sig, ... {
+    /* Variable arg list. http://www.cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html */
+    jmethodID ctorv = env->GetMethodID(cls, "<init>", [sig cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (ctorv==NULL) {
+        [self clearJvmException:env];
+        if (error!=nil) {
+            NSString *msg = [NSString stringWithFormat:@"Could not find method: %@ constructor", sig];
+            *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+        }
+    }
+    jobject obj = NULL;
+    if (ctorv!=NULL) {
+        va_list args;
+        va_start(args, sig);
+        obj = env->NewObjectV(cls, ctorv, args);
+        va_end(args);
+
+        if (obj==NULL) {
+            [self clearJvmException:env];
+            if (error!=nil) {
+                NSString *msg = [NSString stringWithFormat:@"Failed to create object using %@ constructor", sig];
+                *error = [NSError errorWithDomain:msg code:0 userInfo:nil];
+            }
+        }
+    }
+    return obj;
+}
 - (jobject) createObject:(JNIEnv *)env error:(NSError * __autoreleasing *)error {
-    /*
-     TODO: Variable arg list. http://www.cocoawithlove.com/2009/05/variable-argument-lists-in-cocoa.html
-     va_list args;
-     va_start(args, signature);
-     env->NewObjectV(theclass, ctor, args);
-     va_end(args);
-     */
     if (ctor==NULL) {
         ctor = env->GetMethodID(cls, "<init>", "()V");
         if (ctor==NULL) {
@@ -112,7 +132,7 @@
     jmethodID getGenericNameMethod = env->GetMethodID(methodClass, "toGenericString", "()Ljava/lang/String;");
     
     jclass classClass = env->FindClass("java/lang/Class");
-    jmethodID getMethodsMethod = env->GetMethodID(classClass, "getDeclaredMethods", "()[Ljava/lang/reflect/Method;");
+    jmethodID getMethodsMethod = env->GetMethodID(classClass, "getMethods", "()[Ljava/lang/reflect/Method;");
     
     jobjectArray methods = (jobjectArray)env->CallObjectMethod(cls, getMethodsMethod);
     int mcount = env->GetArrayLength(methods);

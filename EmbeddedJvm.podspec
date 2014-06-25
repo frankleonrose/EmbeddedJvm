@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.compiler_flags = '-DOS_OBJECT_USE_OBJC=0'
 
-  s.preserve_paths = 'Java/**/*.java', 'LICENSE.md'
+  s.preserve_paths = 'Java/src/main/**/*.java', 'LICENSE.md'
   
   s.default_subspec = 'Core'
   
@@ -31,6 +31,7 @@ Pod::Spec.new do |s|
   s.subspec "Thrift" do |sp|
     sp.source_files = "EmbeddedJvm/Thrift/*.{h,m,mm}"
     sp.dependency "EmbeddedJvm/Core"
+    #sp.dependency 'Thrift', :path => "/Users/frank/Futurose/Frameworks/Thrift"
     sp.dependency 'thrift', '~> 0.9.1'
   end
 

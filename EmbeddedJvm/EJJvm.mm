@@ -22,6 +22,7 @@
 
 #import "EmbeddedJvm.h"
 #include <dlfcn.h>
+#include <pthread.h>
 
 JNIEXPORT void JNICALL EmbeddedJvmOutputStream_write(JNIEnv *env, jobject obj, jbyteArray bytes, jint offset, jint len);
 JNIEXPORT void JNICALL EmbeddedJvmOutputStream_open(JNIEnv *env, jobject obj, jstring tag);
@@ -67,14 +68,18 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     JavaVM *jvm;       /* denotes a Java VM */
     JNIEnv *env;       /* pointer to native method interface */
 
+    dispatch_semaphore_t mainThreadStartSignal;
     dispatch_semaphore_t mainThreadEndSignal;
+    dispatch_queue_t lifecycleQueue;
 }
 @property NSString *classpath;
 @property NSThread* mainThread;
 @property NSMutableArray* commands;
 @property CFRunLoopRef runLoop;
 @property CFRunLoopSourceRef runLoopSource;
-@property BOOL shutdown;
+@property BOOL shutdownRequested;
+@property BOOL isShutdown;
+@property NSError *startError;
 -(void)doCommand;
 @end
 
@@ -211,8 +216,11 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 - (EJJvm*) initWithClassPaths:(NSArray*)paths options:(NSArray*)options error:(NSError * __autoreleasing *)error {
     if (self = [super init]) {
-        self.shutdown = NO;
+        self.isShutdown = NO;
+        self.shutdownRequested = NO;
+        self->mainThreadStartSignal = dispatch_semaphore_create(0);
         self->mainThreadEndSignal = dispatch_semaphore_create(0);
+        self->lifecycleQueue = dispatch_queue_create("EJJvmLifecycle", 0);
         
         if (paths==nil) {
             paths = @[];
@@ -355,16 +363,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         self.mainThread = [[NSThread alloc] initWithTarget:self
                                                      selector:@selector(mainThreadLoop:)
                                                        object:nil];
-        [self.mainThread setName:@"EmbeddedJvm"];
+        [self.mainThread  setName:@"EmbeddedJvm"];
         [self.mainThread start];  // Actually start the thread
-        
+        dispatch_semaphore_wait(mainThreadStartSignal, DISPATCH_TIME_FOREVER);
+        if (self.isShutdown) {
+            // We had a problem starting
+            if (error!=nil) {
+                *error = self.startError;
+            }
+            return self = nil;
+        }
     }
     return self;
 }
 
 -(void)dealloc {
     NSLog(@"Deallocating EmbeddedJvm");
-    [self printErrors];
+    
+    [self close];
+    
     if (optionsArray!=nil) {
         // 0th entry was not allocated on stack!
         for (int j=1; j<optionCount; ++j) {
@@ -372,6 +389,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         }
         delete[] optionsArray;
     }
+    
+    dispatch_release(self->mainThreadStartSignal);
+    dispatch_release(self->mainThreadEndSignal);
+    dispatch_release(self->lifecycleQueue);
 }
 
 -(void)printErrors {
@@ -388,7 +409,25 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 -(void)close {
-    [self destroy];
+    void (^syncDestroy)() = ^() {
+        if (!self.isShutdown) {
+            [self printErrors];
+
+            // PoisonPill block that sets shutdownRequested=YES so that main thread knows to terminate
+            void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+                self.shutdownRequested = YES;
+            };
+            
+            [self enqueueCommand:blockWithDone];
+            
+            dispatch_semaphore_wait(self->mainThreadEndSignal, DISPATCH_TIME_FOREVER);
+            
+            self.isShutdown = YES;
+        }
+    };
+    
+    // Call on serial queue to ensure that it happens only once despite multiple calls to close.
+    dispatch_sync(self->lifecycleQueue, syncDestroy);
 }
 
 - (bool)createJvm:(NSError * __autoreleasing *)error {
@@ -406,7 +445,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
     /* load and initialize a Java VM, return a JNI interface pointer in env */
 //    NSLog(@"Calling createJavaVM()");
-    jint result = createJavaVM(&jvm, (void**)&env, &vm_args);
+    jint result = self->createJavaVM(&self->jvm, (void**)&self->env, &vm_args);
 //    NSLog(@"Returned from createJavaVM()");
     if (result!=0) {
         NSString *msg = [NSString stringWithFormat:@"Failed to create JVM with error code: %d", result];
@@ -422,12 +461,16 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (void)mainThreadLoop:(NSObject*)parameter {
+    pthread_setname_np("EmbeddedJvm");
     NSLog(@"Starting EmbeddedJvm main thread (self=%@)", self);
     NSError *error = nil;
     [self createJvm:&error];
     if (error!=nil) {
         // TODO: Send error back to caller
         NSLog(@"Error creating JVM: %@", error);
+        self.isShutdown = YES;
+        self.startError = error;
+        dispatch_semaphore_signal(self->mainThreadStartSignal);
         return;
     }
     NSLog(@"Created JVM in main thread");
@@ -446,22 +489,45 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     
     CFRunLoopAddSource(self.runLoop, self.runLoopSource, kCFRunLoopDefaultMode);
     
-    [self connectNativeOutput];
-    
+    EJClass *output = [self connectNativeOutput];
+
+    dispatch_semaphore_signal(self->mainThreadStartSignal);
+
     [self doCommand]; // Run all the commands queued while waiting for this thread to start.
 
     bool threadTerminated = false;
-    while (!threadTerminated && !self.shutdown) {
-        bool sourceOrTimeout = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-        if (!sourceOrTimeout) {
-            NSLog(@"Failed to start run loop in EmbeddedJvm");
-            threadTerminated = true;
+    while (!threadTerminated && !self.shutdownRequested) {
+        @autoreleasepool {
+            bool sourceOrTimeout = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+            if (!sourceOrTimeout) {
+                NSLog(@"Failed to start run loop in EmbeddedJvm");
+                threadTerminated = true;
+            }
+            [self doCommand];
         }
-        [self doCommand];
     }
     
+    output = nil;
+    self.isShutdown = YES;
+    
+    // Release runloop stuff
+    CFRunLoopRemoveSource(self.runLoop, self.runLoopSource, kCFRunLoopDefaultMode);
+    CFRelease(self.runLoopSource);
+    self.runLoopSource = nil;
+    self.runLoop = nil;
+    
     /* We are done. */
-    jint result = jvm->DestroyJavaVM();
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
+    
+    jint result = jvm->DetachCurrentThread();
+    if (result!=0) {
+        NSString *msg = [NSString stringWithFormat:@"Failed to detach EmbeddedJvm thread with error code: %d", result];
+        NSLog(@"%@", msg);
+    }
+    result = jvm->DestroyJavaVM();
     if (result!=0) {
         NSString *msg = [NSString stringWithFormat:@"Failed to destroy JVM with error code: %d", result];
         NSLog(@"%@", msg);
@@ -472,6 +538,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         jvmlib = NULL;
     }
     if (jreBundle!=NULL) {
+        CFBundleUnloadExecutable(jreBundle);
         CFRelease(jreBundle);
         jreBundle = NULL;
     }
@@ -482,7 +549,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 
 #define NATIVE_OUTPUT_CLASS @"com/futurose/embeddedjvm/EmbeddedJvmOutputStream"
 
-- (void)connectNativeOutput {
+- (EJClass *)connectNativeOutput {
     static JNINativeMethod method_table[] = {
         EJ_JVM_NATIVE("nativeWrite", "([BII)V", EmbeddedJvmOutputStream_write),
         EJ_JVM_NATIVE("nativeOpen", "(Ljava/lang/String;)V", EmbeddedJvmOutputStream_open),
@@ -517,18 +584,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             }
         }
     }
-}
-
-- (void)destroy {
-    // PoisonPill block that sets shutdown=YES so that main thread knows to terminate
-    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
-        self.shutdown = YES;
-    };
-    
-    [self enqueueCommand:blockWithDone];
-    
-    dispatch_semaphore_wait(self->mainThreadEndSignal, DISPATCH_TIME_FOREVER);
-    dispatch_release(self->mainThreadEndSignal);
+    return cls;
 }
 
 -(void)doCommand {
@@ -585,6 +641,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (void) callJvmSyncVoid:(void(^)(JNIEnv *))block {
+    if (self.isShutdown) {
+        return;
+    }
+    
     dispatch_semaphore_t done = dispatch_semaphore_create(0);
     
     void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
@@ -599,6 +659,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (int) callJvmSyncInt:(int(^)(JNIEnv* env))block {
+    if (self.isShutdown) {
+        return 0;
+    }
+    
     dispatch_semaphore_t done = dispatch_semaphore_create(0);
     
     int __block ret = 0;
@@ -615,6 +679,10 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 }
 
 - (id) callJvmSyncObject:(id(^)(JNIEnv* env))block {
+    if (self.isShutdown) {
+        return nil;
+    }
+    
     dispatch_semaphore_t done = dispatch_semaphore_create(0);
     
     id __block ret = 0;
@@ -628,6 +696,53 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
     dispatch_release(done);
     return ret;
+}
+
+- (void) callJvmAsyncVoid:(void(^)(JNIEnv* env))block completion:(void(^)())completion {
+    if (self.isShutdown) {
+        return completion();
+    }
+    
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        block(blockEnv);
+        if (completion!=nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), completion);
+        }
+    };
+    
+    [self enqueueCommand:blockWithDone];
+}
+
+- (void) callJvmAsyncInt:(int(^)(JNIEnv* env))block completion:(void(^)(int i))completion {
+    if (self.isShutdown) {
+        return completion(0);
+    }
+    
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        int ret = block(blockEnv);
+        void(^vcompletion)() = ^() {
+            completion(ret);
+        };
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), vcompletion);
+    };
+    
+    [self enqueueCommand:blockWithDone];
+}
+
+- (void) callJvmAsyncObject:(id(^)(JNIEnv* env))block completion:(void(^)(id obj))completion {
+    if (self.isShutdown) {
+        return completion(nil);
+    }
+    
+    void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
+        id ret = block(blockEnv);
+        void(^vcompletion)() = ^() {
+            completion(ret);
+        };
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), vcompletion);
+    };
+    
+    [self enqueueCommand:blockWithDone];
 }
 
 - (JNIEnv *) getEnv {
@@ -706,7 +821,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode)
 {
     EJJvm *host = (__bridge EJJvm*)(info);
     [host setRunLoop:nil];
-    if (!host.shutdown) {
+    if (!host.shutdownRequested) {
         NSLog(@"Unexpected cancelation of run loop source");
     }
 }

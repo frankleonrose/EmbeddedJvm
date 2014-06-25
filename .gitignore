@@ -4,3 +4,7 @@ Temp/
 xcuserdata/
 Release/
 Docs/
+Pods/
+*.class
+Podfile.lock
+Java/target/
