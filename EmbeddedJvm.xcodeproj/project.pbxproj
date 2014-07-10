@@ -114,7 +114,7 @@
 		01C46AA61959DD50000FF725 /* EmbeddedJvmTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvmTests.h; sourceTree = "<group>"; };
 		01C46AAB1959E9B1000FF725 /* EmbeddedJvmTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmbeddedJvmTest.h; sourceTree = "<group>"; };
 		01C46AAC1959E9B1000FF725 /* EmbeddedJvmTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmbeddedJvmTest.m; sourceTree = "<group>"; };
-		01C5C708195747AA00C4ED90 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		01C5C708195747AA00C4ED90 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		01C5C70D1958876500C4ED90 /* EJClassTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EJClassTest.m; sourceTree = "<group>"; };
 		01C5C7111958879800C4ED90 /* EJThriftTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EJThriftTest.m; sourceTree = "<group>"; };
 		01C90C141884562600873596 /* CopyJavaToPluginsFolder.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = CopyJavaToPluginsFolder.sh; sourceTree = "<group>"; };

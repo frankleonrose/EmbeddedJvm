@@ -74,7 +74,7 @@ static JNINativeMethod method_table[] = {
         }
         self.jvm = jvm;
         
-        *error = (NSError *)[self.jvm callJvmSyncObject:^(JNIEnv *env) {
+        NSError *err = (NSError *)[self.jvm callJvmSyncObject:^(JNIEnv *env) {
             NSError *error = nil;
             BOOL success = [self connect:env channelClass:classname error:&error];
             if (!success) {
@@ -82,7 +82,10 @@ static JNINativeMethod method_table[] = {
             }
             return error;
         }];
-        if (*error!=nil) {
+        if (err!=nil) {
+            if (error!=nil) {
+                *error = err;
+            }
             return nil;
         }
     }
@@ -114,7 +117,7 @@ static JNINativeMethod method_table[] = {
 }
 
 -(void)disconnect {
-    NSLog(@"Calling disconnect");
+    //NSLog(@"Calling disconnect");
 }
 
 -(void)logException:(JNIEnv *)env {
