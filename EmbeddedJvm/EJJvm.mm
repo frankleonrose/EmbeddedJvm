@@ -648,8 +648,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     dispatch_semaphore_t done = dispatch_semaphore_create(0);
     
     void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
-        block(blockEnv);
-        dispatch_semaphore_signal(done);
+        @try {
+            block(blockEnv);
+        }
+        @finally {
+            dispatch_semaphore_signal(done);
+        }
     };
     
     [self enqueueCommand:blockWithDone];
@@ -667,8 +671,12 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     
     int __block ret = 0;
     void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
-        ret = block(blockEnv);
-        dispatch_semaphore_signal(done);
+        @try {
+            ret = block(blockEnv);
+        }
+        @finally {
+            dispatch_semaphore_signal(done);
+        }
     };
     
     [self enqueueCommand:blockWithDone];
@@ -687,10 +695,14 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     
     id __block ret = 0;
     void (^blockWithDone)(JNIEnv *) = ^(JNIEnv *blockEnv) {
-        ret = block(blockEnv);
-        dispatch_semaphore_signal(done);
+        @try {
+            ret = block(blockEnv);
+        }
+        @finally {
+            dispatch_semaphore_signal(done);
+        }
     };
-    
+
     [self enqueueCommand:blockWithDone];
     
     dispatch_semaphore_wait(done, DISPATCH_TIME_FOREVER);
