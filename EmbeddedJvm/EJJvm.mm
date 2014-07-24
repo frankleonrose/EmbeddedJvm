@@ -45,6 +45,25 @@ jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env) {
     return response;
 }
 
+//NSMutableArray* EJDataToArrayOfBytes(NSData *data) {
+//    NSMutableArray *bytes = [NSMutableArray arrayWithCapacity:data.length];
+//    unsigned char *dbytes = (unsigned char *)data.bytes;
+//    for (int i=0; i<data.length; ++i) {
+//        NSNumber *byte = [NSNumber numberWithUnsignedChar:dbytes[i]];
+//        [bytes addObject:byte];
+//    }
+//    return bytes;
+//}
+//
+//NSData *EJArrayOfBytesToData(NSMutableArray *bytes) {
+//    NSMutableData *data = [NSMutableData dataWithLength:bytes.count];
+//    for (int i=0; i<bytes.count; ++i) {
+//        unsigned char b = [[bytes objectAtIndex:i] unsignedCharValue];
+//        [data appendBytes:&b length:1];
+//    }
+//    return [NSData dataWithData:data];
+//}
+
 typedef jint (JNICALL *JNI_GetDefaultJavaVMInitArgs_t)(void *args);
 typedef jint (JNICALL *JNI_CreateJavaVM_t)(JavaVM **pvm, void **penv, void *args);
 typedef jint (JNICALL *JNI_GetCreatedJavaVMs_t)(JavaVM **, jsize, jsize *);
