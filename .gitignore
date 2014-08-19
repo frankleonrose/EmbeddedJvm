@@ -8,3 +8,4 @@ Pods/
 *.class
 Podfile.lock
 Java/target/
+*.log

@@ -509,6 +509,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     CFRunLoopAddSource(self.runLoop, self.runLoopSource, kCFRunLoopDefaultMode);
     
     EJClass *output = [self connectNativeOutput];
+    [output printMethods:self->env];
 
     dispatch_semaphore_signal(self->mainThreadStartSignal);
 
