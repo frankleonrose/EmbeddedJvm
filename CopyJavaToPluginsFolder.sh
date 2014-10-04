@@ -3,9 +3,9 @@
 #  EmbeddedJvm/CopyJavaToPluginsFolder.sh
 #  Copyright (c) 2014 Futurose. All rights reserved.
 
-copyTo=$BUILT_PRODUCTS_DIR/$PLUGINS_FOLDER_PATH
-# Make certain that copyTo directory exists
-[ -d $copyTo ] || mkdir -p $copyTo
+pluginsPath=$BUILT_PRODUCTS_DIR/$PLUGINS_FOLDER_PATH
+# Make certain that pluginsPath directory exists
+[ -d $pluginsPath ] || mkdir -p $pluginsPath
 
 javaBundle=$1
 [ -n "$javaBundle" ] || javaBundle=$(cd $JAVA_HOME/../..; pwd)
@@ -20,14 +20,14 @@ then
 exit 1
 fi
 
-# Copy or Link jre to copyTo
+# Copy or Link jre to pluginsPath
 if [ $CONFIGURATION = "Release" ]
 then
-  echo Copying $javaBundle to $copyTo
+  echo Copying $javaBundle to $pluginsPath
 # a: archive.  "Preserve almost everything"
-  rsync -a "$javaBundle" "$copyTo/"
+  rsync -a "$javaBundle" "$pluginsPath/"
 
-  appJREBundle="$copyTo"/$(basename "$javaBundle")
+  appJREBundle="$pluginsPath"/$(basename "$javaBundle")
   javaInfoPlist="$appJREBundle/Contents/Info.plist"
 
   # Remove the two files referring to the now-deprecated (10.9) QTKit
@@ -35,27 +35,27 @@ then
   rm -f $appJREBundle/Contents/Home/lib/libgstplugins-lite.dylib
   rm -f $appJREBundle/Contents/Home/lib/libjfxmedia.dylib
 else
-  echo Linking $javaBundle to $copyTo
+  echo Linking $javaBundle to $pluginsPath
 # s: symbolic link
 # h: target is already a symbolic link, do not follow it.  Because we want to replace.
 # f: force.  Unlink the target file if it already exists.
 # F: unlink directory. Even if target is a directory, unlink it so the link may occur.
-  ln -shfF "$javaBundle" "$copyTo/"
+  ln -shfF "$javaBundle" "$pluginsPath/"
 fi
 
 
 ####### Copy build java files (if any specified) to app/Contents/Resources/Java
 # Classpaths may be specified as $APP_JAVA/my.jar and they will point to this folder.
 shift
-copyTo=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
-# Make certain that copyTo directory exists
-[ -d $copyTo ] || mkdir -p $copyTo
+jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
+# Make certain that jarPath directory exists
+[ -d $jarPath ] || mkdir -p $jarPath
 
 for ((i=0; i < SCRIPT_INPUT_FILE_COUNT ; i++)) ; do
   inputFile=`eval echo '$SCRIPT_INPUT_FILE_'$i`
   if [ -e $inputFile ] ; then
-    echo Copying $inputFile to $copyTo
-    rsync -az "$inputFile" "$copyTo"
+    echo Copying $inputFile to $jarPath
+    rsync -az "$inputFile" "$jarPath"
   fi
 done
 
@@ -71,7 +71,7 @@ then
   entitlements=$PROJECT_DIR/$CODE_SIGN_ENTITLEMENTS
 
   appIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$BUILT_PRODUCTS_DIR/$INFOPLIST_PATH")
-  jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
+
   echo Signing all .jar files in $jarPath with $appIdentifier
   find "$jarPath" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$appIdentifier" {} \;
 
@@ -81,6 +81,7 @@ then
   # change the jre/Contents/MacOS/libjli.dylib symbolic link to a real file, which causes the JVM's relative
   # path logic to fail to find libjava.dylib.
   # Learned about materialization here: https://lists.macosforge.org/pipermail/macruby-devel/2012-June/008839.html
+  # Current (2014-10-04 / Xcode 6.0.1) versions of codesign issue an error when the MacOS/executablefile is a symlink
   echo Signing all .jar and dylib files in $appJREBundle with identifier $jreIdentifier
   find "$appJREBundle/Contents/Home" -type f \( -name "*.jar" -or -name "*.dylib" -or -name "Info.plist" \) -exec codesign --verbose=4 --force --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$jreIdentifier" {} \;
 fi
