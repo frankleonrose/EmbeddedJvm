@@ -77,15 +77,16 @@ then
 
   jreIdentifier=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$javaInfoPlist")
 
-  # Codesign used to materialize links, which changed the jre/Contents/MacOS/libjli.dylib symbolic link to a real file,
-  # which causes the JVM's relative path logic to fail to find libjava.dylib.
-  # Learned about materialization here: https://lists.macosforge.org/pipermail/macruby-devel/2012-June/008839.html
-  # Now (2014-10-04, 10.9.5, Xcode 6.0.1) codesign simply refuses to sign an executable that is a symlink.
-  # The solution is to remove the symlink, edit the Info.plist to point directly to libjli.dylib,
-  # and then sign the whole jre.
-  echo Redirecting JRE executable
-  rm "$appJREBundle/Contents/MacOS/libjli.dylib"
-  /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable ../Home/lib/jli/libjli.dylib" "$javaInfoPlist"\
+  # App store code signing requires MacOS/libjli.dylib symlink to be an actual file.
+  # It will not work to remove it and simply point CFExecutable to ../Home/lib/jli/libjli.dylib (tried 2014-10-05)
+  # However, once materialized thus, the JVM's relative path logic fails to find libjava.dylib, etc.
+  # (Read about materialization here: https://lists.macosforge.org/pipermail/macruby-devel/2012-June/008839.html)
+  # That means that after materializing and signing, we never actually user MacOS/libjli.dylib.
+  # Instead our JVM loading logic goes directly for Contents/Home/lib/jli/libjli.dylib
+  # TODO: Write the actual library path into either the JRE Info.plist or the app's Info.plist
+  echo Materializing JRE executable
+  JLILIB="$appJREBundle/Contents/MacOS/libjli.dylib"
+  rsync `dirname $JLILIB`/`readlink $JLILIB` $JLILIB
 
   echo Signing $appJREBundle with identifier $jreIdentifier
   codesign --verbose --verbose --force --deep --sign "$CODE_SIGN_IDENTITY" --entitlements "$entitlements" --identifier "$jreIdentifier" "$appJREBundle"

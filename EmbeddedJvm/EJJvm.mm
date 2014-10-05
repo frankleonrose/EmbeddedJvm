@@ -102,14 +102,14 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 -(void)doCommand;
 @end
 
-#define JRE_JVM_SHARED_LIB @"lib/server/libjvm.dylib"
+#define JRE_JVM_SHARED_LIB @"lib/jli/libjli.dylib"
 #define JDK_JVM_SHARED_LIB @"jre/" JRE_JVM_SHARED_LIB
 
 #define kLaunchFailure "JavaAppLauncherFailure"
 #define CREATE_JVM_FN "JNI_CreateJavaVM"
 
 @implementation EJJvm
-+(NSString *)appendJvmToJre:(NSString *)javaHome {
++(NSString *)getSharedLibFromJavaHome:(NSString *)javaHome {
     NSString *lib = JRE_JVM_SHARED_LIB;
     if ([javaHome rangeOfString:@"jre"].location == NSNotFound) {
         // Assume we have JDK
@@ -183,6 +183,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
 // And sample code from OpenJDK: http://cr.openjdk.java.net/~michaelm/7113349/7u4/4/jdk7u-osx/new/src/macosx/bundle/JavaAppLauncher/src/JavaAppLauncher.m.html
 - (JNI_CreateJavaVM_t) loadAsBundle:(NSURL *)jreBundleURL error:(NSError * __autoreleasing *)error {
     // load the libjli.dylib of the embedded JRE (or JDK) bundle
+    NSLog(@"Loading JRE bundle: %@", jreBundleURL);
     jreBundle = CFBundleCreate(NULL, (__bridge CFURLRef)jreBundleURL);
     
     CFErrorRef err = NULL;
@@ -192,7 +193,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         if (error!=nil) {
             *error = nserr;
         }
-        NSLog(@"could not load the JRE/JDK: %@", nserr);
+        NSLog(@"Could not load JRE bundle %@: %@", jreBundleURL, nserr);
         return NULL;
     }
     
@@ -211,12 +212,13 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
     return reinterpret_cast<JNI_CreateJavaVM_t>(rawCreateFn);
 }
 
-- (JNI_CreateJavaVM_t) loadAsDylib:(NSString *)appJvm error:(NSError * __autoreleasing *)error {
+- (JNI_CreateJavaVM_t) loadAsDylib:(NSString *)jvmDylib error:(NSError * __autoreleasing *)error {
+    NSLog(@"Loading JRE library: %@", jvmDylib);
     if (const char *err = dlerror()) {
         NSLog(@"Flushing existing dl error: %s", err);
     }
 
-    jvmlib = dlopen([appJvm cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
+    jvmlib = dlopen([jvmDylib cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
     
     if (jvmlib==nil) {
         const char *derror = dlerror();
@@ -225,7 +227,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSString *msg = [NSString stringWithFormat:@"Error dl loading JVM: %s (from %@)", derror, cwd];
         NSLog(@"%@", msg);
         if (error!=nil) {
-            *error = [NSError errorWithDomain:@"load" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm, @"cwd": cwd}];
+            *error = [NSError errorWithDomain:@"load" code:0 userInfo:@{@"msg": msg, @"jvm": jvmDylib, @"cwd": cwd}];
         }
         return NULL;
     }
@@ -275,16 +277,17 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         if (jreBundleURL==nil) {
             jreBundleURL = [NSURL URLWithString:[[javaHome stringByDeletingLastPathComponent] stringByDeletingLastPathComponent]];
         }
-        NSString *appJvm = [EJJvm appendJvmToJre:javaHome];
+        NSString *jvmDylib = [EJJvm getSharedLibFromJavaHome:javaHome];
 
-//        createJavaVM = [self loadAsDylib:appJvm error:error];
-        createJavaVM = [self loadAsBundle:jreBundleURL error:error];
+        createJavaVM = [self loadAsDylib:jvmDylib error:error];
+        //createJavaVM = [self loadAsBundle:jreBundleURL error:error];
         
         if (createJavaVM==nil) {
             NSString *msg = @"Failed to load JNI_CreateJavaVM symbol";
             NSLog(@"%@", msg);
             if (error!=nil) {
-                *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
+                NSString *jre = [NSString stringWithFormat:@"%@", jreBundleURL];
+                *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jre": jre}];
             }
             return self = nil;
         }
@@ -369,7 +372,8 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
                 NSString *msg = [NSString stringWithFormat:@"Failed to encode JVM option as cstring (%@)", option];
                 NSLog(@"%@", msg);
                 if (error!=nil) {
-                    *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jvm": appJvm}];
+                    NSString *jre = [NSString stringWithFormat:@"%@", jreBundleURL];
+                    *error = [NSError errorWithDomain:@"EmbeddedJvm" code:0 userInfo:@{@"msg": msg, @"jre": jre}];
                 }
                 return self = nil;
             }
