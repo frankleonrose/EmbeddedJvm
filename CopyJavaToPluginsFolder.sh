@@ -56,6 +56,8 @@ for ((i=0; i < SCRIPT_INPUT_FILE_COUNT ; i++)) ; do
   if [ -e $inputFile ] ; then
     echo Copying $inputFile to $jarPath
     rsync -az "$inputFile" "$jarPath"
+  else
+    echo warning: Unknown jar file or directory $inputFile
   fi
 done
 
