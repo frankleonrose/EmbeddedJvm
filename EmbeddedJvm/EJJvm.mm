@@ -296,7 +296,7 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
             return self = nil;
         }
 
-        NSString *appJava = [NSString stringWithFormat:@"%@/Java", [appContents path]];
+        NSString *appJava = [NSString stringWithFormat:@"%@/Resources/Java", [appContents path]];
         {
             // Convenience method replaces APP_JAVA with actual app's Java path
             NSMutableArray *adjustedPaths = [NSMutableArray arrayWithCapacity:[paths count]];

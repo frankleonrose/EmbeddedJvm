@@ -47,7 +47,7 @@ fi
 ####### Copy build java files (if any specified) to app/Contents/Resources/Java
 # Classpaths may be specified as $APP_JAVA/my.jar and they will point to this folder.
 shift
-jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Java
+jarPath=$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/Resources/Java
 # Make certain that jarPath directory exists
 [ -d $jarPath ] || mkdir -p $jarPath
 

@@ -28,7 +28,7 @@ jbyteArray EJDataToJBytes(NSData *data, JNIEnv *env);
 /**
  Create an embedded JVM.
  
- The default classpath will include all .jar files within the app/Contents/Java folder.
+ The default classpath will include all .jar files within the app/Contents/Resources/Java folder.
  
  @param path An optional set of paths that will be prepended to the standard paths.  May be nil.
  @param options A dictionary of options
