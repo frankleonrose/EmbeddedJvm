@@ -30,17 +30,6 @@ then
   appJREBundle="$pluginsPath"/$(basename "$javaBundle")
   javaInfoPlist="$appJREBundle/Contents/Info.plist"
 
-  # Check whether JavaVM:JVMCapabilities:JNI is set in JRE bundle. Add if not.
-  capKey="JavaVM:JVMCapabilities"
-  (/usr/libexec/PlistBuddy -c "Print $capKey" $javaInfoPlist 2>/dev/null | grep JNI >/dev/null)
-  if [ $? -ne 0 ]
-  then
-    echo Adding JNI to $capKey in $javaInfoPlist to avoid JRE install popup
-    # Adding $capKey array
-    /usr/libexec/PlistBuddy -c "Add $capKey array" $javaInfoPlist 2>/dev/null
-    /usr/libexec/PlistBuddy -c "Add $capKey:0 string \"JNI\"" $javaInfoPlist
-  fi
-
   # Remove the two files referring to the now-deprecated (10.9) QTKit
   # otool -L $appJREBundle/Contents/Home/jre/lib/*dylib | grep QTKit should yield nothing
   rm -f $appJREBundle/Contents/Home/lib/libgstplugins-lite.dylib
@@ -52,15 +41,6 @@ else
 # f: force.  Unlink the target file if it already exists.
 # F: unlink directory. Even if target is a directory, unlink it so the link may occur.
   ln -shfF "$javaBundle" "$pluginsPath/"
-
-# Check whether JavaVM:JVMCapabilities:JNI is set in JRE bundle. Warn if not.
-  javaInfoPlist="$javaBundle/Contents/Info.plist"
-  capKey="JavaVM:JVMCapabilities"
-  (/usr/libexec/PlistBuddy -c "Print $capKey" $javaInfoPlist 2>/dev/null | grep JNI >/dev/null)
-  if [ $? -ne 0 ]
-  then
-    echo warning: missing string JNI in key $capKey in $javaInfoPlist. You may see the JRE install popup.
-  fi
 fi
 
 

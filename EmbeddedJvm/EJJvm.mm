@@ -17,6 +17,8 @@
  
  
  Demonstrate using RegisterNatives to link functions in the host to classes loaded into the Embedded JVM.
+ 
+ Don't forget about JAVA_LAUNCHER_VERBOSE for debugging.
  */
 
 
@@ -218,7 +220,9 @@ void RunLoopSourceCancelRoutine (void *info, CFRunLoopRef rl, CFStringRef mode);
         NSLog(@"Flushing existing dl error: %s", err);
     }
 
-    jvmlib = dlopen([jvmDylib cStringUsingEncoding:NSASCIIStringEncoding], RTLD_NOW | RTLD_LOCAL); // Being strict
+    // Don't use RTLD_LOCAL! If libjava.dylib symbols are not in global name space, the Install On Demand is triggered.
+    // Thanks, Mike Swingler for finally leading me out of this hell. http://grokbase.com/t/openjdk/macosx-port-dev/111spq7j0a/linking-to-javaruntimesupport-framework/11836qwknj#20110801cznskjq0kjcp33yar4kr72r3am
+    jvmlib = dlopen([jvmDylib cStringUsingEncoding:NSASCIIStringEncoding], RTLD_LAZY);
     
     if (jvmlib==nil) {
         const char *derror = dlerror();
