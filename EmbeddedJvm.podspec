@@ -36,7 +36,8 @@ Pod::Spec.new do |s|
   end
 
   #subspec "Protobuf" do |sp|
-  #  sp.source_files = "Classes/Pinboard"
+  #  sp.source_files = "EmbeddedJvm/Protobuf/*.{h,m,mm}"
+  #  sp.dependency "EmbeddedJvm/Core"
   #  sp.dependency 'protobuf'
   #end
 end
